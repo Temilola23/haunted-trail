@@ -1,0 +1,1708 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="A Halloween coding hunt by ColorStack Minerva: walk a haunted trail through five cities of puzzles and coding trials.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M6 28V14a10 10 0 0 1 20 0v14l-3.3-3-3.3 3-3.4-3-3.3 3-3.4-3z' fill='%23f4efe6'/><circle cx='12.5' cy='14' r='2' fill='%23120a1c'/><circle cx='19.5' cy='14' r='2' fill='%23120a1c'/></svg>">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>The Haunted Trail</title>
+<!-- 🦇 You looked under the floorboards. Good instinct. Whisper this word: nocturnal -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>.CodeMirror{font-family:monospace;height:300px;color:#000;direction:ltr}.CodeMirror-lines{padding:4px 0}.CodeMirror pre.CodeMirror-line,.CodeMirror pre.CodeMirror-line-like{padding:0 4px}.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff}.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap}.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap}.CodeMirror-guttermarker{color:#000}.CodeMirror-guttermarker-subtle{color:#999}.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0}.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver}.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7}.cm-fat-cursor div.CodeMirror-cursors{z-index:1}.cm-fat-cursor .CodeMirror-line::selection,.cm-fat-cursor .CodeMirror-line>span::selection,.cm-fat-cursor .CodeMirror-line>span>span::selection{background:0 0}.cm-fat-cursor .CodeMirror-line::-moz-selection,.cm-fat-cursor .CodeMirror-line>span::-moz-selection,.cm-fat-cursor .CodeMirror-line>span>span::-moz-selection{background:0 0}.cm-fat-cursor{caret-color:transparent}@-moz-keyframes blink{50%{background-color:transparent}}@-webkit-keyframes blink{50%{background-color:transparent}}@keyframes blink{50%{background-color:transparent}}.cm-tab{display:inline-block;text-decoration:inherit}.CodeMirror-rulers{position:absolute;left:0;right:0;top:-50px;bottom:0;overflow:hidden}.CodeMirror-ruler{border-left:1px solid #ccc;top:0;bottom:0;position:absolute}.cm-s-default .cm-header{color:#00f}.cm-s-default .cm-quote{color:#090}.cm-negative{color:#d44}.cm-positive{color:#292}.cm-header,.cm-strong{font-weight:700}.cm-em{font-style:italic}.cm-link{text-decoration:underline}.cm-strikethrough{text-decoration:line-through}.cm-s-default .cm-keyword{color:#708}.cm-s-default .cm-atom{color:#219}.cm-s-default .cm-number{color:#164}.cm-s-default .cm-def{color:#00f}.cm-s-default .cm-variable-2{color:#05a}.cm-s-default .cm-type,.cm-s-default .cm-variable-3{color:#085}.cm-s-default .cm-comment{color:#a50}.cm-s-default .cm-string{color:#a11}.cm-s-default .cm-string-2{color:#f50}.cm-s-default .cm-meta{color:#555}.cm-s-default .cm-qualifier{color:#555}.cm-s-default .cm-builtin{color:#30a}.cm-s-default .cm-bracket{color:#997}.cm-s-default .cm-tag{color:#170}.cm-s-default .cm-attribute{color:#00c}.cm-s-default .cm-hr{color:#999}.cm-s-default .cm-link{color:#00c}.cm-s-default .cm-error{color:red}.cm-invalidchar{color:red}.CodeMirror-composing{border-bottom:2px solid}div.CodeMirror span.CodeMirror-matchingbracket{color:#0b0}div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#a22}.CodeMirror-matchingtag{background:rgba(255,150,0,.3)}.CodeMirror-activeline-background{background:#e8f2ff}.CodeMirror{position:relative;overflow:hidden;background:#fff}.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-50px;margin-right:-50px;padding-bottom:50px;height:100%;outline:0;position:relative;z-index:0}.CodeMirror-sizer{position:relative;border-right:50px solid transparent}.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none;outline:0}.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll}.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll}.CodeMirror-scrollbar-filler{right:0;bottom:0}.CodeMirror-gutter-filler{left:0;bottom:0}.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3}.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-50px}.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important}.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4}.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4}.CodeMirror-gutter-wrapper ::selection{background-color:transparent}.CodeMirror-gutter-wrapper ::-moz-selection{background-color:transparent}.CodeMirror-lines{cursor:text;min-height:1px}.CodeMirror pre.CodeMirror-line,.CodeMirror pre.CodeMirror-line-like{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:contextual;font-variant-ligatures:contextual}.CodeMirror-wrap pre.CodeMirror-line,.CodeMirror-wrap pre.CodeMirror-line-like{word-wrap:break-word;white-space:pre-wrap;word-break:normal}.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0}.CodeMirror-linewidget{position:relative;z-index:2;padding:.1px}.CodeMirror-rtl pre{direction:rtl}.CodeMirror-code{outline:0}.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box}.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden}.CodeMirror-cursor{position:absolute;pointer-events:none}.CodeMirror-measure pre{position:static}div.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3}div.CodeMirror-dragcursors{visibility:visible}.CodeMirror-focused div.CodeMirror-cursors{visibility:visible}.CodeMirror-selected{background:#d9d9d9}.CodeMirror-focused .CodeMirror-selected{background:#d7d4f0}.CodeMirror-crosshair{cursor:crosshair}.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0}.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0}.cm-searching{background-color:#ffa;background-color:rgba(255,255,0,.4)}.cm-force-border{padding-right:.1px}@media print{.CodeMirror div.CodeMirror-cursors{visibility:hidden}}.cm-tab-wrap-hack:after{content:''}span.CodeMirror-selectedtext{background:0 0}</style>
+<style>
+/* Layout: a candlelit night map. Left, the climb through five rotation cities; right, the live coven board. */
+:root{
+  --night:#0c0b12;      /* ground */
+  --crypt:#16141f;      /* raised surface */
+  --stone:#221f2e;      /* tiles */
+  --line:#34304a;       /* hairlines */
+  --bone:#ece6d8;       /* text */
+  --ash:#9d97ad;        /* muted text */
+  --ember:#ff8a2a;      /* accent: candle flame */
+  --ember-soft:#ff8a2a22;
+  --spirit:#8be3b4;     /* solved / pass */
+  --blood:#ff5d6c;      /* wrong / fail */
+  --boss:#c77dff;       /* boss crypts */
+  --font-display:"Creepster","Impact",fantasy;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--night);color:var(--bone)}
+body{font-family:var(--font-body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:0 48px;min-height:100%;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, #2a1e3f66, transparent 70%),
+    radial-gradient(900px 400px at -10% 110%, #3a1d0f55, transparent 70%),
+    var(--night);
+  background-attachment:fixed}
+.wrap{max-width:1180px;margin:0 auto}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.5}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+code,pre{font-family:var(--font-mono)}
+code{font-size:.92em;background:var(--night);border:1px solid var(--line);border-radius:5px;padding:0 4px}
+
+/* top bar */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;padding-block:22px 18px;position:relative}
+.brand h1{font-family:var(--font-display);font-weight:400;font-size:clamp(34px,6vw,58px);line-height:.95;margin:0;letter-spacing:.02em;color:var(--ember);text-shadow:0 0 24px #ff8a2a55}
+.brand p{margin:4px 0 0;color:var(--ash);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.topbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.me{display:flex;align-items:center;gap:12px;background:var(--crypt);border:1px solid var(--line);border-radius:14px;padding:8px 10px 8px 14px}
+.me .who{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.me .alias{font-weight:600;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me .rank{font-size:12px;color:var(--ember)}
+.me .score{font-family:var(--font-mono);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;padding-inline:6px}
+.btn{background:var(--stone);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13px}
+.btn:hover:not(:disabled){border-color:var(--ember)}
+.btn.primary{background:var(--ember);color:#1a0d02;border-color:var(--ember);font-weight:600}
+.btn.primary:hover:not(:disabled){filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.on{border-color:var(--spirit);color:var(--spirit)}
+.moon{position:absolute;right:-6px;top:-34px;width:64px;height:64px;border:0;background:none;padding:0;opacity:.85;display:none}
+@media (min-width:900px){.moon{display:block;right:-70px;top:14px}}
+.moon svg{width:100%;height:100%}
+.moon.lit svg circle:first-child{fill:#fff6d8}
+
+/* rank path */
+.path{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-block:4px 22px}
+.step{position:relative;padding:10px 8px 8px;border-top:3px solid var(--line);color:var(--ash);font-size:12px;min-width:0}
+.step b{display:block;font-family:var(--font-display);font-weight:400;font-size:clamp(14px,2vw,20px);letter-spacing:.03em;color:var(--ash);line-height:1.1}
+.step.done{border-color:var(--spirit)}
+.step.done b{color:var(--bone)}
+.step.here{border-color:var(--ember)}
+.step.here b{color:var(--ember)}
+.step .n{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+@media (max-width:640px){.path{grid-template-columns:repeat(3,1fr)}}
+
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+.level{margin-bottom:26px}
+.level-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:12px}
+.level-head h2{margin:0;font-size:19px;font-weight:600;text-wrap:balance}
+.level-head h2 .city{color:var(--ash);font-weight:400}
+.level-head .meta{font-family:var(--font-mono);font-size:12px;color:var(--ash)}
+.level.locked .tiles{opacity:.35;filter:grayscale(1);pointer-events:none}
+.level.locked .level-head h2::before{content:"🔒 "}
+.lockmsg{font-size:13px;color:var(--ash);margin:-4px 0 10px}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.tile{position:relative;text-align:left;background:var(--stone);border:1px solid var(--line);border-radius:28px 28px 8px 8px;padding:18px 16px 14px;display:flex;flex-direction:column;gap:6px;min-height:132px;transition:transform .15s ease,border-color .15s ease}
+.tile:hover{transform:translateY(-2px);border-color:var(--ember)}
+.tile .kind{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
+.tile .t{font-weight:600;font-size:16px;line-height:1.25}
+.tile .pts{margin-top:auto;font-family:var(--font-mono);font-size:12px;color:var(--ash);font-variant-numeric:tabular-nums}
+.tile .code-tag{position:absolute;top:10px;right:12px;font-family:var(--font-mono);font-size:10.5px;color:var(--ash);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+.tile.solved{border-color:#8be3b455;background:linear-gradient(180deg,#8be3b414,var(--stone))}
+.tile.solved .kind{color:var(--spirit)}
+.tile.solved .pts::before{content:"✓ solved · ";color:var(--spirit)}
+.tile.boss{border-radius:8px;border-style:dashed;border-color:#c77dff77;background:linear-gradient(180deg,#c77dff14,var(--stone))}
+.tile.boss .kind{color:var(--boss)}
+.tile.boss:hover{border-color:var(--boss)}
+.tile.boss.solved{border-style:solid;border-color:#8be3b477}
+.mates{display:flex;gap:4px;position:absolute;bottom:12px;right:12px}
+.mate{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:700;color:#120a1c;box-shadow:0 0 0 2px var(--stone)}
+
+/* sidebar */
+aside{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:900px){aside{position:static}}
+.panel{background:var(--crypt);border:1px solid var(--line);border-radius:14px;padding:16px}
+.panel h3{margin:0 0 10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.live{color:var(--spirit);font-weight:500}
+.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--spirit);margin-right:6px;vertical-align:1px;animation:pulse 2s infinite}
+.live.off{color:var(--ash)}.live.off::before{background:var(--ash);animation:none}
+@keyframes pulse{50%{opacity:.3}}
+ol.board{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:420px;overflow-y:auto}
+ol.board li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 6px;border-radius:8px}
+ol.board li.mine{background:var(--ember-soft)}
+ol.board li:has(.empty){display:block}
+ol.board .pos{font-family:var(--font-mono);font-size:12px;color:var(--ash);text-align:right}
+ol.board .nm{min-width:0}
+ol.board .nm span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+ol.board .nm small{display:block;color:var(--ash);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ol.board .sc{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600}
+ol.board li:nth-child(1) .pos{color:var(--ember)}
+.empty{color:var(--ash);font-size:13px;margin:0}
+.covenp .code{font-family:var(--font-mono);font-size:26px;letter-spacing:.2em;color:var(--ember);font-weight:600}
+.covenp .cname{font-weight:600;font-size:16px;margin:0 0 2px}
+.covenp p{margin:0 0 10px;font-size:13.5px;color:var(--ash)}
+.covenp ul{list-style:none;margin:10px 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.covenp li{display:flex;align-items:center;gap:8px;font-size:13.5px;min-width:0}
+.covenp li .st{color:var(--ash);font-size:12px;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+.covenp .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.whisper form{display:flex;gap:8px}
+.whisper input{flex:1;min-width:0;background:var(--night);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.whisper p{font-size:13px;color:var(--ash);margin:0 0 10px}
+.eggs{display:flex;gap:6px;margin-top:10px;font-size:18px}
+.eggs span{opacity:.25;filter:grayscale(1)}
+.eggs span.found{opacity:1;filter:none}
+.coven p{margin:0;font-size:13.5px;color:var(--ash)}
+.coven strong{color:var(--bone)}
+.note{font-size:12.5px;color:var(--ash);border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:0}
+
+/* dialogs */
+dialog{border:1px solid var(--line);background:var(--crypt);color:var(--bone);border-radius:18px;padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 40px)}
+dialog.wide{width:min(1180px,calc(100vw - 32px))}
+dialog::backdrop{background:#05040acc;backdrop-filter:blur(3px)}
+.dlg{padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px}
+.kind{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember)}
+.kind.bossk{color:var(--boss)}
+.dlg h2{margin:0;font-size:24px;line-height:1.2;text-wrap:balance}
+.prompt{margin:0;max-width:65ch}
+.dlg pre{margin:0;background:var(--night);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;font-size:13.5px;line-height:1.6;color:#e9dcc4}
+.dlg form.ans{display:flex;gap:8px;flex-wrap:wrap}
+.dlg input[type=text]{flex:1 1 200px;min-width:0;background:var(--night);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:var(--font-mono)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.hint{background:var(--ember-soft);border:1px solid #ff8a2a44;border-radius:10px;padding:10px 12px;font-size:14px}
+.hints{display:flex;flex-direction:column;gap:8px}
+.fb{min-height:1.4em;font-size:14px;margin:0}
+.fb.bad{color:var(--blood)}
+.fb.good{color:var(--spirit)}
+.shake{animation:shake .35s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.x{background:none;border:0;color:var(--ash);font-size:22px;line-height:1;padding:4px 8px;align-self:flex-start}
+.ptsl{font-family:var(--font-mono);color:var(--ash);font-size:13px}
+
+/* interactive widgets */
+.widget{background:var(--night);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.widget .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--spirit)}
+.wheel-out{font-family:var(--font-mono);font-size:26px;letter-spacing:.25em;color:var(--bone);word-break:break-all}
+.widget input[type=range]{width:100%;accent-color:var(--ember)}
+.candles{display:flex;gap:6px;flex-wrap:wrap}
+.candle{width:38px;height:54px;border-radius:8px;border:1px solid var(--line);background:var(--stone);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:4px;font-family:var(--font-mono);font-size:11px;color:var(--ash);position:relative}
+.candle::before{content:"";position:absolute;top:8px;width:8px;height:14px;border-radius:50% 50% 45% 45%;background:var(--line)}
+.candle.lit{border-color:var(--ember);color:var(--bone)}
+.candle.lit::before{background:var(--ember);box-shadow:0 0 12px var(--ember)}
+.candle-read{font-family:var(--font-mono);font-size:14px;color:var(--ash)}
+.candle-read b{color:var(--bone);font-size:20px}
+.house .here{font-size:18px;font-weight:600}
+.house .doors{display:flex;gap:8px;flex-wrap:wrap}
+.house .trail{font-family:var(--font-mono);font-size:12.5px;color:var(--ash);word-break:break-word}
+
+/* code trial */
+.trial{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:20px;align-items:start}
+@media (max-width:860px){.trial{grid-template-columns:minmax(0,1fr)}}
+.trial .left{display:flex;flex-direction:column;gap:12px;min-width:0}
+.trial .right{display:flex;flex-direction:column;gap:10px;min-width:0}
+.examples{display:flex;flex-direction:column;gap:8px}
+.examples pre{font-size:12.5px;padding:10px 12px}
+.ed-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ed-bar select{background:var(--stone);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:13px}
+.ed-bar .sp{flex:1}
+.editor{border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.editor textarea{width:100%;min-height:260px;background:var(--night);border:0;padding:12px;font-family:var(--font-mono);font-size:13.5px;resize:vertical}
+.CodeMirror{height:300px;background:var(--night);color:var(--bone);font-family:var(--font-mono);font-size:13.5px;line-height:1.55}
+.CodeMirror-gutters{background:var(--crypt);border-right:1px solid var(--line)}
+.CodeMirror-linenumber{color:#5c5672}
+.CodeMirror-cursor{border-left:2px solid var(--ember)}
+.CodeMirror-selected,.CodeMirror-focused .CodeMirror-selected{background:#ff8a2a33!important}
+.CodeMirror-matchingbracket{color:var(--spirit)!important;text-decoration:underline}
+.cm-s-default .cm-keyword{color:var(--ember)}
+.cm-s-default .cm-def{color:#d6b4ff}
+.cm-s-default .cm-variable,.cm-s-default .cm-variable-2{color:var(--bone)}
+.cm-s-default .cm-property{color:#e9dcc4}
+.cm-s-default .cm-builtin{color:#7fd0ff}
+.cm-s-default .cm-string{color:var(--spirit)}
+.cm-s-default .cm-number,.cm-s-default .cm-atom{color:#f5c06b}
+.cm-s-default .cm-comment{color:#7d7791;font-style:italic}
+.cm-s-default .cm-operator{color:#b9b2c9}
+.cm-s-default .cm-meta{color:#d6b4ff}
+.tape{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.cell{width:26px;height:26px;border:1px solid var(--line);background:var(--stone);display:grid;place-items:center;font-size:12px;font-family:var(--font-mono);color:var(--ash)}
+.cell.sample{border-radius:6px}
+.cell.hidden{border-radius:50%}
+.cell.PASS{background:#8be3b433;border-color:var(--spirit);color:var(--spirit)}
+.cell.FAIL,.cell.ERROR,.cell.TIMEOUT{background:#ff5d6c26;border-color:var(--blood);color:var(--blood)}
+.cell.sel{outline:2px solid var(--bone);outline-offset:1px}
+.tape-legend{font-size:12px;color:var(--ash)}
+.detail{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;display:flex;flex-direction:column;gap:8px}
+.detail .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.detail pre{padding:8px 10px;font-size:12.5px;white-space:pre-wrap;word-break:break-word}
+.verdict{font-weight:600}
+.verdict.good{color:var(--spirit)}
+.verdict.bad{color:var(--blood)}
+
+#ascend .dlg{text-align:center;align-items:center;padding-block:34px 26px}
+#ascend .up{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+#ascend .newrank{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,9vw,64px);color:var(--ember);line-height:1;text-shadow:0 0 30px #ff8a2a66;margin:0}
+.lore{text-align:left;background:var(--night);border:1px solid var(--line);border-radius:12px;padding:14px 16px;max-width:52ch}
+.lore .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--spirit);margin-bottom:4px}
+.lore p{margin:0}
+.lore b{color:var(--bone)}
+#ascend .pass{color:var(--ash);font-size:13.5px;max-width:46ch;margin:0}
+
+#join .dlg{gap:12px}
+#join p{margin:0;color:var(--ash)}
+.field{flex:1 1 220px;min-width:0;background:var(--night);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg button{background:var(--stone);border:1px solid var(--line);border-radius:10px;padding:10px 8px;font-size:13.5px;text-align:center}
+.seg button[aria-pressed="true"]{border-color:var(--ember);background:var(--ember-soft);color:var(--bone)}
+.seg small{display:block;color:var(--ash);font-size:11.5px}
+@media (max-width:480px){.seg{grid-template-columns:1fr}}
+.rules{margin:0;padding-left:18px;color:var(--ash);font-size:14px;display:flex;flex-direction:column;gap:4px}
+.rules b{color:var(--bone)}
+
+.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;flex-direction:column;gap:8px;z-index:50;width:min(420px,calc(100vw - 32px));pointer-events:none}
+.toast{background:var(--stone);border:1px solid var(--ember);border-radius:12px;padding:10px 14px;font-size:14px;box-shadow:0 10px 30px #000a;animation:rise .3s ease}
+@keyframes rise{from{transform:translateY(10px);opacity:0}}
+
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--ash);font-size:12.5px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+.dark-ink{color:var(--night);user-select:text}
+.dark-ink::selection{background:var(--ember);color:#1a0d02}
+
+/* projector mode */
+body.projector .journey,body.projector .whisper,body.projector .coven,body.projector .covenp,body.projector .note,body.projector .path,body.projector .me{display:none}
+body.projector .grid{grid-template-columns:minmax(0,1fr)}
+body.projector aside{position:static;max-width:900px;margin:0 auto;width:100%}
+body.projector ol.board{max-height:none;gap:6px}
+body.projector ol.board li{font-size:22px;grid-template-columns:48px minmax(0,1fr) auto;padding:12px 14px;background:var(--stone)}
+body.projector ol.board .pos{font-size:20px}
+body.projector ol.board .nm small{font-size:15px}
+body.projector .panel h3{font-size:16px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<style>
+/* Map version: a full-width haunted trail; HUD on top, board in a drawer. */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding-block:12px;background:linear-gradient(180deg,var(--night) 70%,#0c0b1200)}
+.hud .brand h1{font-size:clamp(26px,4.5vw,40px)}
+.hud .brand p{font-size:10.5px}
+.chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{background:var(--crypt);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;display:flex;gap:6px;align-items:center;white-space:nowrap}
+.chip b{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.chip .star{color:#ffd36e}
+.chip.rankc{color:var(--ember);font-weight:600}
+.hud .moon{position:static;display:block;width:40px;height:40px}
+.wrap.trailwrap{max-width:1500px}
+.stage{display:block}
+.map-wrap{max-width:560px;width:100%;margin:0 auto;position:relative}
+.map-wrap.land{max-width:1500px}
+#map{display:block;width:100%;height:auto;overflow:hidden;border-radius:28px}
+aside.drawer{display:flex;flex-direction:column;gap:18px}
+@media all{
+  aside.drawer{position:fixed;top:0;right:0;bottom:0;width:min(360px,92vw);z-index:40;background:var(--night);border-left:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);overflow-y:auto;transform:translateX(105%);transition:transform .3s ease}
+  body.drawer-open aside.drawer{transform:none;box-shadow:-20px 0 60px #000c}
+}
+.drawer-scrim{position:fixed;inset:0;z-index:39;background:#05040a99;display:none}
+body.drawer-open .drawer-scrim{display:block}
+#drawerClose{align-self:flex-end}
+
+/* map pieces */
+.zone-label{font-family:var(--font-display);fill:var(--bone);font-size:30px;letter-spacing:.04em}
+.zone-sub{font-family:var(--font-body);fill:var(--ash);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+.trail-glow{fill:none;stroke:#ff8a2a33;stroke-width:34;stroke-linecap:round;filter:blur(6px)}
+.trail{fill:none;stroke:#3a2f48;stroke-width:22;stroke-linecap:round}
+.trail-dash{fill:none;stroke:#ece6d855;stroke-width:3;stroke-dasharray:2 14;stroke-linecap:round;animation:march 1.6s linear infinite}
+@keyframes march{to{stroke-dashoffset:-16}}
+.spur{fill:none;stroke:#c77dff66;stroke-width:4;stroke-dasharray:6 8}
+.node{cursor:pointer;outline:none}
+.node .disc{transition:transform .2s ease;transform-box:fill-box;transform-origin:center}
+.node:hover .disc,.node:focus-visible .disc{transform:scale(1.08)}
+.node:focus-visible .ring{stroke:var(--bone);stroke-width:3}
+.node.locked{cursor:not-allowed}
+.node .num{font-family:var(--font-display);font-size:26px;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.node .tag{font-family:var(--font-mono);font-size:10px;text-anchor:middle;fill:var(--ash);pointer-events:none}
+.pulse{fill:none;stroke:var(--ember);stroke-width:3;transform-box:fill-box;transform-origin:center;animation:pulsering 2s ease-out infinite}
+.node.boss .pulse{stroke:var(--boss)}
+@keyframes pulsering{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+.star-on{fill:#ffd36e;stroke:#b8860b;stroke-width:1}
+.star-off{fill:#2a2638;stroke:#4a4460;stroke-width:1}
+.gate .bar{stroke:#5d5675;stroke-width:5;stroke-linecap:round}
+.gate.open .leaf-l{transform-box:fill-box;transform-origin:left center;transform:perspective(200px) rotateY(70deg)}
+.gate.open .leaf-r{transform-box:fill-box;transform-origin:right center;transform:perspective(200px) rotateY(-70deg)}
+.gate.opening .leaf-l{animation:swingl 1.4s ease-out both}
+.gate.opening .leaf-r{animation:swingr 1.4s ease-out both}
+@keyframes swingl{from{transform:perspective(200px) rotateY(0)}to{transform:perspective(200px) rotateY(70deg)}}
+@keyframes swingr{from{transform:perspective(200px) rotateY(0)}to{transform:perspective(200px) rotateY(-70deg)}}
+.gate-text{font-family:var(--font-body);font-size:13px;fill:var(--ash);text-anchor:middle;paint-order:stroke;stroke:#0c0b12;stroke-width:4px}
+.gate.open .gate-text{fill:var(--spirit)}
+.ghost{pointer-events:none}
+.ghost .bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-7px)}}
+.zone-dim{transition:opacity .8s}
+.mate-dot{stroke:var(--night);stroke-width:2}
+.mate-txt{font-size:9px;font-weight:700;text-anchor:middle;dominant-baseline:central;fill:#120a1c;pointer-events:none}
+
+/* atmosphere */
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
+.fog{position:fixed;left:-20%;right:-20%;height:45vh;pointer-events:none;z-index:1;opacity:.35;filter:blur(30px);animation:drift 50s ease-in-out infinite alternate}
+.fog.f1{bottom:-10vh;background:radial-gradient(ellipse at 30% 60%,#6b5a8a55,transparent 60%),radial-gradient(ellipse at 75% 40%,#4b3f6655,transparent 60%)}
+.fog.f2{top:30vh;animation-duration:70s;animation-direction:alternate-reverse;background:radial-gradient(ellipse at 60% 50%,#3d335233,transparent 60%)}
+@keyframes drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+.wrap,.hud,.stage{position:relative;z-index:2}
+.bat{position:fixed;top:14vh;left:-80px;width:46px;z-index:31;pointer-events:none;animation:fly 26s linear infinite}
+.bat.b2{top:32vh;width:30px;animation-duration:34s;animation-delay:-14s}
+.bat svg{display:block;animation:flap .22s ease-in-out infinite alternate;transform-origin:center}
+@keyframes fly{0%{transform:translate(0,0)}25%{transform:translate(30vw,-6vh)}50%{transform:translate(60vw,4vh)}75%{transform:translate(90vw,-3vh)}100%{transform:translate(calc(100vw + 160px),2vh)}}
+@keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.45)}}
+
+/* level card header inside pop-ups */
+.lvl{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lvn{font-family:var(--font-display);font-size:30px;color:var(--ember);line-height:1}
+.lvn.bossn{color:var(--boss)}
+.bigstars{font-size:26px;letter-spacing:4px;line-height:1}
+.bigstars span{display:inline-block;color:#2f2a40;transition:color .2s}
+.bigstars span.on{color:#ffd36e;text-shadow:0 0 12px #ffd36e88}
+.bigstars span.pop{animation:starpop .5s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes starpop{0%{transform:scale(0) rotate(-40deg)}100%{transform:scale(1) rotate(0)}}
+.starrule{font-size:12px;color:var(--ash)}
+
+body.projector .map-wrap,body.projector .chips .chip:not(.keep),body.projector .whisper,body.projector .coven,body.projector .covenp,body.projector .note{display:none}
+body.projector .stage{grid-template-columns:minmax(0,1fr)}
+body.projector #drawerBtn,body.projector #drawerClose{display:none}
+body.projector aside.drawer{position:static;transform:none;max-width:900px;margin:0 auto;width:100%;background:none;border:0;box-shadow:none}
+@media (prefers-reduced-motion:reduce){.bat,.fog{display:none}}
+</style>
+
+<div class="wrap trailwrap">
+  <header class="hud">
+    <div class="brand">
+      <h1>The Haunted Trail</h1>
+      <p>ColorStack Minerva · Halloween Hunt 2026</p>
+    </div>
+    <div class="chips">
+      <span class="chip" id="me"><span class="alias" id="meAlias">Unnamed soul</span><button class="btn ghost" id="renameBtn" type="button" title="Change your name or coven" style="padding:0 4px;border:0">✎</button></span>
+      <span class="chip rankc" id="meRank">Trick-or-Treater</span>
+      <span class="chip"><span class="star">★</span><b id="meStars">0</b><span style="color:var(--ash)">/ 75</span></span>
+      <span class="chip"><b id="meScore">0</b> pts</span>
+      <button class="btn" id="soundBtn" type="button" aria-pressed="false">🔇 Sound off</button>
+      <button class="btn" id="drawerBtn" type="button">🏆 Board</button>
+      <button class="btn" id="projBtn" type="button">Projector view</button>
+      <button class="moon" id="moon" type="button" aria-label="The moon">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="#f3e7c2"/><circle cx="24" cy="26" r="4" fill="#d9caa0"/><circle cx="38" cy="38" r="6" fill="#d9caa0"/><circle cx="40" cy="22" r="2.5" fill="#d9caa0"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="map-wrap"><svg id="map" role="group" aria-label="The haunted trail of levels"></svg></div>
+    <div class="drawer-scrim" id="drawerScrim"></div>
+    <aside class="drawer" id="drawer">
+      <button class="x" type="button" id="drawerClose" aria-label="Close the board">×</button>
+      <div class="panel" id="boardPanel">
+        <h3><span>The Coven Board</span><span class="live off" id="liveTag">connecting</span></h3>
+        <ol class="board" id="board"><li><p class="empty">Waiting for the first soul to join…</p></li></ol>
+      </div>
+      <div class="panel covenp" id="covenPanel"></div>
+      <div class="panel whisper">
+        <h3><span>Whisper a secret</span><span id="eggCount">0 / 4</span></h3>
+        <p>Four secret words are hidden in this page itself, outside the levels. Some hide where developers look. Each is worth 75.</p>
+        <form id="whisperForm" autocomplete="off">
+          <input id="whisperIn" type="text" placeholder="a secret word…" aria-label="Secret word">
+          <button class="btn" type="submit">Whisper</button>
+        </form>
+        <p class="fb" id="whisperFb" style="margin-top:8px"></p>
+        <div class="eggs" id="eggs"><span>🦇</span><span>🕯️</span><span>🌕</span><span>🕸️</span></div>
+      </div>
+      <div class="panel coven">
+        <h3><span>Nobody climbs alone</span></h3>
+        <p>Stuck? <strong>Summon a familiar</strong> for a hint (you’ll earn 1 star and half points). Even better, turn to the person next to you. Explaining a solution is how you really learn it.</p>
+      </div>
+      <p class="note" id="offlineNote" hidden></p>
+    </aside>
+  </main>
+
+  <footer>
+    <span>Clear 3 of 4 levels in a city to open the next gate. Skull crypts are optional bosses.</span>
+    <span class="dark-ink">the coven's motto, for those who look closely: nobodyclimbsalone</span>
+    <span>Made for ColorStack Minerva 🎃</span>
+  </footer>
+</div>
+<div class="fog f1" aria-hidden="true"></div><div class="fog f2" aria-hidden="true"></div>
+<div class="bat" aria-hidden="true"><svg viewBox="0 0 64 28"><path fill="#07060b" d="M32 10c2-4 4-6 4-6l1 4c3-1 5 0 5 0-2 2-2 4-1 5 5-4 12-6 23-3-6 1-9 4-10 8-3-3-7-3-10 1-2-3-5-4-8-3-2-1-2 0-4 0-3-1-6 0-8 3-3-4-7-4-10-1-1-4-4-7-10-8 11-3 18-1 23 3 1-1 1-3-1-5 0 0 2-1 5 0l1-4s2 2 4 6z"/></svg></div>
+<div class="bat b2" aria-hidden="true"><svg viewBox="0 0 64 28"><path fill="#07060b" d="M32 10c2-4 4-6 4-6l1 4c3-1 5 0 5 0-2 2-2 4-1 5 5-4 12-6 23-3-6 1-9 4-10 8-3-3-7-3-10 1-2-3-5-4-8-3-2-1-2 0-4 0-3-1-6 0-8 3-3-4-7-4-10-1-1-4-4-7-10-8 11-3 18-1 23 3 1-1 1-3-1-5 0 0 2-1 5 0l1-4s2 2 4 6z"/></svg></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- answer puzzles -->
+<dialog id="puzzle" aria-labelledby="pzTitle">
+  <div class="dlg">
+    <div class="row"><span class="kind" id="pzKind"></span><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <div class="lvl" id="pzLvl"></div>
+    <h2 id="pzTitle"></h2>
+    <p class="prompt" id="pzPrompt"></p>
+    <pre id="pzCode" hidden></pre>
+    <div id="pzWidget" hidden></div>
+    <div class="hint" id="pzHint" hidden></div>
+    <form class="ans" id="pzForm" autocomplete="off">
+      <input type="text" id="pzAnswer" placeholder="your answer" aria-label="Your answer">
+      <button class="btn primary" type="submit">Submit</button>
+    </form>
+    <p class="fb" id="pzFb"></p>
+    <div class="row">
+      <button class="btn" type="button" id="pzHintBtn">🐈‍⬛ Summon a familiar (hint, half points)</button>
+      <span class="ptsl" id="pzPts"></span>
+    </div>
+  </div>
+</dialog>
+
+<!-- code trials -->
+<dialog id="trial" class="wide" aria-labelledby="trTitle">
+  <div class="dlg">
+    <div class="row"><span class="kind" id="trKind"></span><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <div class="trial">
+      <div class="left">
+        <div class="lvl" id="trLvl"></div>
+        <h2 id="trTitle"></h2>
+        <p class="prompt" id="trPrompt"></p>
+        <div class="examples" id="trExamples"></div>
+        <div class="hints" id="trHints"></div>
+        <div class="row">
+          <button class="btn" type="button" id="trHintBtn">🐈‍⬛ Summon a familiar</button>
+          <span class="ptsl" id="trPts"></span>
+        </div>
+      </div>
+      <div class="right">
+        <div class="ed-bar">
+          <label for="trLang" class="tape-legend">Language</label>
+          <select id="trLang"><option value="py">Python</option><option value="js">JavaScript</option></select>
+          <span class="sp"></span>
+          <button class="btn ghost" type="button" id="trReset" title="Reset to the starter code">Reset</button>
+          <button class="btn ghost" type="button" id="trShare" hidden title="Send your current code to everyone in your coven">Share my code</button>
+          <button class="btn ghost" type="button" id="trLoad" hidden title="Replace your code with the last version someone in your coven shared">Use coven’s code</button>
+        </div>
+        <div class="editor" id="trEditor"></div>
+        <div class="ed-bar">
+          <button class="btn" type="button" id="trRun">▶ Run samples</button>
+          <button class="btn primary" type="button" id="trSubmit">Submit all tests</button>
+          <span class="sp"></span>
+          <span class="tape-legend" id="trStatus"></span>
+        </div>
+        <div class="tape" id="trTape" aria-label="Test results"></div>
+        <div class="tape-legend" id="trLegend" hidden>■ sample test · ● hidden test. Click a cell for details.</div>
+        <div class="detail" id="trDetail" hidden></div>
+        <p class="fb" id="trFb"></p>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="ascend" aria-labelledby="ascRank">
+  <div class="dlg">
+    <span class="up" id="ascUp">You have risen to</span>
+    <h2 class="newrank" id="ascRank"></h2>
+    <div class="lore"><div class="lbl">A pioneer to know</div><p id="ascLore"></p></div>
+    <p class="pass">Pass it on: find someone a level behind you and help them through one tombstone.</p>
+    <button class="btn primary" type="button" id="ascClose">Keep climbing</button>
+  </div>
+</dialog>
+
+<dialog id="join" aria-labelledby="joinTitle">
+  <form class="dlg" id="joinForm" autocomplete="off">
+    <span class="kind">Welcome, wanderer</span>
+    <h2 id="joinTitle">Name yourself for the coven board</h2>
+    <p>Pick any name you want the room to see. Spooky names are encouraged.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input type="text" id="joinName" class="field" maxlength="24" placeholder="e.g. Null Pointer Banshee" aria-label="Your name">
+      <button class="btn" type="button" id="rollName">🎲 Roll one</button>
+    </div>
+    <div class="seg" role="group" aria-label="How are you playing?">
+      <button type="button" data-mode="solo" aria-pressed="true">Solo<small>climb alone</small></button>
+      <button type="button" data-mode="start" aria-pressed="false">Start a coven<small>get a code to share</small></button>
+      <button type="button" data-mode="join" aria-pressed="false">Join a coven<small>enter a friend’s code</small></button>
+    </div>
+    <input type="text" id="covenName" class="field" maxlength="28" placeholder="Coven name, e.g. The Recursive Witches" aria-label="Coven name" hidden>
+    <input type="text" id="covenCode" class="field" maxlength="4" placeholder="4-letter code" aria-label="Coven code" style="text-transform:uppercase;font-family:var(--font-mono);letter-spacing:.2em" hidden>
+    <p class="fb" id="joinFb"></p>
+    <ul class="rules">
+      <li>Five cities, four tombstones each. <b>Solve 3 of 4</b> to rise a rank.</li>
+      <li>Early cities need no coding. Later ones are real LeetCode-style problems you code and test right here.</li>
+      <li>Each city has an optional <b>boss crypt</b>: a harder coding problem worth big points.</li>
+      <li>In a coven, everyone plays on their own device and progress is shared.</li>
+    </ul>
+    <button class="btn primary" type="submit" id="joinGo">Enter the night</button>
+  </form>
+</dialog>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* ---------- Supabase backend: same doc/collection/room shape the game already uses ---------- */
+const SB_URL = "https://glmcrzggvmnhyexkznjm.supabase.co", SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdsbWNyemdndm1uaHlleGt6bmptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyNDg5MTAsImV4cCI6MjEwODgyNDkxMH0.Pb1MuWEvvcBZAdt9KaCHUMDv_Jn-B9bbeuTdf77YspM";
+async function supaInit(){
+  if (!window.supabase || SB_URL.startsWith("__")) throw new Error("backend not configured");
+  const sb = supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, autoRefreshToken:true, storageKey:"haunted-trail-auth"}});
+  let {data:{session}} = await sb.auth.getSession();
+  if (!session){
+    const r = await sb.auth.signInAnonymously();
+    if (r.error) throw r.error;
+    session = r.data.session;
+  }
+  const uid = session.user.id;
+  const fail = e => ({code: e && (e.code==="42501" || /row-level security|violates/i.test(e.message||"")) ? "invalid_argument" : "unavailable", message: e && e.message});
+  const parse = path => {
+    const s = path.split("/");
+    if (s[0]==="players" && s.length===2) return {t:"players", key:{id:s[1]}};
+    if (s[0]==="teams" && s.length===2) return {t:"teams", key:{code:s[1]}};
+    if (s[0]==="teams" && s[2]==="drafts" && s.length===4) return {t:"drafts", key:{team_id:s[1], puzzle_id:s[3]}};
+    throw new TypeError("unknown path " + path);
+  };
+  const db = {
+    doc(path){
+      const {t, key} = parse(path);
+      return {
+        async get(){
+          let q = sb.from(t).select("doc");
+          for (const k in key) q = q.eq(k, key[k]);
+          const {data, error} = await q.maybeSingle();
+          if (error) throw fail(error);
+          return {exists:!!data, data:()=>data ? data.doc : undefined};
+        },
+        async set(doc){
+          const row = {...key, doc};
+          if (t==="teams") row.founder = uid;
+          if (t==="drafts") row.by_id = uid;
+          const {error} = await sb.from(t).upsert(row);
+          if (error) throw fail(error);
+        }
+      };
+    },
+    collection(t){
+      const idk = t==="players" ? "id" : "code";
+      return {
+        onSnapshot(next, onErr){
+          const rows = new Map(); let dead=false;
+          const emit = () => { if (!dead) next({docs:[...rows].map(([id,doc])=>({id, data:()=>doc}))}); };
+          const load = async () => {
+            const {data, error} = await sb.from(t).select(idk+",doc").limit(1000);
+            if (error){ onErr && onErr(fail(error)); return; }
+            rows.clear(); data.forEach(r=>rows.set(r[idk], r.doc)); emit();
+          };
+          const ch = sb.channel("tbl-"+t+"-"+Math.random().toString(36).slice(2))
+            .on("postgres_changes", {event:"*", schema:"public", table:t}, p=>{
+              if (p.eventType==="DELETE"){ if (p.old && p.old[idk]) rows.delete(p.old[idk]); }
+              else if (p.new && p.new[idk]) rows.set(p.new[idk], p.new.doc);
+              emit();
+            })
+            .subscribe(st=>{ if (st==="SUBSCRIBED") load(); });
+          load();
+          const timer = setInterval(load, 30000); // safety net if the live stream drops
+          return () => { dead=true; clearInterval(timer); sb.removeChannel(ch); };
+        }
+      };
+    }
+  };
+  const room = {
+    join(name){
+      return new Promise((resolve, reject)=>{
+        const ch = sb.channel(name, {config:{presence:{key:uid}}});
+        const mine = {}, handlers = [];
+        const peers = () => Object.values(ch.presenceState()).map(metas=>({presence:metas[metas.length-1]||{}}));
+        ch.on("presence", {event:"sync"}, ()=>{ const p=peers(); handlers.forEach(h=>h({peers:p})); });
+        const t = setTimeout(()=>reject(new Error("presence timeout")), 10000);
+        ch.subscribe(st=>{
+          if (st!=="SUBSCRIBED") return;
+          clearTimeout(t);
+          resolve({
+            presence(patch){ for (const k in patch){ if (patch[k]===null) delete mine[k]; else mine[k]=patch[k]; } return ch.track({...mine}); },
+            onPeers(fn){ handlers.push(fn); fn({peers:peers()}); return ()=>{ const i=handlers.indexOf(fn); if (i>=0) handlers.splice(i,1); }; },
+            leave(){ return sb.removeChannel(ch); }
+          });
+        });
+      });
+    }
+  };
+  return {db, room, uid};
+}
+
+</script>
+<script>
+/* ---------- code runners (Python via Skulpt, JavaScript via a Worker) ---------- */
+function toPy(v){
+  if (v===null || v===undefined) return "None";
+  if (v===true) return "True";
+  if (v===false) return "False";
+  if (typeof v==="number") return String(v);
+  if (typeof v==="string") return JSON.stringify(v);
+  if (Array.isArray(v)) return "[" + v.map(toPy).join(", ") + "]";
+  return "{" + Object.entries(v).map(([k,x])=>JSON.stringify(k)+": "+toPy(x)).join(", ") + "}";
+}
+const fmtJs = v => JSON.stringify(v);
+const PY_CANON = {
+  sorted: "def __canon(x):\n    return sorted(x) if isinstance(x, list) else x\n",
+  none: "def __canon(x):\n    return x\n"
+};
+const JS_CANON = {
+  sorted: x => Array.isArray(x) ? [...x].sort((a,b)=>a-b) : x,
+  none: x => x
+};
+function buildPyProgram(spec, code, tests){
+  const lines = [code, "", PY_CANON[spec.canon||"none"], "__tests = ["];
+  for (const t of tests) lines.push("    ((" + t.args.map(toPy).join(", ") + (t.args.length?",":"") + "), " + toPy(t.out) + "),");
+  lines.push("]",
+    "for __i, (__a, __e) in enumerate(__tests):",
+    "    print('@@B ' + str(__i))",
+    "    try:",
+    "        __r = " + spec.py + "(*__a)",
+    "        print('@@R ' + str(__i) + (' PASS ' if __canon(__r) == __canon(__e) else ' FAIL ') + repr(__r))",
+    "    except Exception as __x:",
+    "        if 'TimeLimit' in type(__x).__name__:",
+    "            raise",
+    "        print('@@R ' + str(__i) + ' ERROR ' + type(__x).__name__ + ': ' + str(__x))");
+  return lines.join("\n") + "\n";
+}
+function parsePyOutput(out, n){
+  const res = Array.from({length:n}, ()=>({status:"NOT RUN", got:"", stdout:"", err:""}));
+  let cur = -1, pre = [];
+  for (const line of out.split("\n")){
+    let m;
+    if ((m = line.match(/^@@B (\d+)$/))) { cur = +m[1]; continue; }
+    if ((m = line.match(/^@@R (\d+) (PASS|FAIL|ERROR) ?(.*)$/))) {
+      const r = res[+m[1]]; r.status = m[2];
+      if (m[2]==="ERROR") r.err = m[3]; else r.got = m[3];
+      cur = -1; continue;
+    }
+    if (cur>=0) res[cur].stdout += line + "\n"; else if (line) pre.push(line);
+  }
+  return {res, pre: pre.join("\n")};
+}
+function buildJsWorkerSource(code){
+  return [
+    "var __logs = [];",
+    "console.log = function(){ __logs.push(Array.prototype.map.call(arguments, function(x){ return typeof x === 'string' ? x : JSON.stringify(x); }).join(' ')); };",
+    "console.error = console.warn = console.info = console.log;",
+    code,
+    ";self.onmessage = function(ev){",
+    "  var d = ev.data, out = [], f;",
+    "  try { f = eval(d.fn); } catch (e) { f = undefined; }",
+    "  var canon = d.canon === 'sorted' ? function(x){ return Array.isArray(x) ? x.slice().sort(function(a,b){return a-b;}) : x; } : function(x){ return x; };",
+    "  for (var i = 0; i < d.tests.length; i++) {",
+    "    __logs = [];",
+    "    var t = d.tests[i];",
+    "    try {",
+    "      if (typeof f !== 'function') throw new ReferenceError(d.fn + ' is not defined');",
+    "      var r = f.apply(null, JSON.parse(JSON.stringify(t.args)));",
+    "      var ok = JSON.stringify(canon(r)) === JSON.stringify(canon(t.out));",
+    "      out.push({status: ok ? 'PASS' : 'FAIL', got: r === undefined ? 'undefined' : JSON.stringify(r), stdout: __logs.join('\\n'), err: ''});",
+    "    } catch (e) {",
+    "      out.push({status: 'ERROR', got: '', stdout: __logs.join('\\n'), err: String(e && e.name ? e.name + ': ' + e.message : e)});",
+    "    }",
+    "  }",
+    "  self.postMessage(out);",
+    "};"
+  ].join("\n");
+}
+function runJs(spec, code, tests){
+  return new Promise(resolve=>{
+    let url, w, done=false;
+    const finish = (res, pre) => { if (done) return; done=true; try{ w && w.terminate(); }catch(e){} if (url) URL.revokeObjectURL(url); resolve({res, pre: pre||""}); };
+    const fail = msg => finish(tests.map(()=>({status:"ERROR", got:"", stdout:"", err:msg})), msg);
+    try {
+      url = URL.createObjectURL(new Blob([buildJsWorkerSource(code)], {type:"text/javascript"}));
+      w = new Worker(url);
+    } catch(e){ return fail("Could not start the JavaScript runner: " + e.message); }
+    const timer = setTimeout(()=>finish(tests.map(()=>({status:"TIMEOUT", got:"", stdout:"", err:"Time limit exceeded (4s). Check for an infinite loop."})), "Time limit exceeded."), 4000);
+    w.onmessage = ev => { clearTimeout(timer); finish(ev.data); };
+    w.onerror = ev => { ev.preventDefault && ev.preventDefault(); clearTimeout(timer); fail((ev.message||"Error") + (ev.lineno ? " (line " + (ev.lineno-3) + ")" : "")); };
+    w.postMessage({fn: spec.js, tests, canon: spec.canon||"none"});
+  });
+}
+let skulptLoading = null;
+function loadSkulpt(){
+  if (window.Sk && Sk.builtinFiles) return Promise.resolve();
+  if (skulptLoading) return skulptLoading;
+  const add = src => new Promise((ok, bad)=>{ const s=document.createElement("script"); s.src=src; s.onload=ok; s.onerror=()=>bad(new Error("Could not load Python")); document.head.appendChild(s); });
+  skulptLoading = add("https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js")
+    .then(()=>add("https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"))
+    .catch(e=>{ skulptLoading=null; throw e; });
+  return skulptLoading;
+}
+function runPySk(Sk, spec, code, tests){
+  let out = "";
+  Sk.configure({
+    output: t => { out += t; },
+    read: x => { if (!Sk.builtinFiles || !Sk.builtinFiles.files[x]) throw "File not found: '" + x + "'"; return Sk.builtinFiles.files[x]; },
+    __future__: Sk.python3, execLimit: 4000
+  });
+  const prog = buildPyProgram(spec, code, tests), t0 = Date.now();
+  const markSlow = p => {
+    if (Date.now() - t0 >= 3800) p.res.forEach(r=>{ if (r.status==="ERROR" || r.status==="NOT RUN"){ r.status="TIMEOUT"; r.err="Time limit exceeded (4s). Check for an infinite loop."; } });
+    return p;
+  };
+  return Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>", false, prog, true))
+    .then(()=>markSlow(parsePyOutput(out, tests.length)))
+    .catch(e=>{
+      const p = parsePyOutput(out, tests.length), msg = String(e);
+      const timeout = /TimeLimitError/.test(msg);
+      p.res.forEach(r=>{ if (r.status==="NOT RUN"){ r.status = timeout ? "TIMEOUT" : "ERROR"; r.err = timeout ? "Time limit exceeded (4s). Check for an infinite loop." : msg; } });
+      p.pre = (p.pre ? p.pre + "\n" : "") + msg;
+      return markSlow(p);
+    });
+}
+async function runPy(spec, code, tests){
+  await loadSkulpt();
+  return runPySk(window.Sk, spec, code, tests);
+}
+
+</script>
+<script>
+const RANKS = ["Trick-or-Treater","Skeleton Coder","Ghoul","Phantom","Wraith","Elder of the Stack"];
+const LORE = [
+  null,
+  "Out of San Francisco’s Bay Area: <b>Gerald “Jerry” Lawson</b> led the team behind the Fairchild Channel F in 1976, the first home console with swappable game cartridges. Every cartridge since traces back to his work.",
+  "From Seoul: <b>Kilnam Chon</b> built SDN in 1982, one of the first internet-style networks in Asia, and is known as the father of Korea’s internet.",
+  "From India: <b>Shakuntala Devi</b>, the “human computer,” multiplied two 13-digit numbers in her head in 28 seconds in 1980, a feat that earned a Guinness World Record.",
+  "From Berlin: <b>Konrad Zuse</b> finished the Z3 there in 1941, the first working programmable, fully automatic digital computer, built in his parents’ living room.",
+  "From Buenos Aires: <b>Cecilia Berdichevsky</b> was the first programmer of Clementina, the computer that launched scientific computing in Argentina at the University of Buenos Aires in 1961. You made it to the top. Now reach back down."
+];
+const LEVELS = [
+  {name:"The Fog", city:"San Francisco", pts:100, puzzles:[
+    {id:"l1a", type:"answer", kind:"Predict the output", title:"Candy Run",
+     prompt:"You knock on houses 1 to 5. Each house gives you as many candies as its number. What does this print?",
+     code:"candy = 0\nfor house in range(1, 6):\n    candy += house\nprint(candy)",
+     hint:"range(1, 6) gives 1, 2, 3, 4, 5. Add them up."},
+    {id:"l1b", type:"answer", kind:"Cipher", title:"The Shifted Tombstone", widget:"wheel",
+     prompt:"Every letter on this tombstone was shifted forward in the alphabet by the same secret amount. Turn the bone wheel until it makes sense, then type the word.",
+     code:"F R O R U V W D F N",
+     hint:"The shift is small, less than 5. You may know this word well."},
+    {id:"l1c", type:"answer", kind:"Binary", title:"Bone Bits", widget:"candles",
+     prompt:"A skeleton tapped this on your window in binary ASCII, one letter per group. Light the candles to match each group and read the letters. What did it say?",
+     code:"01000010  01001111  01001111",
+     hint:"01000010 is 66 in decimal. In ASCII, 65 is A, so 66 is B."},
+    {id:"l1d", type:"answer", kind:"Riddle", title:"Where It All Began",
+     prompt:"Fog swallows a red-orange bridge. Every Minervan’s first year begins in this city. Name it.",
+     hint:"Golden Gate."}
+  ], boss:{id:"b1", type:"code", pts:250, diff:"Easy-ish", title:"The Mirror Spell",
+     prompt:"Return <code>True</code> if <code>spell</code> reads the same forwards and backwards once you ignore case and anything that isn’t a letter or digit. Your first coding trial, if you dare.",
+     hints:["Build a cleaned string first: keep only letters and digits, lowercased.","Compare it with its reverse, or walk two pointers in from both ends."]}},
+  {name:"Night Market", city:"Seoul", pts:150, puzzles:[
+    {id:"l2a", type:"answer", kind:"Predict the output", title:"Backwards Bones",
+     prompt:"What does this Python print?",
+     code:"word = \"skeleton\"\nprint(word[::-1][:4])",
+     hint:"[::-1] reverses a string. [:4] keeps the first 4 characters."},
+    {id:"l2b", type:"answer", kind:"Predict the output", title:"Ghost Filter",
+     prompt:"What number does this JavaScript log?",
+     code:"let ghosts = [3, 1, 4, 1, 5];\nlet total = ghosts\n  .filter(g => g > 2)\n  .map(g => g * 2)\n  .reduce((a, b) => a + b, 0);\nconsole.log(total);",
+     hint:"Keep the ghosts bigger than 2, double each one, then add them up."},
+    {id:"l2c", type:"code", kind:"Fix the bug", title:"One Bat Too Many",
+     prompt:"<code>count_bats(n)</code> should count exactly <code>n</code> bats, but it always counts one too many. Run it, read the test tape, and fix it so every test passes.",
+     hints:["Run it first. What does it return for n = 3?","The loop runs for i = 0, 1, …, n. That’s n + 1 times.","Change one character in the loop condition."]},
+    {id:"l2d", type:"answer", kind:"Hidden figure", title:"Into Orbit",
+     prompt:"Her hand calculations confirmed the trajectory that sent John Glenn into orbit in 1962, and her story was told in the film <i>Hidden Figures</i>. Who was she? A last name is enough.",
+     hint:"Her first name was Katherine."}
+  ], boss:{id:"b2", type:"code", pts:350, diff:"Medium", title:"Top Haunts",
+     prompt:"Given a list of haunted <code>words</code>, return the <code>k</code> most common, most common first. Break ties alphabetically.",
+     hints:["Count each word with a dictionary.","Sort the words by (−count, word) and take the first k."]}},
+  {name:"Charminar at Midnight", city:"Hyderabad", pts:200, puzzles:[
+    {id:"l3a", type:"answer", kind:"Stacks", title:"The Cauldron Stack",
+     prompt:"A stack is last-in, first-out. Run these operations in order. Every <code>pop</code> drops a letter into the cauldron. What word do the popped letters spell?",
+     code:"push T\npop\npush K\npush C\npush I\npush R\npop\npop\npop\npop",
+     hint:"The first pop gives T. After pushing K, C, I, R, the top of the stack is R."},
+    {id:"l3b", type:"trace", kind:"Graphs", title:"The Haunted House",
+     prompt:"Walk from the Foyer to the Crypt through the fewest doors. Click a door to walk through it. The house only lets you out if you take the shortest way.",
+     hint:"Think breadth-first: which rooms are 1 door from the Foyer? Which are 2 doors away?"},
+    {id:"l3c", type:"answer", kind:"Recursion", title:"Echoes",
+     prompt:"What does this print?",
+     code:"def haunt(n):\n    if n <= 1:\n        return 1\n    return haunt(n - 1) + haunt(n - 2)\n\nprint(haunt(7))",
+     hint:"haunt(2) = 2, haunt(3) = 3, haunt(4) = 5. Spot the pattern."},
+    {id:"l3d", type:"code", kind:"Write code", title:"Candy Census",
+     prompt:"Write <code>most_common(bag)</code> that returns the candy appearing the most times in <code>bag</code>. There is always one clear winner.",
+     hints:["Use a dictionary to count: counts[c] = counts.get(c, 0) + 1.","Then return the key with the largest count. In Python, max(counts, key=counts.get) does it."]}
+  ], boss:{id:"b3", type:"code", pts:450, diff:"Medium", title:"Ritual Order",
+     prompt:"There are <code>n</code> rituals numbered 0 to n−1. Each rule <code>[a, b]</code> means ritual b must happen before ritual a. Return <code>True</code> if every ritual can be completed, or <code>False</code> if the rules trap you in a cycle.",
+     hints:["This is cycle detection in a directed graph.","Kahn’s algorithm: repeatedly perform rituals that have no remaining prerequisites. If you get through all n, there’s no cycle."]}},
+  {name:"The U-Bahn Tunnels", city:"Berlin", pts:300, puzzles:[
+    {id:"l4a", type:"code", kind:"Two Sum", title:"Potion Pair",
+     prompt:"Return the indices of the two potions whose weights add up to <code>target</code>, in any order. Exactly one pair works, and you can’t use the same potion twice.",
+     hints:["Brute force: try every pair i < j. That’s O(n²) and fine here.","Faster: walk the list once, storing each weight’s index in a dictionary. For weight w, check whether target − w is already stored."]},
+    {id:"l4b", type:"code", kind:"Valid brackets", title:"Sealed Spells",
+     prompt:"A spell is sealed if every bracket closes in the right order: <code>()</code> <code>[]</code> <code>{}</code>. Return <code>True</code> if it’s sealed, otherwise <code>False</code>.",
+     hints:["Use a stack. Push every opening bracket.","On a closing bracket, the top of the stack must be its partner. If it isn’t, or the stack is empty, the spell is broken.","At the end the stack must be empty."]},
+    {id:"l4c", type:"code", kind:"Max subarray", title:"Spirit Surge",
+     prompt:"Given hourly spirit <code>readings</code>, return the largest total of one unbroken run of hours (at least one hour).",
+     hints:["Track the best run that ends at the current hour.","At each reading x: cur = max(x, cur + x). Keep the largest cur you ever see."]},
+    {id:"l4d", type:"code", kind:"Grid search", title:"Graveyards",
+     prompt:"<code>grid</code> is a list of strings. <code>#</code> is a grave and <code>.</code> is grass. Graves touching up, down, left or right form one graveyard (diagonals don’t count). Return how many graveyards there are.",
+     hints:["Loop over every cell. An unvisited # starts a new graveyard.","From it, flood fill (DFS or BFS) to mark every connected #, so you never count it twice."]}
+  ], boss:{id:"b4", type:"code", pts:600, diff:"Hard", title:"The Flooded Crypt",
+     prompt:"<code>heights</code> lists the height of each crypt wall, each one unit wide. After the rain, how many units of water are trapped between the walls?",
+     hints:["Water above one wall = min(tallest wall to its left, tallest to its right) − its own height.","Two pointers moving in from both ends do it in one pass with O(1) space."]}},
+  {name:"Recoleta", city:"Buenos Aires", pts:400, puzzles:[
+    {id:"l5a", type:"code", kind:"Sliding window", title:"Nightmare Window",
+     prompt:"Return the length of the longest stretch of <code>s</code> with no repeated letter.",
+     hints:["Keep a window [left, i] and remember where you last saw each letter.","If s[i] was last seen inside the window, move left to just after that spot."]},
+    {id:"l5b", type:"code", kind:"Dynamic programming", title:"The Cursed Stair",
+     prompt:"You climb <code>n</code> stairs taking 1 or 2 at a time, and you can never step on a stair listed in <code>cursed</code>. Return the number of different ways to reach stair n.",
+     hints:["ways(i) = ways(i−1) + ways(i−2).","ways(0) = 1, and ways(i) = 0 for any cursed stair."]},
+    {id:"l5c", type:"code", kind:"Coin change", title:"Exact Change",
+     prompt:"Return the fewest <code>coins</code> that add up to <code>amount</code>, using as many of each coin as you like, or <code>-1</code> if it can’t be done. Greedy won’t save you: with coins [1, 5, 12] and 16, greedy uses 5 coins but 4 is possible.",
+     hints:["Bottom-up DP: best[t] = fewest coins for total t.","best[0] = 0. For each t, try each coin c ≤ t: best[t] = min(best[t], best[t − c] + 1)."]},
+    {id:"l5d", type:"code", kind:"Bit tricks", title:"The Lonely Ghost",
+     prompt:"Every number in <code>ghosts</code> appears twice except one. Return the one that appears once. Try it with O(1) extra space.",
+     hints:["A dictionary of counts works, but uses O(n) space.","XOR: a ^ a = 0 and a ^ 0 = a. XOR everything together."]}
+  ], boss:{id:"b5", type:"code", pts:800, diff:"Hard", title:"The Shapeshifter",
+     prompt:"A shapeshifter turns one word into another by inserting, deleting or replacing one letter per move. Return the fewest moves to turn <code>start</code> into <code>goal</code>.",
+     hints:["This is edit distance. Let dp[i][j] be the cost to turn the first i letters of start into the first j letters of goal.","If the letters match, dp[i][j] = dp[i−1][j−1]. Otherwise it’s 1 + the min of the insert, delete and replace options."]}}
+];
+const HOUSE = {Foyer:["Hall","Library"],Hall:["Foyer","Kitchen","Stairs"],Library:["Foyer","Study"],Study:["Library","Crypt"],Kitchen:["Hall","Cellar"],Stairs:["Hall","Attic"],Cellar:["Kitchen","Crypt"],Attic:["Stairs"],Crypt:["Study","Cellar"]};
+const EGG_PTS = 75;
+const EGG_ICONS = {e1:"🦇", e2:"🕯️", e3:"🌕", e4:"🕸️"};
+const EGG_ORDER = ["e1","e2","e3","e4"];
+const HASHES = {"l1a": ["cc141fa91d206549aca78340f349eeee8663d0d8277368e78394ef11dc890dbd"], "l1b": ["dd34e5edfffcfab367dcb8b2f891d48fff24afec4be6fbf8c91ebe1d833450fc"], "l1c": ["027c865afd6cef643c27db087b29ae60c78a02df21a76baf00c54473b07dd432"], "l1d": ["9144869179dd581a577421d8f76f371505273a6672eed692d844553777b052f9", "aff03e7c769a01c84e9b2b7e77b1df05451aea2d09cc0ab02e159ff1eb0e0e8e", "a36d70697d3cb150b3fffab5d9f36ebfcb7b792fe7f724f8be54368ad8cb3f0f"], "l2a": ["ee8176a4a377e6ec8a8737ac5d6ceafc31af6877ba42ef8d6767a6d8209a73bf"], "l2b": ["01e8fa0a7bebb01bbda7fce065e58b332cc897950678c41d24ccf7f77b7e56ed"], "l2d": ["4104a60cab38d87f52641a7f7c6ee3f5644bf5d46e9b73d426d2dc14ed46d616", "792ea0509387b318be8bbe9d10782f288c9920ba2e58dcf4ae4692fc4e4dbd56", "2e5c723ef5b81ff05ae4a3cd12aae4cce3b7b771c8007a76ccd16a760c3821ef", "c0d20ed55f45cb2f3c2761447d7cc10e3eaa740f623b716cf2638d93ebffd424"], "l3a": ["c7811b8379e2251103347805340ac472402a52a4d93ce95c4defb936e7d8ec1f"], "l3c": ["280df00ec2efea39b2127cbc6f654bf6970757c36f4eec3eb8d2696771d62c8c"], "e1": ["9eb7423dfd77466f4f2b03e73b529b19840354164e0718f8d7c6602bf0bf5296"], "e2": ["56c368fc87bd0d1d76c6a6ee3161593efa724fa71e9a750f4df488a02246df42"], "e3": ["3491f9ad82f932f7874ecbca1e2eca614d7cbacfc9c8266266271b000cc6cc06"], "e4": ["546a741a725935b4edab0e7a91fca241c4a9dfa77c97d1b47324edfe2842cce4"]};
+const CODE = {"l2c": {"py": "count_bats", "js": "countBats", "params": ["n"], "canon": "none", "tests": [{"args": [10], "out": 10, "hidden": false}, {"args": [0], "out": 0, "hidden": false}, {"args": [3], "out": 3, "hidden": false}, {"args": [1], "out": 1, "hidden": true}, {"args": [100], "out": 100, "hidden": true}, {"args": [7], "out": 7, "hidden": true}], "starter": {"py": "def count_bats(n):\n    bats = 0\n    i = 0\n    while i <= n:\n        bats += 1\n        i += 1\n    return bats\n", "js": "function countBats(n) {\n  let bats = 0;\n  let i = 0;\n  while (i <= n) {\n    bats += 1;\n    i += 1;\n  }\n  return bats;\n}\n"}}, "l3d": {"py": "most_common", "js": "mostCommon", "params": ["bag"], "canon": "none", "tests": [{"args": [["kitkat", "twix", "kitkat", "snickers", "twix", "kitkat", "skittles", "twix", "twix"]], "out": "twix", "hidden": false}, {"args": [["boo"]], "out": "boo", "hidden": false}, {"args": [["a", "b", "b"]], "out": "b", "hidden": false}, {"args": [["x", "y", "y", "x", "x"]], "out": "x", "hidden": true}, {"args": [["kitkat", "kitkat", "twix"]], "out": "kitkat", "hidden": true}, {"args": [["m", "n", "o", "o"]], "out": "o", "hidden": true}], "starter": {"py": "def most_common(bag):\n    # your code here\n    pass\n", "js": "function mostCommon(bag) {\n  // your code here\n}\n"}}, "l4a": {"py": "two_sum", "js": "twoSum", "params": ["nums", "target"], "canon": "sorted", "tests": [{"args": [[17, 42, 8, 63, 31, 69, 71, 26], 100], "out": [4, 5], "hidden": false}, {"args": [[2, 7, 11, 15], 9], "out": [0, 1], "hidden": false}, {"args": [[3, 2, 4], 6], "out": [1, 2], "hidden": false}, {"args": [[3, 3], 6], "out": [0, 1], "hidden": true}, {"args": [[1, 5, 9, 13, -4], 9], "out": [3, 4], "hidden": true}, {"args": [[0, 4, 3, 0], 0], "out": [0, 3], "hidden": true}], "starter": {"py": "def two_sum(nums, target):\n    # your code here\n    pass\n", "js": "function twoSum(nums, target) {\n  // your code here\n}\n"}}, "l4b": {"py": "is_sealed", "js": "isSealed", "params": ["spell"], "canon": "none", "tests": [{"args": ["({[]})"], "out": true, "hidden": false}, {"args": ["([)]"], "out": false, "hidden": false}, {"args": ["((()))"], "out": true, "hidden": false}, {"args": ["{[}"], "out": false, "hidden": true}, {"args": ["[]{}()"], "out": true, "hidden": true}, {"args": ["((("], "out": false, "hidden": true}, {"args": [")("], "out": false, "hidden": true}, {"args": [""], "out": true, "hidden": true}, {"args": ["{[()()]}"], "out": true, "hidden": true}], "starter": {"py": "def is_sealed(spell):\n    # your code here\n    pass\n", "js": "function isSealed(spell) {\n  // your code here\n}\n"}}, "l4c": {"py": "max_surge", "js": "maxSurge", "params": ["readings"], "canon": "none", "tests": [{"args": [[-2, 5, -1, 7, -9, 4, 3, -1, 6, -8]], "out": 14, "hidden": false}, {"args": [[1]], "out": 1, "hidden": false}, {"args": [[-3, -1, -2]], "out": -1, "hidden": false}, {"args": [[5, 4, -1, 7, 8]], "out": 23, "hidden": true}, {"args": [[-2, 1, -3, 4, -1, 2, 1, -5, 4]], "out": 6, "hidden": true}, {"args": [[0, 0, 0]], "out": 0, "hidden": true}], "starter": {"py": "def max_surge(readings):\n    # your code here\n    pass\n", "js": "function maxSurge(readings) {\n  // your code here\n}\n"}}, "l4d": {"py": "count_graveyards", "js": "countGraveyards", "params": ["grid"], "canon": "none", "tests": [{"args": [["##..#", "#..##", "..#..", "#...#", "##.##"]], "out": 5, "hidden": false}, {"args": [["#"]], "out": 1, "hidden": false}, {"args": [["..", ".."]], "out": 0, "hidden": false}, {"args": [["##", "##"]], "out": 1, "hidden": true}, {"args": [["#.#", ".#.", "#.#"]], "out": 5, "hidden": true}, {"args": [["###", "#.#", "###"]], "out": 1, "hidden": true}, {"args": [["#..#", "....", "#..#"]], "out": 4, "hidden": true}], "starter": {"py": "def count_graveyards(grid):\n    # your code here\n    pass\n", "js": "function countGraveyards(grid) {\n  // your code here\n}\n"}}, "l5a": {"py": "longest_window", "js": "longestWindow", "params": ["s"], "canon": "none", "tests": [{"args": ["nightmarehaunts"], "out": 9, "hidden": false}, {"args": ["bbbbb"], "out": 1, "hidden": false}, {"args": ["abcabcbb"], "out": 3, "hidden": false}, {"args": [""], "out": 0, "hidden": true}, {"args": ["pwwkew"], "out": 3, "hidden": true}, {"args": ["dvdf"], "out": 3, "hidden": true}, {"args": ["boo"], "out": 2, "hidden": true}], "starter": {"py": "def longest_window(s):\n    # your code here\n    pass\n", "js": "function longestWindow(s) {\n  // your code here\n}\n"}}, "l5b": {"py": "cursed_stairs", "js": "cursedStairs", "params": ["n", "cursed"], "canon": "none", "tests": [{"args": [10, [5]], "out": 25, "hidden": false}, {"args": [3, []], "out": 3, "hidden": false}, {"args": [4, [2]], "out": 1, "hidden": false}, {"args": [10, []], "out": 89, "hidden": true}, {"args": [6, [2, 4]], "out": 1, "hidden": true}, {"args": [5, [1, 3]], "out": 1, "hidden": true}, {"args": [8, [3, 6]], "out": 2, "hidden": true}], "starter": {"py": "def cursed_stairs(n, cursed):\n    # your code here\n    pass\n", "js": "function cursedStairs(n, cursed) {\n  // your code here\n}\n"}}, "l5c": {"py": "fewest_coins", "js": "fewestCoins", "params": ["coins", "amount"], "canon": "none", "tests": [{"args": [[1, 5, 12], 16], "out": 4, "hidden": false}, {"args": [[2], 3], "out": -1, "hidden": false}, {"args": [[1], 0], "out": 0, "hidden": false}, {"args": [[1, 2, 5], 11], "out": 3, "hidden": true}, {"args": [[2, 5, 10, 1], 27], "out": 4, "hidden": true}, {"args": [[186, 419, 83, 408], 6249], "out": 20, "hidden": true}, {"args": [[3, 7], 5], "out": -1, "hidden": true}], "starter": {"py": "def fewest_coins(coins, amount):\n    # your code here\n    pass\n", "js": "function fewestCoins(coins, amount) {\n  // your code here\n}\n"}}, "l5d": {"py": "lonely_ghost", "js": "lonelyGhost", "params": ["ghosts"], "canon": "none", "tests": [{"args": [[7, 3, 9, 3, 7, 12, 9]], "out": 12, "hidden": false}, {"args": [[1]], "out": 1, "hidden": false}, {"args": [[4, 1, 2, 1, 2]], "out": 4, "hidden": false}, {"args": [[0, 5, 0]], "out": 5, "hidden": true}, {"args": [[6, 6, 8]], "out": 8, "hidden": true}, {"args": [[10, 20, 10, 30, 20]], "out": 30, "hidden": true}], "starter": {"py": "def lonely_ghost(ghosts):\n    # your code here\n    pass\n", "js": "function lonelyGhost(ghosts) {\n  // your code here\n}\n"}}, "b1": {"py": "is_mirror", "js": "isMirror", "params": ["spell"], "canon": "none", "tests": [{"args": ["A man, a plan, a canal: Panama"], "out": true, "hidden": false}, {"args": ["race a car"], "out": false, "hidden": false}, {"args": [" "], "out": true, "hidden": false}, {"args": ["Was it a rat I saw?"], "out": true, "hidden": true}, {"args": ["0P"], "out": false, "hidden": true}, {"args": ["Boo! Ob"], "out": true, "hidden": true}, {"args": ["ab_a"], "out": true, "hidden": true}], "starter": {"py": "def is_mirror(spell):\n    # your code here\n    pass\n", "js": "function isMirror(spell) {\n  // your code here\n}\n"}}, "b2": {"py": "top_haunts", "js": "topHaunts", "params": ["words", "k"], "canon": "none", "tests": [{"args": [["ghost", "bat", "ghost", "witch", "bat", "ghost"], 2], "out": ["ghost", "bat"], "hidden": false}, {"args": [["a", "b", "c"], 2], "out": ["a", "b"], "hidden": false}, {"args": [["i", "love", "leetcode", "i", "love", "coding"], 2], "out": ["i", "love"], "hidden": true}, {"args": [["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], 4], "out": ["the", "is", "sunny", "day"], "hidden": true}, {"args": [["z", "y", "z", "y", "x"], 3], "out": ["y", "z", "x"], "hidden": true}], "starter": {"py": "def top_haunts(words, k):\n    # your code here\n    pass\n", "js": "function topHaunts(words, k) {\n  // your code here\n}\n"}}, "b3": {"py": "can_finish", "js": "canFinish", "params": ["n", "rules"], "canon": "none", "tests": [{"args": [2, [[1, 0]]], "out": true, "hidden": false}, {"args": [2, [[1, 0], [0, 1]]], "out": false, "hidden": false}, {"args": [3, []], "out": true, "hidden": false}, {"args": [4, [[1, 0], [2, 1], [3, 2]]], "out": true, "hidden": true}, {"args": [3, [[0, 1], [1, 2], [2, 0]]], "out": false, "hidden": true}, {"args": [5, [[1, 0], [2, 0], [3, 1], [3, 2], [4, 3]]], "out": true, "hidden": true}, {"args": [4, [[1, 0], [2, 1], [1, 2], [3, 0]]], "out": false, "hidden": true}], "starter": {"py": "def can_finish(n, rules):\n    # your code here\n    pass\n", "js": "function canFinish(n, rules) {\n  // your code here\n}\n"}}, "b4": {"py": "trapped_water", "js": "trappedWater", "params": ["heights"], "canon": "none", "tests": [{"args": [[0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]], "out": 6, "hidden": false}, {"args": [[4, 2, 0, 3, 2, 5]], "out": 9, "hidden": false}, {"args": [[1, 2, 3]], "out": 0, "hidden": false}, {"args": [[]], "out": 0, "hidden": true}, {"args": [[5, 0, 5]], "out": 5, "hidden": true}, {"args": [[3, 0, 0, 2, 0, 4]], "out": 10, "hidden": true}, {"args": [[2, 0, 2, 0, 2]], "out": 4, "hidden": true}], "starter": {"py": "def trapped_water(heights):\n    # your code here\n    pass\n", "js": "function trappedWater(heights) {\n  // your code here\n}\n"}}, "b5": {"py": "shift_cost", "js": "shiftCost", "params": ["start", "goal"], "canon": "none", "tests": [{"args": ["ghost", "host"], "out": 1, "hidden": false}, {"args": ["horse", "ros"], "out": 3, "hidden": false}, {"args": ["intention", "execution"], "out": 5, "hidden": false}, {"args": ["", "bat"], "out": 3, "hidden": true}, {"args": ["witch", "witch"], "out": 0, "hidden": true}, {"args": ["pumpkin", "pumpkins"], "out": 1, "hidden": true}, {"args": ["vampire", "empire"], "out": 2, "hidden": true}], "starter": {"py": "def shift_cost(start, goal):\n    # your code here\n    pass\n", "js": "function shiftCost(start, goal) {\n  // your code here\n}\n"}}};
+const SALT = "csminerva-haunted-2026";
+const ALL = LEVELS.flatMap((L,li)=>[...L.puzzles.map(p=>({...p,li,pts:L.pts,boss:false})), {...L.boss, li, kind:"Boss crypt · "+L.boss.diff, boss:true}]);
+const byId = Object.fromEntries(ALL.map(p=>[p.id,p]));
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- state ---------- */
+const LS_KEY = "haunted-trail-v1";
+let S = {alias:"", teamId:"", solved:{}, hints:{}, eggs:{}, tries:{}, joinedAt:0, lastAt:0};
+try { const raw = localStorage.getItem(LS_KEY); if (raw) S = Object.assign(S, JSON.parse(raw)); } catch(e){}
+let PLAYERS = {};   // uid -> player doc (from the live board)
+let TEAMS = {};     // code -> team doc
+let PEERS = [];     // coven presence
+
+const norm = s => String(s).toLowerCase().normalize("NFKD").replace(/[^a-z0-9,]/g,"");
+async function sha(s){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+async function check(id, guess){
+  const h = await sha(SALT + ":" + id + ":" + norm(guess));
+  return (HASHES[id]||[]).includes(h);
+}
+/* effective progress: mine, merged with my coven-mates' */
+function mates(){ return S.teamId ? Object.entries(PLAYERS).filter(([id,p])=>id!==uid && p.teamId===S.teamId) : []; }
+function merged(list){
+  const m = {solved:{}, hints:{}, eggs:{}, tries:{}};
+  for (const p of list){
+    for (const k in (p.solved||{})) if (!m.solved[k] || p.solved[k] < m.solved[k]) m.solved[k] = p.solved[k];
+    for (const k in (p.hints||{})) m.hints[k] = Math.max(m.hints[k]||0, +p.hints[k]||0);
+    for (const k in (p.eggs||{})) m.eggs[k] = m.eggs[k] || p.eggs[k];
+    for (const k in (p.tries||{})) m.tries[k] = k in m.tries ? Math.min(m.tries[k], +p.tries[k]||0) : (+p.tries[k]||0);
+  }
+  return m;
+}
+const E = () => merged([S, ...mates().map(([,p])=>p)]);
+const solvedIn = (st, li) => LEVELS[li].puzzles.filter(p=>st.solved[p.id]).length;
+function rankOf(st){ let r=0; for (let i=0;i<LEVELS.length;i++){ if (solvedIn(st,i)>=3) r=i+1; else break; } return r; }
+const unlockedIn = (st, li) => li===0 || solvedIn(st, li-1)>=3;
+const ptsFor = (st, id) => byId[id] ? (st.hints[id] ? Math.round(byId[id].pts/2) : byId[id].pts) : 0;
+function scoreOf(st){
+  let s=0;
+  for (const id in st.solved) s += ptsFor(st, id);
+  for (const e in st.eggs) if (EGG_ICONS[e]) s += EGG_PTS;
+  return s;
+}
+
+/* ---------- persistence ---------- */
+let db=null, uid=null, myRef=null, room=null, covenRoom=null, writeBlocked=false, saving=false, dirty=false;
+function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function body(){
+  return {alias:(S.alias||"Unnamed soul").slice(0,24), teamId:S.teamId||"", score:scoreOf(S), rank:rankOf(S),
+    solvedCount:Object.keys(S.solved).length, solved:S.solved, hints:S.hints, eggs:S.eggs, tries:S.tries,
+    joinedAt:S.joinedAt||Date.now(), lastAt:S.lastAt||0};
+}
+async function save(){
+  saveLocal();
+  if (!myRef || writeBlocked) return;
+  if (saving){ dirty=true; return; }
+  saving=true;
+  try { await myRef.set(body()); }
+  catch(e){
+    if (e && e.code==="invalid_argument"){ writeBlocked=true; showOffline("You can play, but your score can’t reach the board. Refresh the page to reconnect."); }
+    else if (e && e.code==="unavailable"){ setTimeout(()=>{ dirty=true; flush(); }, 800+Math.random()*800); }
+  }
+  saving=false;
+  flush();
+}
+function flush(){ if (dirty && !saving){ dirty=false; save(); } }
+function showOffline(msg){ const n=$("offlineNote"); n.textContent=msg; n.hidden=false; }
+
+/* ---------- sound (all synthesized, nothing to download) ---------- */
+const Sound = {
+  ctx:null, master:null, on:false, timer:null,
+  ensure(){
+    if (this.ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
+    const c = this.ctx = new AC();
+    this.master = c.createGain(); this.master.gain.value = .7; this.master.connect(c.destination);
+    // wind: looped brown noise through a slowly swaying low-pass filter
+    const len = c.sampleRate*4, buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    let last=0; for (let i=0;i<len;i++){ last=(last+.02*(Math.random()*2-1))/1.02; d[i]=last*3.5; }
+    const src = c.createBufferSource(); src.buffer=buf; src.loop=true;
+    const lp = c.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=420; lp.Q.value=4;
+    const lfo = c.createOscillator(), lfoG = c.createGain(); lfo.frequency.value=.07; lfoG.gain.value=260; lfo.connect(lfoG); lfoG.connect(lp.frequency); lfo.start();
+    this.amb = c.createGain(); this.amb.gain.value=0;
+    src.connect(lp); lp.connect(this.amb); src.start();
+    // low drone
+    [55, 82.6, 110.4].forEach((f,i)=>{ const o=c.createOscillator(), g=c.createGain(); o.type=i?"triangle":"sine"; o.frequency.value=f; g.gain.value=i?.012:.035; o.connect(g); g.connect(this.amb); o.start(); });
+    this.amb.connect(this.master);
+    return true;
+  },
+  start(){
+    if (!this.ensure()) return;
+    this.ctx.resume(); this.on = true;
+    this.amb.gain.setTargetAtTime(.5, this.ctx.currentTime, 1.5);
+    const tick = () => { if (!this.on) return; const r=Math.random(); (r<.35?this.creak:r<.65?this.owl:r<.85?this.bell:this.whisper).call(this); this.timer=setTimeout(tick, 7000+Math.random()*12000); };
+    clearTimeout(this.timer); this.timer = setTimeout(tick, 2500);
+  },
+  stop(){ this.on=false; clearTimeout(this.timer); if (this.ctx){ this.amb.gain.setTargetAtTime(0, this.ctx.currentTime, .4); } },
+  env(g, t, a, peak, dec){ g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(peak,t+a); g.gain.exponentialRampToValueAtTime(.0001,t+a+dec); },
+  tone(type, f, t, a, peak, dec, dest){ const c=this.ctx,o=c.createOscillator(),g=c.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); this.env(g,t,a,peak,dec); o.connect(g); g.connect(dest||this.master); o.start(t); o.stop(t+a+dec+.05); return o; },
+  creak(){ const c=this.ctx,t=c.currentTime,o=c.createOscillator(),bp=c.createBiquadFilter(),g=c.createGain(); o.type="sawtooth"; o.frequency.setValueAtTime(70,t); o.frequency.linearRampToValueAtTime(130,t+.6); o.frequency.linearRampToValueAtTime(85,t+1.4); bp.type="bandpass"; bp.frequency.value=900; bp.Q.value=9; this.env(g,t,.15,.09,1.3); o.connect(bp); bp.connect(g); g.connect(this.master); o.start(t); o.stop(t+1.7); },
+  owl(){ const t=this.ctx.currentTime; [0,.45,.7].forEach((d,i)=>{ const o=this.tone("sine", i===0?392:370, t+d, .05, .05, i===0?.35:.22); o.frequency.linearRampToValueAtTime(330, t+d+.3); }); },
+  bell(){ const t=this.ctx.currentTime; [1,2.4,3,4.2,5.4].forEach((m,i)=>this.tone("sine",146*m,t,.01,.05/(i+1),4.5)); },
+  whisper(){ const c=this.ctx,t=c.currentTime,len=c.sampleRate*2,b=c.createBuffer(1,len,c.sampleRate),d=b.getChannelData(0); for(let i=0;i<len;i++) d[i]=Math.random()*2-1; const s=c.createBufferSource(); s.buffer=b; const bp=c.createBiquadFilter(); bp.type="bandpass"; bp.frequency.setValueAtTime(1800,t); bp.frequency.linearRampToValueAtTime(3200,t+1.6); bp.Q.value=6; const g=c.createGain(); this.env(g,t,.7,.06,1.2); s.connect(bp); bp.connect(g); g.connect(this.master); s.start(t); },
+  sfx(name){
+    if (!this.on || !this.ctx) return;
+    const t=this.ctx.currentTime;
+    if (name==="good") [523.3,659.3,784,1046.5].forEach((f,i)=>this.tone("triangle",f,t+i*.08,.01,.12,.5));
+    else if (name==="bad"){ this.tone("sine",95,t,.005,.35,.4); this.tone("square",62,t,.005,.05,.25); }
+    else if (name==="rank"){ [110,165,220,277.2,330].forEach((f,i)=>this.tone(i?"triangle":"sine",f,t+i*.05,.02,.12/(i+1)+.03,3)); [1,2.76,5.4].forEach(m=>this.tone("sine",98*m,t,.005,.08,4)); }
+    else if (name==="egg") this.whisper();
+    else if (name==="tick") this.tone("sine",1400,t,.002,.04,.06);
+  }
+};
+let soundPref=false; try{ soundPref = localStorage.getItem("haunted-sound")==="on"; }catch(e){}
+function setSound(on){
+  soundPref=on; try{ localStorage.setItem("haunted-sound", on?"on":"off"); }catch(e){}
+  $("soundBtn").textContent = on ? "🔊 Sound on" : "🔇 Sound off";
+  $("soundBtn").classList.toggle("on", on); $("soundBtn").setAttribute("aria-pressed", on);
+  on ? Sound.start() : Sound.stop();
+}
+$("soundBtn").addEventListener("click", ()=>setSound(!soundPref));
+$("soundBtn").textContent = soundPref ? "🔊 Sound on" : "🔇 Sound off";
+// browsers need a click before audio can play: resume on the first one if sound was left on
+document.addEventListener("pointerdown", function first(){ document.removeEventListener("pointerdown", first, true); if (soundPref && !Sound.on) setSound(true); }, true);
+
+/* ---------- render ---------- */
+const MATE_COLORS = ["#ff9fc3","#8bd3ff","#ffd36e","#b4f08b","#d6b4ff"];
+function mateColor(id){ let h=0; for (const c of String(id)) h=(h*31+c.charCodeAt(0))>>>0; return MATE_COLORS[h%MATE_COLORS.length]; }
+function initials(a){ return String(a||"?").trim().split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase() || "?"; }
+let shownRank = null, bootQuiet = true;
+function renderMe(st){
+  $("meAlias").textContent = (S.alias || "Unnamed soul") + (S.teamId && TEAMS[S.teamId] ? " · " + TEAMS[S.teamId].name : "");
+  $("meRank").textContent = RANKS[rankOf(st)];
+  $("meScore").textContent = scoreOf(st);
+  $("meStars").textContent = totalStars(st);
+}
+
+/* ---------- the trail map ---------- */
+const SVGNS="http://www.w3.org/2000/svg";
+let MAPW=420, MAPMODE="port";
+const ZONE_TINT=["#1a2333","#2a1a2e","#2d2016","#141f22","#22161c"];
+let ghostMoving=false;
+let MAP=null, ghostLen=null, ghostAnim=0, openedGates=null, pendingCelebrate=null;
+function rng(seed){ return ()=>{ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; }; }
+function pickMode(){ const w=document.querySelector(".stage").clientWidth || innerWidth; return w>=820 ? "land" : "port"; }
+function layoutMap(){
+  const main=[], bosses=[], zones=[], gates=[], way=[]; let i=0, H;
+  if (MAPMODE==="land"){
+    MAPW=1000; const BAND=440, GAP=230, xs=[170,390,610,830]; let top=30;
+    LEVELS.forEach((L,li)=>{
+      const ltr=li%2===0, order=ltr?xs:[...xs].reverse(), cy=top+225;
+      if (li>0) way.push({x:ltr?70:MAPW-70, y:top+70});
+      L.puzzles.forEach((p,j)=>{ const n={id:p.id, li, n:i+1, x:order[j], y:cy+55*Math.sin(j*1.9+li*.8)}; main.push(n); way.push(n); i++; });
+      const a=main[main.length-1], b=main[main.length-2];
+      bosses.push({id:L.boss.id, li, x:(a.x+b.x)/2, y:Math.max(a.y,b.y)+105, from:a});
+      zones.push({li, top, bottom:top+BAND, ltr});
+      if (li<LEVELS.length-1){ const sx=ltr?MAPW-70:70; way.push({x:sx, y:top+BAND-40}); gates.push({li, x:sx, y:top+BAND+GAP/2}); top+=BAND+GAP; }
+      else top+=BAND;
+    });
+    H=top+30;
+    way.unshift({x:40, y:main[0].y}); way.push({x:MAPW-40, y:main[main.length-1].y});
+  } else {
+    MAPW=420; let y=200;
+    LEVELS.forEach((L,li)=>{
+      const top=y-170;
+      L.puzzles.forEach(p=>{ const n={id:p.id, li, n:i+1, x:MAPW/2+118*Math.sin(i*1.2+.5), y}; main.push(n); way.push(n); y+=132; i++; });
+      const a=main[main.length-1], b=main[main.length-2];
+      bosses.push({id:L.boss.id, li, x:(a.x+b.x)/2>MAPW/2?70:MAPW-70, y:(a.y+b.y)/2+10, from:a});
+      zones.push({li, top, bottom:y+10, ltr:true});
+      if (li<LEVELS.length-1){ gates.push({li, y:y+60, x:MAPW/2+118*Math.sin((i-.5)*1.2+.5)}); y+=300; }
+    });
+    H=y+30;
+    way.unshift({x:MAPW/2, y:20}); way.push({x:MAPW/2, y:H-10});
+  }
+  return {main, bosses, zones, gates, way, H};
+}
+function catmull(pts){
+  let d=`M${pts[0].x},${pts[0].y}`;
+  for (let k=0;k<pts.length-1;k++){
+    const p0=pts[k-1]||pts[k], p1=pts[k], p2=pts[k+1], p3=pts[k+2]||p2;
+    d+=` C${p1.x+(p2.x-p0.x)/6},${p1.y+(p2.y-p0.y)/6} ${p2.x-(p3.x-p1.x)/6},${p2.y-(p3.y-p1.y)/6} ${p2.x},${p2.y}`;
+  }
+  return d;
+}
+const LANDMARK = [
+  (x,y)=>`<g transform="translate(${x},${y})" fill="#2b3550"><rect x="-58" y="-120" width="8" height="120"/><rect x="50" y="-120" width="8" height="120"/><rect x="-62" y="-126" width="16" height="8"/><rect x="46" y="-126" width="16" height="8"/><rect x="-90" y="-46" width="180" height="6"/><path d="M-90,-60 Q-54,-120 -54,-120 Q0,-40 54,-120 Q90,-60 90,-60" fill="none" stroke="#2b3550" stroke-width="2.5"/></g>`,
+  (x,y)=>`<g transform="translate(${x},${y})" fill="#3a2442"><ellipse cx="0" cy="0" rx="90" ry="26"/><rect x="-4" y="-150" width="8" height="140"/><ellipse cx="0" cy="-108" rx="16" ry="8"/><rect x="-11" y="-120" width="22" height="12" rx="4"/><rect x="-1" y="-185" width="2" height="38"/></g>`,
+  (x,y)=>`<g transform="translate(${x},${y})" fill="#3d2c1c"><rect x="-50" y="-60" width="100" height="60"/><path d="M-26,0 v-30 a26,26 0 0 1 52,0 v30z" fill="#2d2016"/>${[-52,-26,26,52].map(d=>`<rect x="${d-4}" y="-120" width="8" height="70"/><circle cx="${d}" cy="-124" r="7"/>`).join("")}<rect x="-50" y="-70" width="100" height="10"/></g>`,
+  (x,y)=>`<g transform="translate(${x},${y})" fill="#22333a"><path d="M-6,0 L-3,-110 L3,-110 L6,0z"/><circle cx="0" cy="-122" r="16"/><rect x="-1.5" y="-180" width="3" height="46"/><rect x="-30" y="-4" width="60" height="4"/></g>`,
+  (x,y)=>`<g transform="translate(${x},${y})" fill="#3a2430"><path d="M-12,0 L-7,-150 L0,-166 L7,-150 L12,0z"/><rect x="-60" y="-3" width="120" height="3"/><rect x="-3" y="-120" width="6" height="8" fill="#22161c"/></g>`
+];
+function decor(z, near){
+  const r=rng(1000+z.li*77+(MAPMODE==="land"?5:0)), out=[], N=MAPMODE==="land"?30:14;
+  for (let k=0;k<N*3 && out.length<N;k++){
+    const x=14+r()*(MAPW-28), y=z.top+95+r()*(z.bottom-z.top-110), t=r();
+    if (near(x,y)<62) continue;
+    if (t<.4) out.push(`<g transform="translate(${x.toFixed(0)},${y.toFixed(0)})"><path d="M-9,0 v-16 a9,9 0 0 1 18,0 v16z" fill="#2b2738"/><rect x="-12" y="0" width="24" height="3" fill="#201d2b"/><path d="M-3,-11 h6 M0,-14 v8" stroke="#3d3850" stroke-width="1.5"/></g>`);
+    else if (t<.7) out.push(`<g transform="translate(${x.toFixed(0)},${y.toFixed(0)})" stroke="#14121c" stroke-width="3" fill="none" stroke-linecap="round"><path d="M0,0 V-38 M0,-22 L-12,-32 M0,-28 L11,-40 M-12,-32 L-18,-34 M11,-40 L16,-46"/></g>`);
+    else if (t<.88) out.push(`<g transform="translate(${x.toFixed(0)},${y.toFixed(0)})"><ellipse cx="0" cy="-7" rx="11" ry="8" fill="#c2561a"/><ellipse cx="0" cy="-7" rx="5" ry="8" fill="#e0702a"/><rect x="-1.5" y="-18" width="3" height="5" fill="#3d5a2a"/><path d="M-5,-9 l2,-2 l2,2 M1,-9 l2,-2 l2,2 M-4,-4 q4,3 8,0" stroke="#ffcf6b" stroke-width="1.2" fill="none"/></g>`);
+    else out.push(`<g transform="translate(${x.toFixed(0)},${y.toFixed(0)})" fill="none" stroke="#ece6d822" stroke-width=".8"><path d="M0,0 L-14,-14 M0,0 L14,-14 M0,0 L0,-20 M-7,-7 Q0,-11 7,-7 M-11,-11 Q0,-17 11,-11"/></g>`);
+  }
+  return out.join("");
+}
+function starPath(cx,cy,R){ let d=""; for (let k=0;k<10;k++){ const a=-Math.PI/2+k*Math.PI/5, rr=k%2?R*.45:R; d+=(k?"L":"M")+(cx+rr*Math.cos(a)).toFixed(1)+","+(cy+rr*Math.sin(a)).toFixed(1); } return d+"Z"; }
+const missesAllowed = p => p.boss ? 3 : p.type==="code" ? 2 : 1;
+function starsFor(st,id){ if (!st.solved[id]) return 0; if (st.hints[id]) return 1; if ((st.tries[id]||0)>missesAllowed(byId[id])) return 2; return 3; }
+function totalStars(st){ return ALL.reduce((a,p)=>a+starsFor(st,p.id),0); }
+function buildMap(){
+  MAP=layoutMap();
+  const svg=$("map"); svg.setAttribute("viewBox",`0 0 ${MAPW} ${MAP.H}`);
+  const pts=MAP.main, d=catmull(MAP.way);
+  // dense polyline of the trail, for keeping scenery off it
+  const poly=[]; for (let k=0;k<MAP.way.length-1;k++){ const A=MAP.way[k], B=MAP.way[k+1]; for (let t=0;t<1;t+=.1) poly.push([A.x+(B.x-A.x)*t, A.y+(B.y-A.y)*t]); }
+  const keep=[...poly, ...MAP.bosses.map(b=>[b.x,b.y]), ...MAP.gates.map(g=>[g.x,g.y])];
+  const near=(x,y)=>{ let m=1e9; for (const [px,py] of keep){ const dd=Math.hypot(px-x,py-y); if (dd<m) m=dd; } return m; };
+  let bg=`<defs>
+    <radialGradient id="gAvail" cx="40%" cy="35%"><stop offset="0" stop-color="#ffc27a"/><stop offset=".55" stop-color="#ff8a2a"/><stop offset="1" stop-color="#a8460c"/></radialGradient>
+    <radialGradient id="gDone" cx="40%" cy="35%"><stop offset="0" stop-color="#d8ffe9"/><stop offset=".55" stop-color="#5fcf98"/><stop offset="1" stop-color="#1f6e4a"/></radialGradient>
+    <radialGradient id="gLock" cx="40%" cy="35%"><stop offset="0" stop-color="#4a4560"/><stop offset="1" stop-color="#211e2c"/></radialGradient>
+    <radialGradient id="gBoss" cx="40%" cy="35%"><stop offset="0" stop-color="#ecd2ff"/><stop offset=".55" stop-color="#a45be0"/><stop offset="1" stop-color="#4b1f73"/></radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+  let labels="";
+  MAP.zones.forEach(z=>{
+    bg+=`<rect x="0" y="${z.top}" width="${MAPW}" height="${z.bottom-z.top}" fill="${ZONE_TINT[z.li]}" opacity=".55" rx="28"/>`;
+    let lx, ly;
+    if (MAPMODE==="land"){ lx = z.ltr ? 95 : MAPW-95; ly = z.bottom-18; }
+    else { const mid=pts.filter(n=>n.li===z.li); const avg=mid.reduce((a,n)=>a+n.x,0)/mid.length; lx = avg>MAPW/2 ? 78 : MAPW-78; ly = z.top+300; }
+    bg+=`<g opacity=".9">${LANDMARK[z.li](lx, ly)}</g>`;
+    const zoneNear=(x,y)=>Math.min(near(x,y), Math.hypot(x-lx,(y-ly+70)*.7)+10, (Math.abs(x-MAPW/2)<190 && y<z.top+110)?0:1e9);
+    bg+=decor(z, zoneNear);
+    labels+=`<g class="zlabel" transform="translate(${MAPW/2},${z.top+56})"><rect x="-150" y="-34" width="300" height="60" rx="14" fill="#0c0b12" opacity=".8" stroke="#34304a"/><text class="zone-label" y="-4" text-anchor="middle">${esc(LEVELS[z.li].city)}</text><text class="zone-sub" y="16" text-anchor="middle">${esc(LEVELS[z.li].name)} · rise to ${esc(RANKS[z.li+1])}</text></g>`;
+  });
+  bg+=`<path class="trail-glow" d="${d}"/><path class="trail" d="${d}" id="trailPath"/><path class="trail-dash" d="${d}"/>`;
+  MAP.bosses.forEach(b=>{ const qx=(b.from.x+b.x)/2, qy = MAPMODE==="land" ? (b.from.y+b.y)/2+30 : b.y-40; bg+=`<path class="spur" d="M${b.from.x},${b.from.y} Q${qx},${qy} ${b.x},${b.y}"/>`; });
+  svg.innerHTML = bg + `<g id="mapZoneDim"></g>${labels}<g id="mapGates"></g><g id="mapNodes"></g><g id="ghost" class="ghost"><g class="bob"><path d="M-14,8 v-16 a14,14 0 0 1 28,0 v16 l-4.5,-4 l-4.5,4 l-5,-4 l-5,4 l-4.5,-4z" fill="#f4efe6" filter="url(#glow)"/><circle cx="-5" cy="-6" r="2.4" fill="#120a1c"/><circle cx="5" cy="-6" r="2.4" fill="#120a1c"/><ellipse cx="0" cy="1" rx="2.5" ry="3" fill="#120a1c"/></g></g>`;
+  // size each city banner to its own text
+  svg.querySelectorAll(".zlabel").forEach(g=>{ let w=0; g.querySelectorAll("text").forEach(t=>{ try{ w=Math.max(w,t.getBBox().width); }catch(e){} }); if (w){ const rr=g.querySelector("rect"); rr.setAttribute("x",-(w/2+24)); rr.setAttribute("width",w+48); } });
+  // map each main node to a length along the trail, for the ghost's walk
+  const path=$("trailPath"), total=path.getTotalLength(), samples=[];
+  for (let L=0; L<=total; L+=4){ const p=path.getPointAtLength(L); samples.push([L,p.x,p.y]); }
+  pts.forEach(n=>{ let best=1e9, bl=0; for (const [L,x,y] of samples){ const dd=(x-n.x)**2+(y-n.y)**2; if (dd<best){ best=dd; bl=L; } } n.len=bl; });
+}
+function nodeSvg(n, st, boss){
+  const p=byId[n.id], open=unlockedIn(st,n.li), solved=!!st.solved[n.id], R=boss?34:30;
+  const fill = !open ? "url(#gLock)" : solved ? "url(#gDone)" : boss ? "url(#gBoss)" : "url(#gAvail)";
+  const s = starsFor(st,n.id);
+  let g=`<g class="node${boss?" boss":""}${open?"":" locked"}" data-id="${n.id}" tabindex="${open?0:-1}" role="button" aria-label="${esc((boss?"Boss crypt: ":"Level "+n.n+": ")+p.title+(solved?", solved, "+s+" stars":open?"":", locked"))}" transform="translate(${n.x},${n.y})">`;
+  if (open && !solved) g+=`<circle class="pulse" r="${R}"/>`;
+  g+=`<ellipse cx="0" cy="${R*.75}" rx="${R*1.05}" ry="${R*.35}" fill="#000" opacity=".45"/>`;
+  g+=`<g class="disc"><circle class="ring" r="${R+4}" fill="#0c0b12" stroke="${solved?"#8be3b4":open?(boss?"#c77dff":"#ffb36b"):"#3a3550"}" stroke-width="2"/><circle r="${R}" fill="${fill}"/>`;
+  if (boss) g+=`<g fill="${open?"#1b0d29":"#0f0d16"}" opacity=".85"><path d="M-11,-2 a11,11 0 1 1 22,0 v5 h-4 v4 h-4 v-4 h-2 v4 h-4 v-4 h-4z"/></g><circle cx="-4.5" cy="-3" r="3" fill="${open?"#ecd2ff":"#3a3550"}"/><circle cx="4.5" cy="-3" r="3" fill="${open?"#ecd2ff":"#3a3550"}"/>`;
+  else g+=`<text class="num" y="1" fill="${open?"#1a0d02":"#5c5672"}">${open?n.n:"🔒"}</text>`;
+  g+=`</g>`;
+  if (!boss || solved) for (let k=0;k<3;k++){ const a=(-115+k*25)*Math.PI/180, rr=R+16; g+=`<path class="${k<s?"star-on":"star-off"}" d="${starPath(Math.cos(a)*rr+(k-1)*14, Math.sin(a)*rr*0.9-6, k===1?10:8)}"/>`; }
+  g+=`<text class="tag" y="${R+20}">${boss?"BOSS · "+p.pts:p.type==="code"?"{ } code":""}</text>`;
+  const here = PEERS.filter(x=>x.presence && x.presence.on===n.id && x.presence.uid!==uid).slice(0,3);
+  here.forEach((x,k)=>{ g+=`<g transform="translate(${R-2-k*14},${-R+4})"><circle class="mate-dot" r="9" fill="${mateColor(x.presence.uid)}"/><text class="mate-txt">${esc(initials(x.presence.alias))}</text></g>`; });
+  return g+`</g>`;
+}
+function renderMap(st){
+  if (!MAP){ MAPMODE=pickMode(); document.querySelector(".map-wrap").classList.toggle("land", MAPMODE==="land"); buildMap(); ghostLen=null; openedGates=null; }
+  const nodes=$("mapNodes"), gates=$("mapGates"), dim=$("mapZoneDim");
+  nodes.innerHTML = MAP.main.map(n=>nodeSvg(n,st,false)).join("") + MAP.bosses.map(b=>nodeSvg(b,st,true)).join("");
+  const nowOpen = MAP.gates.map(g=>solvedIn(st,g.li)>=3);
+  gates.innerHTML = MAP.gates.map((g,k)=>{
+    const open=nowOpen[k], fresh = openedGates && open && !openedGates[k];
+    const n=solvedIn(st,g.li);
+    return `<g class="gate${open?" open":""}${fresh?" opening":""}" transform="translate(${g.x},${g.y})">
+      <rect x="-46" y="-40" width="10" height="56" fill="#2a2638"/><rect x="36" y="-40" width="10" height="56" fill="#2a2638"/>
+      <circle cx="-41" cy="-44" r="6" fill="#3a3550"/><circle cx="41" cy="-44" r="6" fill="#3a3550"/>
+      <g class="leaf-l">${[-30,-22,-14,-6].map(x=>`<line class="bar" x1="${x}" y1="-34" x2="${x}" y2="12"/>`).join("")}<line class="bar" x1="-34" y1="-12" x2="-2" y2="-12"/></g>
+      <g class="leaf-r">${[6,14,22,30].map(x=>`<line class="bar" x1="${x}" y1="-34" x2="${x}" y2="12"/>`).join("")}<line class="bar" x1="2" y1="-12" x2="34" y2="-12"/></g>
+      ${open?"":`<g transform="translate(0,-10)"><rect x="-8" y="-4" width="16" height="13" rx="2" fill="#ffb36b"/><path d="M-5,-4 v-4 a5,5 0 0 1 10,0 v4" stroke="#ffb36b" stroke-width="2.5" fill="none"/></g>`}
+      <text class="gate-text" x="${Math.max(150,Math.min(MAPW-150,g.x))-g.x}" y="38">${open?"The gate to "+esc(LEVELS[g.li+1].city)+" is open":"Clear "+Math.max(0,3-n)+" more in "+esc(LEVELS[g.li].city)+" to open"}</text></g>`;
+  }).join("");
+  openedGates = nowOpen;
+  dim.innerHTML = MAP.zones.filter(z=>!unlockedIn(st,z.li)).map(z=>`<rect x="0" y="${z.top+80}" width="${MAPW}" height="${z.bottom-z.top-80}" fill="#0c0b12" opacity=".45"/>`).join("");
+  nodes.querySelectorAll(".node").forEach(el=>{
+    const go=()=>{ if (el.classList.contains("locked")){ Sound.sfx("bad"); toast("🔒 That gate is still locked. Clear 3 levels in the city before it."); return; } Sound.sfx("tick"); openPuzzle(el.dataset.id); };
+    el.addEventListener("click",go);
+    el.addEventListener("keydown",e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); } });
+  });
+  placeGhost(st, false);
+}
+let resizeT=0;
+addEventListener("resize",()=>{ clearTimeout(resizeT); resizeT=setTimeout(()=>{ if (MAP && pickMode()!==MAPMODE){ MAP=null; renderMap(E()); } },200); });
+function ghostTarget(st){
+  const open = MAP.main.filter(n=>unlockedIn(st,n.li));
+  return open.find(n=>!st.solved[n.id]) || open[open.length-1];
+}
+function placeGhost(st, animate){
+  const t=ghostTarget(st), path=$("trailPath"), g=$("ghost"); if (!t||!path) return;
+  const to=t.len, from = ghostLen==null ? to : ghostLen;
+  if (!animate && ghostMoving) return;
+  cancelAnimationFrame(ghostAnim); ghostMoving=false;
+  const put=L=>{ const p=path.getPointAtLength(L); g.setAttribute("transform",`translate(${p.x+38},${p.y-26})`); };
+  if (!animate || from===to || matchMedia("(prefers-reduced-motion: reduce)").matches){ put(to); ghostLen=to; return; }
+  ghostMoving=true;
+  const t0=performance.now(), dur=Math.min(2600, 700+Math.abs(to-from)*1.4);
+  const step=now=>{ const k=Math.min(1,(now-t0)/dur), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; put(from+(to-from)*e); if (k<1) ghostAnim=requestAnimationFrame(step); else { ghostLen=to; ghostMoving=false; } };
+  ghostAnim=requestAnimationFrame(step);
+}
+function scrollToNode(n, smooth){
+  const svg=$("map"), r=svg.getBoundingClientRect(), scale=r.width/MAPW;
+  const y = window.scrollY + r.top + n.y*scale - window.innerHeight*0.45;
+  window.scrollTo({top:Math.max(0,y), behavior:smooth?"smooth":"auto"});
+}
+function nodeScreen(id){
+  const el=$("mapNodes").querySelector(`[data-id="${id}"]`); if (!el) return null;
+  const b=el.getBoundingClientRect(); return {x:b.left+b.width/2, y:b.top+b.height/2};
+}
+function celebrate(id){
+  const st=E(); renderMap(st);
+  const p=nodeScreen(id); if (p) FX.burst(p.x,p.y, starsFor(st,id));
+  setTimeout(()=>{ placeGhost(st,true); const t=ghostTarget(st); if (t) setTimeout(()=>scrollToNode(t,true), 300); }, 500);
+}
+
+/* ---------- fireflies + bursts ---------- */
+const FX = {
+  cv:null, cx:null, flies:[], parts:[], raf:0, reduced:matchMedia("(prefers-reduced-motion: reduce)").matches,
+  init(){
+    this.cv=$("fx"); this.cx=this.cv.getContext("2d");
+    const size=()=>{ const d=Math.min(2,devicePixelRatio||1); this.cv.width=innerWidth*d; this.cv.height=innerHeight*d; this.cx.setTransform(d,0,0,d,0,0); };
+    size(); addEventListener("resize",size);
+    if (!this.reduced) for (let k=0;k<26;k++) this.flies.push({x:Math.random()*innerWidth, y:Math.random()*innerHeight, a:Math.random()*6.28, s:.2+Math.random()*.4, ph:Math.random()*6.28});
+    const loop=t=>{ this.draw(t); this.raf=requestAnimationFrame(loop); }; this.raf=requestAnimationFrame(loop);
+  },
+  burst(x,y,stars){
+    if (this.reduced) return;
+    const cols=["#ffd36e","#ff8a2a","#8be3b4","#c77dff","#ff9fc3"];
+    for (let k=0;k<60;k++){ const a=Math.random()*6.28, v=2+Math.random()*6; this.parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-3,life:1,c:cols[k%cols.length],r:2+Math.random()*3,star:k<stars*6}); }
+  },
+  draw(t){
+    const c=this.cx; c.clearRect(0,0,innerWidth,innerHeight);
+    for (const f of this.flies){
+      f.a+= (Math.random()-.5)*.2; f.x+=Math.cos(f.a)*f.s; f.y+=Math.sin(f.a)*f.s;
+      if (f.x<-10) f.x=innerWidth+10; if (f.x>innerWidth+10) f.x=-10; if (f.y<-10) f.y=innerHeight+10; if (f.y>innerHeight+10) f.y=-10;
+      const al=.25+.55*(.5+.5*Math.sin(t/600+f.ph));
+      const g=c.createRadialGradient(f.x,f.y,0,f.x,f.y,9); g.addColorStop(0,`rgba(255,214,120,${al})`); g.addColorStop(1,"rgba(255,214,120,0)");
+      c.fillStyle=g; c.beginPath(); c.arc(f.x,f.y,9,0,6.28); c.fill();
+    }
+    this.parts=this.parts.filter(p=>p.life>0);
+    for (const p of this.parts){
+      p.vy+=.18; p.vx*=.98; p.x+=p.vx; p.y+=p.vy; p.life-=.014;
+      c.globalAlpha=Math.max(0,p.life); c.fillStyle=p.c;
+      if (p.star){ c.beginPath(); for (let k=0;k<10;k++){ const a=-Math.PI/2+k*Math.PI/5, rr=k%2?p.r*1.1:p.r*2.6; c.lineTo(p.x+rr*Math.cos(a), p.y+rr*Math.sin(a)); } c.fill(); }
+      else { c.beginPath(); c.arc(p.x,p.y,p.r,0,6.28); c.fill(); }
+      c.globalAlpha=1;
+    }
+  }
+};
+function starsHtml(n, pop){ return [0,1,2].map(k=>`<span class="${k<n?"on":""}${pop&&k<n?" pop":""}" style="animation-delay:${k*.18}s">★</span>`).join(""); }
+function starRule(p){
+  const n=missesAllowed(p);
+  return p.type==="code" ? `★★★ no hints, up to ${n} failed submits (Run is free) · ★★ no hints · ★ with hints` : `★★★ no hints, up to ${n} wrong guess · ★★ no hints · ★ with hints`;
+}
+function levelHeader(p, pop){
+  const st=E(), main = MAP && MAP.main.find(n=>n.id===p.id);
+  return `<span class="lvn${p.boss?" bossn":""}">${p.boss?"Boss crypt":"Level "+(main?main.n:"")}</span><span class="bigstars">${starsHtml(starsFor(st,p.id),pop)}</span><span class="starrule">${st.solved[p.id]?"":starRule(p)}</span>`;
+}
+
+function renderEggs(st){
+  const n=Object.keys(st.eggs).length; $("eggCount").textContent=`${n} / 4`;
+  $("eggs").querySelectorAll("span").forEach((s,i)=>s.classList.toggle("found",!!st.eggs[EGG_ORDER[i]]));
+}
+function renderCoven(){
+  const el=$("covenPanel"); el.textContent="";
+  if (!S.teamId){
+    el.innerHTML=`<h3><span>Your coven</span></h3><p>Playing solo. Start a coven to team up: everyone uses their own device, and solves, hints and secrets are shared.</p><div class="row"><button class="btn" type="button" data-coven="start">Start a coven</button><button class="btn" type="button" data-coven="join">Join with a code</button></div>`;
+    el.querySelectorAll("[data-coven]").forEach(b=>b.addEventListener("click",()=>openJoin(b.dataset.coven)));
+    if (!db){ el.querySelectorAll("button").forEach(b=>b.disabled=true); }
+    return;
+  }
+  const t = TEAMS[S.teamId];
+  el.innerHTML=`<h3><span>Your coven</span><span>code</span></h3><div class="row" style="justify-content:space-between"><p class="cname"></p><span class="code"></span></div><p>Friends join with this code from their own device.</p><ul></ul><div class="row"><button class="btn" type="button" id="copyCode">Copy code</button><button class="btn ghost" type="button" id="leaveCoven">Leave coven</button></div>`;
+  el.querySelector(".cname").textContent = t ? t.name : "Your coven";
+  el.querySelector(".code").textContent = S.teamId;
+  const ul=el.querySelector("ul");
+  const members = [[uid||"me", {alias:S.alias}], ...mates()];
+  for (const [id,p] of members){
+    const li=document.createElement("li");
+    const dot=document.createElement("span"); dot.className="mate"; dot.style.background=mateColor(id); dot.textContent=initials(p.alias);
+    const nm=document.createElement("span"); nm.textContent=String(p.alias||"Unnamed soul").slice(0,24)+(id===(uid||"me")?" (you)":"");
+    const st=document.createElement("span"); st.className="st";
+    if (id!==(uid||"me")){
+      const peer = PEERS.find(x=>x.presence && x.presence.uid===id);
+      st.textContent = !peer ? "away" : peer.presence.on && byId[peer.presence.on] ? "on " + byId[peer.presence.on].title : "browsing";
+    } else st.textContent = current && byId[current] ? "on " + byId[current].title : "";
+    li.append(dot,nm,st); ul.appendChild(li);
+  }
+  $("copyCode").addEventListener("click", async e=>{ try{ await navigator.clipboard.writeText(S.teamId); e.target.textContent="Copied"; }catch(err){ e.target.textContent=S.teamId; } });
+  $("leaveCoven").addEventListener("click", leaveCoven);
+}
+function renderAll(){
+  const st=E();
+  renderMe(st); renderMap(st); renderEggs(st); renderCoven();
+  // a coven-mate's solve can lift the whole coven a rank
+  const r=rankOf(st);
+  if (!bootQuiet && shownRank!==null && r>shownRank && !$("ascend").open) setTimeout(()=>ascend(r), 300);
+  shownRank=r;
+}
+
+/* ---------- leaderboard ---------- */
+let lastBoard=null;
+function renderBoard(){
+  const groups={};
+  for (const [id,p] of Object.entries(PLAYERS)){
+    const key = p.teamId ? "t:"+p.teamId : "p:"+id;
+    (groups[key] = groups[key] || {key, team:p.teamId||"", members:[]}).members.push({id, ...p});
+  }
+  const rows = Object.values(groups).map(g=>{
+    const st = merged(g.members);
+    return {...g, score:scoreOf(st), rank:rankOf(st), solved:Object.keys(st.solved).length,
+      lastAt:Math.max(...g.members.map(m=>m.lastAt||0)),
+      name: g.team ? (TEAMS[g.team] ? TEAMS[g.team].name : "Coven "+g.team) : (g.members[0].alias||"Unnamed soul")};
+  }).sort((a,b)=> b.score-a.score || a.lastAt-b.lastAt);
+  const ol=$("board"); ol.textContent="";
+  if (!rows.length){ ol.innerHTML=`<li><p class="empty">No one has joined yet. Be the first name on the board.</p></li>`; return; }
+  const mine = S.teamId ? "t:"+S.teamId : "p:"+uid;
+  rows.forEach((r,i)=>{
+    const li=document.createElement("li"); if (r.key===mine) li.classList.add("mine");
+    li.innerHTML=`<span class="pos">${i+1}</span><span class="nm"><span></span><small></small></span><span class="sc"></span>`;
+    li.querySelector(".nm span").textContent = String(r.name).slice(0,28) + (r.team?" 🕯️":"") + (r.key===mine?" (you)":"");
+    li.querySelector(".nm small").textContent = RANKS[r.rank] + " · " + r.solved + " solved" + (r.team ? " · " + r.members.map(m=>String(m.alias||"?").slice(0,14)).join(", ") : "");
+    li.querySelector(".sc").textContent = r.score;
+    ol.appendChild(li);
+  });
+  const now={}; rows.forEach(r=>now[r.key]=r.rank);
+  if (lastBoard) rows.forEach(r=>{ if (r.key!==mine && lastBoard[r.key]!==undefined && r.rank>lastBoard[r.key]) toast(`👻 ${String(r.name).slice(0,28)} rose to ${RANKS[r.rank]}`); });
+  lastBoard=now;
+}
+function toast(msg){
+  const dlg=[...document.querySelectorAll("dialog[open]")].pop();
+  let host=$("toasts");
+  if (dlg){ host=dlg.querySelector(".toasts"); if (!host){ host=document.createElement("div"); host.className="toasts"; host.setAttribute("aria-live","polite"); dlg.appendChild(host); } }
+  const t=document.createElement("div"); t.className="toast"; t.textContent=msg;
+  host.appendChild(t); setTimeout(()=>t.remove(),4200);
+}
+
+/* ---------- opening puzzles ---------- */
+let current=null, cooldown=0;
+function setOn(id){ current=id; if (covenRoom) covenRoom.presence({on:id||null}).catch(()=>{}); }
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>b.closest("dialog").close()));
+["puzzle","trial"].forEach(d=>$(d).addEventListener("close",()=>{ setOn(null); renderCoven(); }));
+["puzzle","trial","ascend"].forEach(d=>$(d).addEventListener("close",()=>setTimeout(()=>{
+  if (pendingCelebrate && !document.querySelector("dialog[open]")){ const id=pendingCelebrate; pendingCelebrate=null; celebrate(id); }
+},60)));
+function openPuzzle(id){
+  const p=byId[id], st=E(); if (!p || !unlockedIn(st, p.li)) return;
+  setOn(id);
+  if (p.type==="code") return openTrial(p);
+  openAnswer(p);
+}
+
+/* answer + trace puzzles */
+const WRONG = ["The spirits shake their heads.","Not quite. Something rattles in the walls.","Wrong. A crow laughs somewhere.","The candle flickers. Try again.","Close the coffin on that guess."];
+function openAnswer(p){
+  const st=E(), id=p.id, solved=!!st.solved[id];
+  $("pzKind").textContent=`${LEVELS[p.li].city} · ${p.kind}`;
+  $("pzTitle").textContent=p.title;
+  $("pzLvl").innerHTML=levelHeader(p,false);
+  $("pzPrompt").innerHTML=p.prompt;
+  const code=$("pzCode"); code.hidden=!p.code; code.textContent=p.code||"";
+  const h=$("pzHint"); h.hidden=!st.hints[id]; h.textContent="🐈‍⬛ "+p.hint;
+  $("pzHintBtn").hidden=!!st.hints[id] || solved;
+  $("pzAnswer").value=""; $("pzFb").textContent=""; $("pzFb").className="fb";
+  $("pzForm").hidden = solved || p.type==="trace";
+  const w=$("pzWidget"); w.textContent=""; w.hidden=true;
+  if (p.widget==="wheel") w.appendChild(wheelWidget()), w.hidden=false;
+  if (p.widget==="candles") w.appendChild(candleWidget()), w.hidden=false;
+  if (p.type==="trace") w.appendChild(houseWidget(p)), w.hidden=false;
+  if (solved){ $("pzFb").textContent="✓ Solved. Help someone else with this one."; $("pzFb").className="fb good"; }
+  $("pzPts").textContent = ptsFor(st,id)+" pts";
+  $("puzzle").showModal();
+  if (!$("pzForm").hidden) setTimeout(()=>$("pzAnswer").focus(),30);
+}
+$("pzHintBtn").addEventListener("click",()=>{
+  if (!current || E().solved[current]) return;
+  S.hints[current]=1; save();
+  $("pzHint").hidden=false; $("pzHintBtn").hidden=true;
+  $("pzPts").textContent=ptsFor(E(),current)+" pts";
+  renderAll();
+});
+function markSolved(id){
+  const before=rankOf(E());
+  S.solved[id]=Date.now(); S.lastAt=Date.now(); save();
+  Sound.sfx("good");
+  const after=rankOf(E());
+  shownRank=after; renderAll();
+  pendingCelebrate=id;
+  ["pzLvl","trLvl"].forEach(k=>{ if ($(k).closest("dialog").open) $(k).innerHTML=levelHeader(byId[id],true); });
+  if (after>before){ setTimeout(()=>{ document.querySelectorAll("dialog[open]").forEach(d=>{ if (d.id!=="ascend") d.close(); }); ascend(after); }, 900); }
+}
+$("pzForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const id=current, guess=$("pzAnswer").value, fb=$("pzFb");
+  if (!id || !norm(guess)) return;
+  if (Date.now()<cooldown){ fb.textContent="The spirits need a moment…"; fb.className="fb bad"; return; }
+  if (await check(id,guess)){
+    fb.textContent="✓ Correct! The tombstone crumbles."; fb.className="fb good";
+    $("pzForm").hidden=true; $("pzHintBtn").hidden=true;
+    markSolved(id);
+  } else {
+    cooldown=Date.now()+2000; Sound.sfx("bad");
+    S.tries[id]=(S.tries[id]||0)+1; save();
+    fb.textContent=WRONG[Math.floor(Math.random()*WRONG.length)]; fb.className="fb bad";
+    const f=$("pzForm"); f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake");
+  }
+});
+
+/* widgets */
+function wheelWidget(){
+  const w=document.createElement("div"); w.className="widget";
+  w.innerHTML=`<span class="lbl">Bone wheel</span><input type="range" min="0" max="25" value="0" id="wheelK" aria-label="Shift back by"><div class="row"><span class="tape-legend" id="wheelLbl">shift back by 0</span></div><div class="wheel-out" id="wheelOut"></div>`;
+  const src="FRORUVWDFN", upd=()=>{ const k=+w.querySelector("#wheelK").value; w.querySelector("#wheelLbl").textContent="shift back by "+k; w.querySelector("#wheelOut").textContent=[...src].map(c=>String.fromCharCode((c.charCodeAt(0)-65-k+26)%26+65)).join(""); };
+  w.querySelector("#wheelK").addEventListener("input",()=>{ upd(); Sound.sfx("tick"); }); upd();
+  return w;
+}
+function candleWidget(){
+  const w=document.createElement("div"); w.className="widget";
+  w.innerHTML=`<span class="lbl">Candle byte · click to light</span><div class="candles"></div><div class="candle-read"></div>`;
+  const bits=[0,0,0,0,0,0,0,0], row=w.querySelector(".candles"), read=w.querySelector(".candle-read");
+  const upd=()=>{ const v=bits.reduce((a,b)=>a*2+b,0); read.innerHTML=`${bits.join("")} = ${v} → <b>${v>=32&&v<127?esc(String.fromCharCode(v)):"·"}</b>`; };
+  bits.forEach((_,i)=>{ const c=document.createElement("button"); c.type="button"; c.className="candle"; c.textContent=2**(7-i); c.setAttribute("aria-label","bit worth "+2**(7-i));
+    c.addEventListener("click",()=>{ bits[i]^=1; c.classList.toggle("lit",!!bits[i]); Sound.sfx("tick"); upd(); }); row.appendChild(c); });
+  upd(); return w;
+}
+function houseWidget(p){
+  const w=document.createElement("div"); w.className="widget house";
+  let at="Foyer", trail=["Foyer"];
+  const draw=()=>{
+    w.innerHTML=`<span class="lbl">You are in</span><div class="here"></div><div class="doors"></div><div class="trail"></div><div class="row"><span class="tape-legend"></span><button class="btn ghost" type="button" data-r>Back to the Foyer</button></div>`;
+    w.querySelector(".here").textContent = at==="Crypt" ? "⚰️ The Crypt" : "🚪 The " + at;
+    w.querySelector(".trail").textContent = trail.join(" → ");
+    w.querySelector(".tape-legend").textContent = (trail.length-1) + " door" + (trail.length===2?"":"s") + " so far";
+    const doors=w.querySelector(".doors");
+    if (at!=="Crypt") HOUSE[at].forEach(r=>{ const b=document.createElement("button"); b.type="button"; b.className="btn"; b.textContent="→ "+r; b.addEventListener("click",()=>{ at=r; trail.push(r); Sound.sfx("tick"); draw(); arrive(); }); doors.appendChild(b); });
+    w.querySelector("[data-r]").addEventListener("click",()=>{ at="Foyer"; trail=["Foyer"]; draw(); $("pzFb").textContent=""; });
+  };
+  const arrive=()=>{
+    if (at!=="Crypt") return;
+    const n=trail.length-1, fb=$("pzFb");
+    if (E().solved[p.id]){ fb.textContent="✓ You know the way."; fb.className="fb good"; return; }
+    if (n===3){ fb.textContent="✓ Three doors. The shortest way out. The house lets you go."; fb.className="fb good"; $("pzHintBtn").hidden=true; markSolved(p.id); }
+    else { S.tries[p.id]=(S.tries[p.id]||0)+1; save(); fb.textContent=`You reached the Crypt in ${n} doors, but the house knows a shorter way. Go back and try again.`; fb.className="fb bad"; Sound.sfx("bad"); }
+  };
+  draw(); return w;
+}
+
+/* ---------- code trials ---------- */
+let cm=null, trialId=null, lastRun=null, selCell=-1;
+let lang="py"; try{ lang = localStorage.getItem("haunted-lang")||"py"; }catch(e){}
+$("trLang").value=lang;
+function draftKey(id,l){ return "haunted-draft:"+id+":"+l; }
+function getDraft(id,l){ try{ return localStorage.getItem(draftKey(id,l)); }catch(e){ return null; } }
+function putDraft(id,l,v){ try{ localStorage.setItem(draftKey(id,l),v); }catch(e){} }
+function ensureEditor(){
+  if (cm || $("trEditor").firstChild) return;
+  if (window.CodeMirror){
+    cm = CodeMirror($("trEditor"), {lineNumbers:true, indentUnit:4, tabSize:4, indentWithTabs:false, matchBrackets:true, autoCloseBrackets:true,
+      extraKeys:{Tab:c=>c.somethingSelected()?c.indentSelection("add"):c.replaceSelection(" ".repeat(c.getOption("indentUnit"))),
+        "Shift-Tab":c=>c.indentSelection("subtract"), "Ctrl-Enter":()=>runTrial(true), "Cmd-Enter":()=>runTrial(true), "Ctrl-'":()=>runTrial(false), "Cmd-'":()=>runTrial(false)}});
+    let t; cm.on("change",()=>{ clearTimeout(t); t=setTimeout(()=>trialId&&putDraft(trialId,lang,cm.getValue()),300); });
+  } else {
+    // fallback if the editor library didn't load
+    const ta=document.createElement("textarea"); ta.spellcheck=false; ta.id="trText"; ta.setAttribute("aria-label","Code editor");
+    ta.addEventListener("keydown",e=>{ if (e.key==="Tab"){ e.preventDefault(); const s=ta.selectionStart; ta.setRangeText("    ",s,ta.selectionEnd,"end"); } });
+    ta.addEventListener("input",()=>trialId&&putDraft(trialId,lang,ta.value));
+    $("trEditor").appendChild(ta);
+  }
+}
+const edGet = () => cm ? cm.getValue() : $("trText").value;
+function edSet(v){ if (cm){ cm.setValue(v); cm.setOption("mode", lang==="py"?"python":"javascript"); cm.setOption("indentUnit", lang==="py"?4:2); } else $("trText").value=v; }
+function literal(v){ return lang==="py" ? toPy(v) : fmtJs(v); }
+function renderTrialHints(){
+  const p=byId[trialId], n=+(E().hints[trialId]||0), box=$("trHints"); box.textContent="";
+  for (let i=0;i<Math.min(n,p.hints.length);i++){ const d=document.createElement("div"); d.className="hint"; d.textContent=`🐈‍⬛ Hint ${i+1}: ${p.hints[i]}`; box.appendChild(d); }
+  const solved=!!E().solved[trialId];
+  $("trHintBtn").hidden = solved || n>=p.hints.length;
+  $("trHintBtn").textContent = n===0 ? "🐈‍⬛ Summon a familiar (hint, half points)" : `🐈‍⬛ Another hint (${p.hints.length-n} left, free now)`;
+  $("trPts").textContent = ptsFor(E(),trialId)+" pts";
+}
+function renderExamples(){
+  const spec=CODE[trialId], box=$("trExamples"); box.textContent="";
+  const fn = lang==="py" ? spec.py : spec.js;
+  spec.tests.filter(t=>!t.hidden).forEach((t,i)=>{
+    const pre=document.createElement("pre");
+    pre.textContent=`Example ${i+1}\n${fn}(${t.args.map((a,j)=>spec.params[j]+" = "+literal(a)).join(", ")})\n→ ${literal(t.out)}`;
+    box.appendChild(pre);
+  });
+}
+function openTrial(p){
+  trialId=p.id; lastRun=null; selCell=-1;
+  const st=E(), spec=CODE[p.id];
+  $("trKind").textContent=`${LEVELS[p.li].city} · ${p.kind}`;
+  $("trKind").className="kind"+(p.boss?" bossk":"");
+  $("trTitle").textContent=p.title;
+  $("trLvl").innerHTML=levelHeader(p,false);
+  $("trPrompt").innerHTML=p.prompt + (p.boss ? " <i>Optional: it doesn’t count toward your rank, but it’s worth a lot.</i>" : "");
+  $("trTape").textContent=""; $("trDetail").hidden=true; $("trLegend").hidden=true; $("trStatus").textContent="";
+  const fb=$("trFb"); fb.className="fb"; fb.textContent = st.solved[p.id] ? "✓ Solved. You can keep experimenting, or help a neighbour." : "";
+  if (st.solved[p.id]) fb.className="fb good";
+  $("trShare").hidden = $("trLoad").hidden = !(S.teamId && db);
+  refreshDraftBtn();
+  $("trial").showModal();
+  ensureEditor();
+  edSet(getDraft(p.id,lang) ?? spec.starter[lang]);
+  renderTrialHints(); renderExamples();
+  if (lang==="py") loadSkulpt().catch(()=>{});
+  if (cm) setTimeout(()=>{ cm.refresh(); cm.focus(); },20);
+}
+$("trLang").addEventListener("change",()=>{
+  if (trialId) putDraft(trialId,lang,edGet());
+  lang=$("trLang").value; try{ localStorage.setItem("haunted-lang",lang); }catch(e){}
+  if (trialId){ edSet(getDraft(trialId,lang) ?? CODE[trialId].starter[lang]); renderExamples(); $("trTape").textContent=""; $("trDetail").hidden=true; }
+  if (lang==="py") loadSkulpt().catch(()=>{});
+});
+$("trReset").addEventListener("click",()=>{ if (trialId) edSet(CODE[trialId].starter[lang]); });
+$("trHintBtn").addEventListener("click",()=>{
+  if (!trialId || E().solved[trialId]) return;
+  S.hints[trialId] = Math.min((+E().hints[trialId]||0)+1, byId[trialId].hints.length); save();
+  renderTrialHints(); renderAll();
+});
+async function runTrial(all){
+  if (!trialId) return;
+  const id=trialId, spec=CODE[id], code=edGet();
+  putDraft(id,lang,code);
+  const tests = all ? spec.tests : spec.tests.filter(t=>!t.hidden);
+  $("trRun").disabled=$("trSubmit").disabled=true;
+  $("trStatus").textContent = lang==="py" && !(window.Sk && Sk.builtinFiles) ? "Summoning Python…" : "Running…";
+  await new Promise(r=>requestAnimationFrame(()=>setTimeout(r,0)));
+  let out;
+  try { out = lang==="py" ? await runPy(spec, code, tests) : await runJs(spec, code, tests); }
+  catch(e){ out = {res:tests.map(()=>({status:"ERROR",got:"",stdout:"",err:String(e.message||e)})), pre:String(e.message||e)}; }
+  $("trRun").disabled=$("trSubmit").disabled=false;
+  if (trialId!==id) return;
+  lastRun = {tests, res:out.res, pre:out.pre, all};
+  const passed = out.res.filter(r=>r.status==="PASS").length;
+  $("trStatus").textContent = `${passed}/${tests.length} passed`;
+  const tape=$("trTape"); tape.textContent="";
+  out.res.forEach((r,i)=>{ const c=document.createElement("button"); c.type="button"; c.className=`cell ${tests[i].hidden?"hidden":"sample"} ${r.status}`; c.textContent = r.status==="PASS"?"✓":"✗"; c.setAttribute("aria-label",`Test ${i+1}: ${r.status}`); c.addEventListener("click",()=>showCell(i)); tape.appendChild(c); });
+  $("trLegend").hidden=false;
+  const firstBad = out.res.findIndex(r=>r.status!=="PASS");
+  showCell(firstBad>=0 ? firstBad : -1);
+  const fb=$("trFb");
+  if (passed===tests.length){
+    if (all){
+      if (!E().solved[id]){ fb.textContent="✓ Every test passes. The crypt opens."; fb.className="fb good"; markSolved(id); }
+      else { fb.textContent="✓ Every test passes."; fb.className="fb good"; Sound.sfx("good"); }
+    } else { fb.textContent="Samples pass. Now submit to face the hidden tests."; fb.className="fb good"; Sound.sfx("tick"); }
+  } else { if (all && !E().solved[id]){ S.tries[id]=(S.tries[id]||0)+1; save(); } fb.textContent = all ? "Not yet. Click a red cell to see what went wrong." : "Some samples fail. Click a red cell for details."; fb.className="fb bad"; Sound.sfx("bad"); }
+}
+function showCell(i){
+  const d=$("trDetail");
+  $("trTape").querySelectorAll(".cell").forEach((c,j)=>c.classList.toggle("sel",j===i));
+  if (!lastRun || i<0){
+    if (lastRun && lastRun.pre){ d.hidden=false; d.innerHTML=`<span class="k">Output</span><pre></pre>`; d.querySelector("pre").textContent=lastRun.pre; } else d.hidden=true;
+    return;
+  }
+  const t=lastRun.tests[i], r=lastRun.res[i], spec=CODE[trialId];
+  const v = r.status==="PASS" ? ["good","Passed"] : r.status==="FAIL" ? ["bad","Wrong answer"] : r.status==="TIMEOUT" ? ["bad","Time limit exceeded"] : ["bad","Error"];
+  d.hidden=false;
+  d.innerHTML=`<span class="verdict ${v[0]}"></span><span class="k">Input</span><pre data-f="in"></pre><span class="k">Expected</span><pre data-f="exp"></pre><span class="k">Your output</span><pre data-f="got"></pre><span class="k" data-k="out">Printed</span><pre data-f="out"></pre>`;
+  d.querySelector(".verdict").textContent = `${v[1]} · test ${i+1}${t.hidden?" (hidden)":""}`;
+  d.querySelector('[data-f="in"]').textContent = t.args.map((a,j)=>spec.params[j]+" = "+literal(a)).join("\n");
+  d.querySelector('[data-f="exp"]').textContent = literal(t.out);
+  d.querySelector('[data-f="got"]').textContent = r.err ? r.err : r.got;
+  const printed = (r.stdout||"").replace(/\n$/,"");
+  d.querySelector('[data-f="out"]').textContent = printed || (i===0 && lastRun.pre ? lastRun.pre : "(nothing printed)");
+}
+$("trRun").addEventListener("click",()=>runTrial(false));
+$("trSubmit").addEventListener("click",()=>runTrial(true));
+/* coven drafts: share your code, or pull a coven-mate's */
+function ago(t){ const m=Math.round((Date.now()-t)/60000); return m<1?"just now":m<60?m+" min ago":Math.round(m/60)+" h ago"; }
+async function refreshDraftBtn(){
+  const b=$("trLoad"), id=trialId; if (!db || !S.teamId || !id) return;
+  b.disabled=true; b.textContent="Use coven’s code";
+  try{
+    const s=await db.doc(`teams/${S.teamId}/drafts/${id}`).get();
+    if (id!==trialId) return;
+    if (s.exists && s.data().byId!==uid){ b.disabled=false; b.textContent=`Use ${String(s.data().by||"a coven-mate").slice(0,16)}’s code`; b.title=`Shared ${ago(s.data().at||0)}. Replaces your code in the editor.`; }
+    else { b.title = s.exists ? "You shared the latest version." : "Nobody in your coven has shared code for this problem yet."; }
+  }catch(e){}
+}
+$("trShare").addEventListener("click",async()=>{
+  if (!db || !S.teamId || !trialId) return;
+  const fb=$("trFb");
+  try{ await db.doc(`teams/${S.teamId}/drafts/${trialId}`).set({code:edGet().slice(0,20000), lang, by:(S.alias||"A coven-mate").slice(0,24), byId:uid, at:Date.now()}); fb.textContent="Shared. Your coven can now load your code with “Use coven’s code”."; fb.className="fb good"; toast("Code shared with your coven"); }
+  catch(e){ fb.textContent="Couldn’t share right now. Try again in a moment."; fb.className="fb bad"; }
+});
+$("trLoad").addEventListener("click",async()=>{
+  if (!db || !S.teamId || !trialId) return;
+  try{
+    const s=await db.doc(`teams/${S.teamId}/drafts/${trialId}`).get();
+    if (!s.exists){ $("trFb").textContent="Nobody in your coven has shared code for this problem yet."; $("trFb").className="fb"; return; }
+    const d=s.data();
+    if (d.lang && d.lang!==lang){ lang=d.lang; $("trLang").value=lang; renderExamples(); }
+    edSet(String(d.code||"")); $("trFb").textContent=`Loaded ${String(d.by||"a coven-mate").slice(0,24)}’s code (shared ${ago(d.at||0)}). Reset brings back the starter.`; $("trFb").className="fb good";
+  }catch(e){ toast("Couldn’t load the coven draft."); }
+});
+
+function ascend(r){
+  Sound.sfx("rank");
+  $("ascUp").textContent = S.teamId ? "Your coven has risen to" : "You have risen to";
+  $("ascRank").textContent=RANKS[r];
+  $("ascLore").innerHTML=LORE[r];
+  $("ascend").showModal();
+}
+$("ascClose").addEventListener("click",()=>$("ascend").close());
+
+/* ---------- secrets ---------- */
+$("whisperForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const v=$("whisperIn").value, fb=$("whisperFb");
+  if (!norm(v)) return;
+  for (const k of EGG_ORDER){
+    if (await check(k,v)){
+      if (E().eggs[k]){ fb.textContent="Your coven already found that one."; fb.className="fb"; return; }
+      S.eggs[k]=Date.now(); S.lastAt=Date.now(); save(); Sound.sfx("egg");
+      fb.textContent=`${EGG_ICONS[k]} A secret! +${EGG_PTS}`; fb.className="fb good";
+      $("whisperIn").value=""; renderAll(); return;
+    }
+  }
+  Sound.sfx("bad");
+  fb.textContent="Only silence answers."; fb.className="fb bad";
+});
+let moonClicks=0;
+$("moon").addEventListener("click",()=>{
+  moonClicks++; Sound.sfx("tick");
+  if (moonClicks===13){ $("moon").classList.add("lit"); Sound.sfx("egg"); toast("🌕 The moon whispers: risetogether"); }
+});
+console.log("%c🕯️ You opened the console. A true developer.\n%cWhisper this word on the page: ancestors","font-size:16px;color:#ff8a2a","font-size:13px;color:#8be3b4");
+
+/* ---------- join, covens, projector ---------- */
+const NAMES1=["Null","Recursive","Undefined","Async","Binary","Segfault","Lambda","Phantom","Cursed","Hollow"];
+const NAMES2=["Banshee","Pointer","Pumpkin","Wraith","Goblin","Specter","Bat","Lich","Ghoul","Witch"];
+let joinMode="solo";
+function setMode(m){
+  joinMode=m;
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.mode===m));
+  $("covenName").hidden = m!=="start"; $("covenCode").hidden = m!=="join";
+  $("joinGo").textContent = m==="start" ? "Start the coven" : m==="join" ? "Join the coven" : "Enter the night";
+  $("joinFb").textContent="";
+}
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{ if (!b.disabled) setMode(b.dataset.mode); }));
+function openJoin(mode){
+  $("joinName").value=S.alias||"";
+  document.querySelectorAll('.seg button:not([data-mode="solo"])').forEach(b=>b.disabled=!db);
+  document.querySelector(".seg").hidden = !!S.teamId && !mode;
+  setMode(mode || "solo");
+  $("join").showModal();
+}
+$("rollName").addEventListener("click",()=>{ $("joinName").value=NAMES1[Math.random()*10|0]+" "+NAMES2[Math.random()*10|0]; });
+const CODE_ABC="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+$("joinForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const v=$("joinName").value.trim().slice(0,24), fb=$("joinFb");
+  if (!v){ $("joinName").focus(); return; }
+  S.alias=v; if (!S.joinedAt) S.joinedAt=Date.now();
+  if (joinMode==="start"){
+    const name=$("covenName").value.trim().slice(0,28);
+    if (!name){ fb.textContent="Give your coven a name."; fb.className="fb bad"; $("covenName").focus(); return; }
+    let code="";
+    try{
+      for (let tries=0; tries<5; tries++){
+        code=Array.from({length:4},()=>CODE_ABC[Math.random()*CODE_ABC.length|0]).join("");
+        if (!(await db.doc("teams/"+code).get()).exists) break;
+      }
+      await db.doc("teams/"+code).set({name, createdAt:Date.now(), founder:uid});
+    }catch(err){ fb.textContent="Couldn’t create the coven. Try again in a moment."; fb.className="fb bad"; return; }
+    TEAMS[code]={name}; await setTeam(code);
+    toast(`🕯️ Coven created. Your code is ${code}`);
+  } else if (joinMode==="join"){
+    const code=$("covenCode").value.trim().toUpperCase();
+    if (code.length!==4){ fb.textContent="Coven codes are 4 characters."; fb.className="fb bad"; return; }
+    let snap; try{ snap=await db.doc("teams/"+code).get(); }catch(err){}
+    if (!snap || !snap.exists){ fb.textContent="No coven with that code. Check it with whoever started it."; fb.className="fb bad"; return; }
+    TEAMS[code]=snap.data(); await setTeam(code);
+    toast(`🕯️ You joined ${String(snap.data().name||"the coven").slice(0,28)}`);
+  }
+  if (covenRoom) covenRoom.presence({alias:S.alias.slice(0,24)}).catch(()=>{});
+  $("join").close(); save(); renderAll();
+});
+async function setTeam(code){
+  S.teamId=code||"";
+  if (covenRoom){ covenRoom.leave().catch(()=>{}); covenRoom=null; PEERS=[]; }
+  if (code && room){
+    try{
+      covenRoom = await room.join("coven-"+code.toLowerCase());
+      covenRoom.presence({uid, alias:(S.alias||"").slice(0,24), on:current||null}).catch(()=>{});
+      covenRoom.onPeers(ch=>{ PEERS=[...ch.peers]; renderMap(E()); renderCoven(); }, ()=>{});
+    }catch(e){ covenRoom=null; }
+  }
+}
+async function leaveCoven(){ await setTeam(""); save(); renderAll(); renderBoard(); toast("You left the coven. Your own solves stay with you."); }
+$("renameBtn").addEventListener("click",()=>openJoin());
+function setProjector(on){ document.body.classList.toggle("projector",on); $("projBtn").textContent=on?"Back to the hunt":"Projector view"; }
+$("projBtn").addEventListener("click",()=>setProjector(!document.body.classList.contains("projector")));
+if (location.hash==="#board") setProjector(true);
+
+$("drawerBtn").addEventListener("click",()=>document.body.classList.toggle("drawer-open"));
+$("drawerClose").addEventListener("click",()=>document.body.classList.remove("drawer-open"));
+$("drawerScrim").addEventListener("click",()=>document.body.classList.remove("drawer-open"));
+document.addEventListener("keydown",e=>{ if (e.key==="Escape" && !document.querySelector("dialog[open]")) document.body.classList.remove("drawer-open"); });
+
+/* ---------- boot ---------- */
+FX.init();
+renderAll();
+requestAnimationFrame(()=>{ const t=ghostTarget(E()); if (t && E().solved && Object.keys(E().solved).length) scrollToNode(t,false); });
+if (!S.alias && location.hash!=="#board") openJoin("solo");
+
+(async()=>{
+  let api=null;
+  try { api = await supaInit(); } catch(e){ console.warn("Live board unavailable:", e && e.message); }
+  const store = api && api.db, rm = api && api.room;
+  uid = api ? api.uid : null;
+  if (!store || !uid){
+    $("liveTag").textContent="offline";
+    showOffline("The live board can’t be reached right now. You can still play solo; progress is saved in this browser. Try refreshing in a minute.");
+    if (S.teamId){ S.teamId=""; saveLocal(); }
+    renderAll(); return;
+  }
+  db=store; room=rm;
+  document.querySelectorAll(".seg button").forEach(b=>b.disabled=false);
+  myRef=db.doc("players/"+uid);
+  try{
+    const snap=await myRef.get();
+    if (snap.exists){
+      const r=snap.data();
+      S.solved=Object.assign({}, r.solved||{}, S.solved);
+      for (const k in (r.hints||{})) S.hints[k]=Math.max(+S.hints[k]||0, +r.hints[k]||0);
+      S.eggs=Object.assign({}, r.eggs||{}, S.eggs);
+      if (!S.alias && r.alias) S.alias=r.alias;
+      if (!S.teamId && r.teamId) S.teamId=r.teamId;
+      S.joinedAt=r.joinedAt||S.joinedAt; S.lastAt=Math.max(r.lastAt||0,S.lastAt||0);
+      if (S.alias && $("join").open) $("join").close();
+    }
+    if (S.alias) save();
+  }catch(e){}
+  if (S.teamId) await setTeam(S.teamId);
+  renderAll();
+  db.collection("teams").onSnapshot(snap=>{ TEAMS={}; snap.docs.forEach(d=>{ if (d.id.length===4) TEAMS[d.id]=d.data(); }); renderBoard(); renderMe(E()); renderCoven(); }, ()=>{});
+  db.collection("players").onSnapshot(
+    snap=>{
+      $("liveTag").textContent="live"; $("liveTag").classList.remove("off");
+      PLAYERS={}; snap.docs.forEach(d=>PLAYERS[d.id]=d.data());
+      renderBoard(); renderAll(); bootQuiet=false;
+    },
+    ()=>{ $("liveTag").textContent="offline"; $("liveTag").classList.add("off"); }
+  );
+})();
+</script>
+
+</body></html>
