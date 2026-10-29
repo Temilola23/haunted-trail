@@ -281,7 +281,15 @@ body.projector .panel h3{font-size:16px}
 /* Map version: a full-width haunted trail; HUD on top, board in a drawer. */
 .hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding-block:12px;background:linear-gradient(180deg,var(--night) 70%,#0c0b1200)}
 .hud .brand h1{font-size:clamp(26px,4.5vw,40px)}
-@media (max-width:640px){.hud{position:static}}
+@media (max-width:640px){
+  .hud{flex-wrap:nowrap;gap:10px;padding-block:8px}
+  .hud .brand p{display:none}
+  .hud .brand h1{font-size:22px;white-space:nowrap}
+  .hud .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0;padding-bottom:2px}
+  .hud .chips::-webkit-scrollbar{display:none}
+  .hud .chips>*{flex:none}
+  .hud .moon{width:30px;height:30px}
+}
 .hud .brand p{font-size:10.5px}
 .chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .chip{background:var(--crypt);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;display:flex;gap:6px;align-items:center;white-space:nowrap}
@@ -345,7 +353,9 @@ body.drawer-open .drawer-scrim{display:block}
 .fog.f1{bottom:-10vh;background:radial-gradient(ellipse at 30% 60%,#6b5a8a55,transparent 60%),radial-gradient(ellipse at 75% 40%,#4b3f6655,transparent 60%)}
 .fog.f2{top:30vh;animation-duration:70s;animation-direction:alternate-reverse;background:radial-gradient(ellipse at 60% 50%,#3d335233,transparent 60%)}
 @keyframes drift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
-.wrap,.hud,.stage{position:relative;z-index:2}
+.wrap,.stage{position:relative;z-index:2}
+/* the header stays pinned while you scroll the trail */
+.hud{position:sticky;top:0;z-index:30;margin-inline:-16px;padding-inline:16px;background:linear-gradient(180deg,var(--night) 82%,#0c0b1200);backdrop-filter:blur(6px)}
 .bat{position:fixed;top:14vh;left:-80px;width:46px;z-index:31;pointer-events:none;animation:fly 26s linear infinite}
 .bat.b2{top:32vh;width:30px;animation-duration:34s;animation-delay:-14s}
 .bat svg{display:block;animation:flap .22s ease-in-out infinite alternate;transform-origin:center}
