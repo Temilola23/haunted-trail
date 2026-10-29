@@ -107,3 +107,18 @@ alter publication supabase_realtime add table public.event;
 alter table public.teams add column if not exists updated_at timestamptz not null default now();
 create trigger teams_touch before update on public.teams for each row execute function public.touch_updated_at();
 create index if not exists players_updated_at on public.players (updated_at);
+
+-- Sealed trail: the game script ships AES-GCM encrypted; this key is readable only by hosts,
+-- or by everyone once event.doc.open is true (or event.doc.opensAt has passed).
+create table if not exists public.gate (
+  id int primary key default 1 check (id = 1),
+  key text not null
+);
+alter table public.gate enable row level security;
+create policy "gate opens with the trail" on public.gate for select using (
+  public.is_admin() or coalesce((
+    select (e.doc->>'open')::boolean is true
+        or ((e.doc->>'opensAt') ~ '^[0-9]+$' and (e.doc->>'opensAt')::bigint <= (extract(epoch from now()) * 1000)::bigint)
+    from public.event e where e.id = 1), false)
+);
+insert into public.gate (id, key) values (1, encode(extensions.gen_random_bytes(32), 'base64')) on conflict (id) do nothing;

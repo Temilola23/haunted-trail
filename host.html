@@ -214,6 +214,14 @@ body.host-open .drawer{transform:none}
       <div class="row" style="justify-content:space-between"><span class="who-host" id="hostWho"></span><button class="btn" type="button" id="logoutBtn">Log out</button></div>
     </div>
     <div class="card">
+      <h3>Trail access</h3>
+      <p class="hint" id="gateState">Checking…</p>
+      <div class="row"><button class="btn primary" type="button" id="openTrail">🔓 Open the trail</button><button class="btn" type="button" id="sealTrail">🔒 Seal it</button></div>
+      <p class="hint">Until it’s open, players only see a sealed landing page, and the game itself stays encrypted. Optionally set a time and it opens by itself, with a countdown on the landing page.</p>
+      <div class="row"><input class="field" id="opensAtIn" type="datetime-local" aria-label="Opening time" style="flex:1 1 180px"><button class="btn" type="button" id="setOpensAt">Set opening time</button><button class="btn" type="button" id="clearOpensAt">Clear</button></div>
+      <p class="fb" id="gateFb"></p>
+    </div>
+    <div class="card">
       <h3>Event timer</h3>
       <div class="row" id="presets"></div>
       <div class="row"><input class="field" id="customMin" type="number" min="1" max="600" placeholder="minutes" aria-label="Custom minutes" style="flex:0 1 120px"><button class="btn" type="button" id="customStart">Start custom</button></div>
@@ -617,7 +625,18 @@ document.querySelectorAll("[data-adj]").forEach(b=>b.addEventListener("click",()
 $("endNow").addEventListener("click",()=>writeEvent({endsAt:Date.now(), startedAt:EVENT.startedAt||Date.now()}, "timerFb", "The hunt has ended."));
 $("clearTimer").addEventListener("click",()=>writeEvent({startedAt:null, endsAt:null}, "timerFb", "Timer cleared."));
 $("freezeBtn").addEventListener("click",()=>writeEvent({frozen:!EVENT.frozen}, "timerFb", EVENT.frozen?"Board unfrozen.":"Board frozen."));
-function syncControls(){ $("freezeBtn").textContent = EVENT && EVENT.frozen ? "☀ Unfreeze board" : "❄ Freeze board"; }
+function syncControls(){
+  $("freezeBtn").textContent = EVENT && EVENT.frozen ? "☀ Unfreeze board" : "❄ Freeze board";
+  const e=EVENT||{}, at=typeof e.opensAt==="number"?e.opensAt:null, open = e.open===true || (at && at<=Date.now());
+  const when = at ? new Date(at).toLocaleString([], {weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}) : null;
+  $("gateState").textContent = open ? "🟢 Open: players can play." : at ? `🔒 Sealed. Opens by itself ${when}.` : "🔒 Sealed: players see the landing page.";
+  $("openTrail").disabled = !!open; $("sealTrail").disabled = !open;
+}
+$("openTrail").addEventListener("click",()=>writeEvent({open:true}, "gateFb", "The trail is open. Players unlock within a few seconds."));
+$("sealTrail").addEventListener("click",()=>writeEvent({open:false, opensAt:null}, "gateFb", "Sealed. Players who load the page now see the landing page."));
+$("setOpensAt").addEventListener("click",()=>{ const v=$("opensAtIn").value; const t=v?new Date(v).getTime():NaN; if (!(t>Date.now())){ fb("gateFb","Pick a time in the future.",false); return; } writeEvent({opensAt:t, open:false}, "gateFb", "Opening time set. The landing page shows a countdown."); });
+$("clearOpensAt").addEventListener("click",()=>writeEvent({opensAt:null}, "gateFb", "Opening time cleared."));
+setInterval(()=>{ try{ syncControls(); }catch(e){} }, 15000);
 $("annText").addEventListener("input",()=>$("annCount").textContent=`${$("annText").value.length} / 140`);
 $("annSend").addEventListener("click",()=>{ const text=$("annText").value.trim().slice(0,140); if (!text){ fb("annFb","Write a message first.",false); return; } writeEvent({announcement:{text, at:Date.now()}}, "annFb", "Sent to every screen."); });
 $("annClear").addEventListener("click",()=>writeEvent({announcement:null}, "annFb", "Announcement cleared."));
