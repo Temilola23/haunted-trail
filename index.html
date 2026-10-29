@@ -247,7 +247,13 @@ dialog::backdrop{background:#05040acc;backdrop-filter:blur(3px)}
 .rules{margin:0;padding-left:18px;color:var(--ash);font-size:14px;display:flex;flex-direction:column;gap:4px}
 .rules b{color:var(--bone)}
 
+.announce{position:fixed;top:calc(env(safe-area-inset-top,0px) + 78px);left:50%;transform:translateX(-50%);width:min(900px,calc(100vw - 32px));z-index:26;box-shadow:0 12px 40px #000c;background-color:var(--crypt);display:flex;gap:12px;align-items:center;background:linear-gradient(90deg,#ff8a2a2e,#c77dff2e);border:1px solid var(--ember);border-radius:12px;padding:10px 14px;font-size:15px;animation:rise .4s ease}
+.announce b{color:var(--ember);white-space:nowrap}
+.announce span{flex:1;min-width:0;overflow-wrap:anywhere}
+#timerChip.low{border-color:var(--blood);color:var(--blood);animation:pulse 1s infinite}
+#timerChip.over{border-color:var(--blood);color:var(--blood)}
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;flex-direction:column;gap:8px;z-index:50;width:min(420px,calc(100vw - 32px));pointer-events:none}
+dialog .toasts{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
 .toast{background:var(--stone);border:1px solid var(--ember);border-radius:12px;padding:10px 14px;font-size:14px;box-shadow:0 10px 30px #000a;animation:rise .3s ease}
 @keyframes rise{from{transform:translateY(10px);opacity:0}}
 
@@ -372,6 +378,7 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
       <span class="chip rankc" id="meRank">Trick-or-Treater</span>
       <span class="chip"><span class="star">★</span><b id="meStars">0</b><span style="color:var(--ash)">/ 75</span></span>
       <span class="chip"><b id="meScore">0</b> pts</span>
+      <span class="btn" id="timerChip" hidden aria-live="off"></span>
       <button class="btn" id="covenChip" type="button">🕯️ Start or join a coven</button>
       <button class="btn" id="soundBtn" type="button" aria-pressed="false">🔇 Sound off</button>
       <button class="btn" id="drawerBtn" type="button">🏆 Board</button>
@@ -521,6 +528,8 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
   </form>
 </dialog>
 
+<div class="announce" id="announce" hidden role="status"><b>📣 Host</b><span id="announceText"></span><button class="x" type="button" id="announceX" aria-label="Dismiss announcement" style="padding:0 6px">×</button></div>
+
 <dialog id="covenDlg" aria-label="Your coven">
   <div class="dlg">
     <div class="row"><span class="kind">🕯️ Coven</span><button class="x" type="button" data-close aria-label="Close">×</button></div>
@@ -582,26 +591,37 @@ async function supaInit(){
       };
     },
     collection(t){
-      const idk = t==="players" ? "id" : "code";
+      const idk = t==="players" || t==="event" ? "id" : "code";
       return {
         onSnapshot(next, onErr){
-          const rows = new Map(); let dead=false;
+          const rows = new Map(); let dead=false, since=null, busy=false;
           const emit = () => { if (!dead) next({docs:[...rows].map(([id,doc])=>({id, data:()=>doc}))}); };
-          const load = async () => {
-            const {data, error} = await sb.from(t).select(idk+",doc").limit(1000);
+          const take = data => { let changed=false; for (const r of data){ const prev=rows.get(r[idk]); if (!prev || JSON.stringify(prev)!==JSON.stringify(r.doc)){ rows.set(r[idk], r.doc); changed=true; } if (!since || r.updated_at>since) since=r.updated_at; } return changed; };
+          const load = async () => {   // full reload: also notices removed players
+            const {data, error} = await sb.from(t).select(idk+",doc,updated_at").limit(2000);
             if (error){ onErr && onErr(fail(error)); return; }
-            rows.clear(); data.forEach(r=>rows.set(r[idk], r.doc)); emit();
+            rows.clear(); since=null; take(data); emit();
+          };
+          const delta = async () => {  // only rows changed since the newest one we've seen
+            if (busy || dead) return; busy=true;
+            try{
+              if (!since){ await load(); return; }
+              const {data, error} = await sb.from(t).select(idk+",doc,updated_at").gte("updated_at", since).limit(2000);
+              if (!error && take(data)) emit();
+            } finally { busy=false; }
           };
           const ch = sb.channel("tbl-"+t+"-"+Math.random().toString(36).slice(2))
             .on("postgres_changes", {event:"*", schema:"public", table:t}, p=>{
               if (p.eventType==="DELETE"){ if (p.old && p.old[idk]) rows.delete(p.old[idk]); }
-              else if (p.new && p.new[idk]) rows.set(p.new[idk], p.new.doc);
+              else if (p.new && p.new[idk]){ rows.set(p.new[idk], p.new.doc); }
               emit();
             })
-            .subscribe(st=>{ if (st==="SUBSCRIBED") load(); });
+            .subscribe(st=>{ if (st==="SUBSCRIBED") delta(); });
           load();
-          const timer = setInterval(load, 30000); // safety net if the live stream drops
-          return () => { dead=true; clearInterval(timer); sb.removeChannel(ch); };
+          const every = t==="players" ? 5000 : 10000;
+          const poll = setInterval(()=>{ if (!document.hidden || Math.random()<.34) delta(); }, every + Math.random()*1000);
+          const full = setInterval(load, 90000 + Math.random()*20000);
+          return () => { dead=true; clearInterval(poll); clearInterval(full); sb.removeChannel(ch); };
         }
       };
     }
@@ -1343,13 +1363,23 @@ function renderBoard(){
     ol.appendChild(li);
   });
   const now={}; rows.forEach(r=>now[r.key]=r.rank);
-  if (lastBoard) rows.forEach(r=>{ if (r.key!==mine && lastBoard[r.key]!==undefined && r.rank>lastBoard[r.key]) toast(`👻 ${String(r.name).slice(0,28)} rose to ${RANKS[r.rank]}`); });
+  if (lastBoard) rows.forEach(r=>{ if (r.key!==mine && lastBoard[r.key]!==undefined && r.rank>lastBoard[r.key]) news(`👻 ${String(r.name).slice(0,28)} rose to ${RANKS[r.rank]}`); });
   lastBoard=now;
+}
+// other players' news: never while you're in a puzzle, at most one every 6s, batched
+let newsQueue=[], newsTimer=0;
+function news(msg){
+  if (document.querySelector("dialog[open]")) return;
+  newsQueue.push(msg);
+  if (newsTimer) return;
+  const flush=()=>{ newsTimer=0; if (!newsQueue.length) return; const n=newsQueue.length; toast(n===1 ? newsQueue[0] : `👻 ${n} rivals just ranked up`); newsQueue=[]; newsTimer=setTimeout(flush,6000); };
+  flush();
 }
 function toast(msg){
   const dlg=[...document.querySelectorAll("dialog[open]")].pop();
   let host=$("toasts");
   if (dlg){ host=dlg.querySelector(".toasts"); if (!host){ host=document.createElement("div"); host.className="toasts"; host.setAttribute("aria-live","polite"); dlg.appendChild(host); } }
+  while (host.children.length>=2) host.firstChild.remove();
   const t=document.createElement("div"); t.className="toast"; t.textContent=msg;
   host.appendChild(t); setTimeout(()=>t.remove(),4200);
 }
@@ -1399,6 +1429,11 @@ $("pzHintBtn").addEventListener("click",()=>{
   renderAll();
 });
 function markSolved(id){
+  if (eventLocked()){
+    const msg = EVENT.frozen ? "Correct! But the host has frozen scores, so this one won’t count." : "Correct! But time’s up, so this one won’t count.";
+    ["pzFb","trFb"].forEach(k=>{ if ($(k).closest("dialog").open){ $(k).textContent=msg; $(k).className="fb"; } });
+    return;
+  }
   const before=rankOf(E());
   S.solved[id]=Date.now(); S.lastAt=Date.now(); save();
   Sound.sfx("good");
@@ -1475,9 +1510,21 @@ function ensureEditor(){
   if (cm || $("trEditor").firstChild) return;
   if (window.CodeMirror){
     cm = CodeMirror($("trEditor"), {lineNumbers:true, indentUnit:4, tabSize:4, indentWithTabs:false, matchBrackets:true, autoCloseBrackets:true,
-      extraKeys:{Tab:c=>c.somethingSelected()?c.indentSelection("add"):c.replaceSelection(" ".repeat(c.getOption("indentUnit"))),
+      extraKeys:{
+        // Tab: indent a selection, or jump to the next indent stop with spaces
+        Tab:c=>{ if (c.somethingSelected()) return c.indentSelection("add"); const u=c.getOption("indentUnit"), ch=c.getCursor().ch; c.replaceSelection(" ".repeat(u - ch % u)); },
+        // Backspace inside leading indentation removes a whole indent level (so Python never ends up with 3 spaces)
+        Backspace:c=>{
+          if (c.somethingSelected()) return CodeMirror.Pass;
+          const cur=c.getCursor(), before=c.getLine(cur.line).slice(0,cur.ch);
+          if (!before.length || /[^ ]/.test(before)) return CodeMirror.Pass;
+          const u=c.getOption("indentUnit"), n=(before.length % u) || u;
+          c.replaceRange("", {line:cur.line, ch:cur.ch-n}, cur);
+        },
         "Shift-Tab":c=>c.indentSelection("subtract"), "Ctrl-Enter":()=>runTrial(true), "Cmd-Enter":()=>runTrial(true), "Ctrl-'":()=>runTrial(false), "Cmd-'":()=>runTrial(false)}});
     let t; cm.on("change",()=>{ clearTimeout(t); t=setTimeout(()=>trialId&&putDraft(trialId,lang,cm.getValue()),300); });
+    // pasted tabs become spaces, so mixed indentation can't break Python
+    cm.on("beforeChange",(c,ch)=>{ if (ch.origin==="paste" && ch.text.some(l=>l.includes("\t"))) ch.update(null,null,ch.text.map(l=>l.replace(/\t/g," ".repeat(c.getOption("indentUnit"))))); });
   } else {
     // fallback if the editor library didn't load
     const ta=document.createElement("textarea"); ta.spellcheck=false; ta.id="trText"; ta.setAttribute("aria-label","Code editor");
@@ -1718,6 +1765,35 @@ function setProjector(on){ document.body.classList.toggle("projector",on); $("pr
 $("projBtn").addEventListener("click",()=>setProjector(!document.body.classList.contains("projector")));
 if (location.hash==="#board") setProjector(true);
 
+/* ---------- event: host timer, announcements, lock ---------- */
+let EVENT = {}, seenAnnounce = 0;
+try{ seenAnnounce = +localStorage.getItem("haunted-announce-seen")||0; }catch(e){}
+const eventLocked = () => !!(EVENT.frozen || (EVENT.endsAt && Date.now() > EVENT.endsAt));
+function fmtClock(ms){ const s=Math.max(0,Math.ceil(ms/1000)), h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0"); }
+function tickTimer(){
+  const c=$("timerChip"); if (!c) return;
+  if (EVENT.frozen){ c.hidden=false; c.className="btn over"; c.textContent="⏸ Scores frozen"; return; }
+  if (!EVENT.endsAt){ c.hidden=true; return; }
+  const left=EVENT.endsAt-Date.now(); c.hidden=false;
+  if (left<=0){ c.className="btn over"; c.textContent="⌛ Time’s up"; return; }
+  c.className="btn"+(left<5*60000?" low":""); c.textContent="⏳ "+fmtClock(left);
+}
+setInterval(tickTimer, 1000);
+function applyEvent(doc){
+  const wasLocked = eventLocked();
+  EVENT = doc || {};
+  tickTimer();
+  const a = EVENT.announcement;
+  if (a && a.text){
+    $("announceText").textContent = String(a.text).slice(0,200);
+    if ((a.at||0) > seenAnnounce){ $("announce").hidden=false; if (!bootQuiet){ toast("📣 " + String(a.text).slice(0,120)); Sound.sfx && Sound.on && Sound.bell(); } }
+  } else $("announce").hidden=true;
+  if (!wasLocked && eventLocked() && !bootQuiet) toast(EVENT.frozen ? "⏸ The host froze the scores." : "⌛ Time’s up! Final scores are locked.");
+}
+$("announceX").addEventListener("click",()=>{ $("announce").hidden=true; seenAnnounce=(EVENT.announcement&&EVENT.announcement.at)||Date.now(); try{ localStorage.setItem("haunted-announce-seen", seenAnnounce); }catch(e){} });
+let renderQueued=false;
+function scheduleRender(){ if (renderQueued) return; renderQueued=true; setTimeout(()=>requestAnimationFrame(()=>{ renderQueued=false; renderBoard(); renderAll(); bootQuiet=false; }),150); }
+
 $("drawerBtn").addEventListener("click",()=>document.body.classList.toggle("drawer-open"));
 $("drawerClose").addEventListener("click",()=>document.body.classList.remove("drawer-open"));
 $("drawerScrim").addEventListener("click",()=>document.body.classList.remove("drawer-open"));
@@ -1772,12 +1848,13 @@ if (!S.alias && location.hash!=="#board") openJoin("solo");
       if (!S.alias) $("joinName").focus();
     }
   }
+  if (HOSTED) db.collection("event").onSnapshot(snap=>{ const d=snap.docs.find(x=>String(x.id)==="1"); applyEvent(d ? d.data() : {}); }, ()=>{});
   db.collection("teams").onSnapshot(snap=>{ TEAMS={}; snap.docs.forEach(d=>{ if (d.id.length===4) TEAMS[d.id]=d.data(); }); renderBoard(); renderMe(E()); renderCoven(); }, ()=>{});
   db.collection("players").onSnapshot(
     snap=>{
       $("liveTag").textContent="live"; $("liveTag").classList.remove("off");
       PLAYERS={}; snap.docs.forEach(d=>PLAYERS[d.id]=d.data());
-      renderBoard(); renderAll(); bootQuiet=false;
+      scheduleRender();
     },
     ()=>{ $("liveTag").textContent="offline"; $("liveTag").classList.add("off"); }
   );

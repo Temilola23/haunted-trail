@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Haunted Trail Host</title>
+<meta name="description" content="Live big-screen leaderboard and host controls for The Haunted Trail, ColorStack Minerva's Halloween coding hunt.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M6 28V14a10 10 0 0 1 20 0v14l-3.3-3-3.3 3-3.4-3-3.3 3-3.4-3z' fill='%23ff8a2a'/><circle cx='12.5' cy='14' r='2' fill='%23120a1c'/><circle cx='19.5' cy='14' r='2' fill='%23120a1c'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+/* Layout: a projector scoreboard. Header with the countdown; a wide animated board on the left; the live feed on the right; city and boss strips along the bottom. */
+:root{
+  --night:#0c0b12; --crypt:#16141f; --stone:#221f2e; --line:#34304a;
+  --bone:#ece6d8; --ash:#9d97ad; --ember:#ff8a2a; --ember-soft:#ff8a2a22;
+  --spirit:#8be3b4; --blood:#ff5d6c; --boss:#c77dff; --gold:#ffd36e;
+  --font-display:"Creepster","Impact",fantasy;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --row:clamp(46px,6.4vh,74px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--night);color:var(--bone)}
+body{font-family:var(--font-body);font-size:clamp(14px,1.05vw,20px);line-height:1.45;overflow-x:hidden;
+  background:radial-gradient(1400px 600px at 85% -10%,#2a1e3f77,transparent 70%),radial-gradient(1000px 500px at -10% 110%,#3a1d0f66,transparent 70%),var(--night);background-attachment:fixed}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+[hidden]{display:none!important}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.screen{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;gap:clamp(10px,1.4vh,20px);padding:clamp(14px,2vh,28px) clamp(16px,2vw,36px)}
+
+/* header */
+.head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px 28px}
+.title h1{margin:0;font-family:var(--font-display);font-weight:400;font-size:clamp(34px,4.4vw,86px);line-height:.92;color:var(--ember);text-shadow:0 0 30px #ff8a2a66;letter-spacing:.02em}
+.title p{margin:6px 0 0;color:var(--ash);font-size:clamp(11px,.85vw,16px);letter-spacing:.2em;text-transform:uppercase;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.conn{display:inline-flex;align-items:center;gap:7px;letter-spacing:.12em}
+.conn::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ash)}
+.conn.live{color:var(--spirit)}.conn.live::before{background:var(--spirit);animation:pulse 2s infinite}
+.conn.bad{color:var(--blood)}.conn.bad::before{background:var(--blood)}
+@keyframes pulse{50%{opacity:.3}}
+.clock{text-align:right}
+.clock .lbl{font-size:clamp(11px,.8vw,15px);letter-spacing:.2em;text-transform:uppercase;color:var(--ash);display:flex;gap:10px;justify-content:flex-end;align-items:center}
+.clock .time{font-family:var(--font-mono);font-weight:700;font-variant-numeric:tabular-nums;font-size:clamp(40px,5.6vw,110px);line-height:1;color:var(--bone);text-shadow:0 0 26px #ece6d833}
+.clock .time.word{font-family:var(--font-display);font-weight:400;color:var(--ember);letter-spacing:.03em}
+.clock.urgent .time{color:var(--blood);text-shadow:0 0 30px #ff5d6c77;animation:throb 1s ease-in-out infinite}
+.clock.over .time{color:var(--blood)}
+@keyframes throb{50%{transform:scale(1.03)}}
+.badge{font-family:var(--font-mono);font-size:clamp(10px,.75vw,14px);letter-spacing:.12em;border:1px solid currentColor;border-radius:999px;padding:2px 10px}
+.badge.frozen{color:#8bd3ff}
+
+/* announcement */
+.announce{display:flex;align-items:center;gap:18px;background:linear-gradient(90deg,#ff8a2a2e,#c77dff22);border:1px solid #ff8a2a66;border-radius:16px;padding:clamp(10px,1.4vh,18px) clamp(14px,1.4vw,24px);animation:drop .6s cubic-bezier(.2,1.4,.4,1)}
+.announce .ic{font-size:clamp(22px,2vw,40px)}
+.announce .tx{font-size:clamp(18px,1.9vw,38px);font-weight:600;line-height:1.2;text-wrap:balance;overflow-wrap:anywhere}
+.announce .ago{margin-left:auto;color:var(--ash);font-family:var(--font-mono);font-size:clamp(11px,.8vw,15px);white-space:nowrap}
+@keyframes drop{from{transform:translateY(-14px);opacity:0}}
+
+/* main */
+.main{flex:1 1 auto;display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:clamp(12px,1.4vw,26px);min-height:0}
+.panel{background:#16141fcc;border:1px solid var(--line);border-radius:18px;padding:clamp(12px,1.4vh,20px) clamp(14px,1.2vw,22px);min-height:0;display:flex;flex-direction:column;backdrop-filter:blur(2px)}
+.panel h2{margin:0 0 10px;font-size:clamp(11px,.85vw,16px);letter-spacing:.2em;text-transform:uppercase;color:var(--ash);font-weight:600;display:flex;justify-content:space-between;gap:10px}
+.board{position:relative;flex:1;min-height:300px}
+.brow{position:absolute;left:0;right:0;height:calc(var(--row) - 6px);display:grid;grid-template-columns:clamp(40px,3.4vw,70px) minmax(0,1fr) auto;align-items:center;gap:clamp(10px,1vw,18px);padding:0 clamp(10px,1vw,18px);border-radius:12px;background:var(--stone);border:1px solid var(--line);transition:transform .8s cubic-bezier(.2,.9,.25,1),opacity .5s;will-change:transform}
+.brow .pos{font-family:var(--font-display);font-size:calc(var(--rh,64px)*.6);color:var(--ash);text-align:center;line-height:1}
+.board.tight .brow .sub{display:none}
+.brow.p1{background:linear-gradient(90deg,#ff8a2a33,var(--stone) 60%);border-color:#ff8a2a88}
+.brow.p1 .pos{color:var(--gold);text-shadow:0 0 16px #ffd36e88}
+.brow.p2 .pos{color:#d9dce6}.brow.p3 .pos{color:#e3a36b}
+.brow .who{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.brow .nm{font-weight:700;font-size:calc(var(--rh,64px)*.38);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .sub{color:var(--ash);font-size:max(10px,calc(var(--rh,64px)*.22));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brow .sub b{color:var(--ember);font-weight:600}
+.brow .sc{font-family:var(--font-mono);font-weight:700;font-variant-numeric:tabular-nums;font-size:calc(var(--rh,64px)*.48);text-align:right}
+.brow.hit{animation:hit 1.6s ease-out}
+@keyframes hit{0%{box-shadow:0 0 0 0 #8be3b4cc;border-color:var(--spirit)}100%{box-shadow:0 0 0 18px #8be3b400}}
+.brow.gone{opacity:0}
+.empty{color:var(--ash);margin:auto;text-align:center;max-width:36ch}
+
+.feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;overflow:hidden;flex:1;mask-image:linear-gradient(180deg,#000 75%,transparent)}
+.feed li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:baseline;background:var(--stone);border:1px solid var(--line);border-radius:12px;padding:8px 12px;animation:slide .5s cubic-bezier(.2,1.2,.4,1)}
+.feed li .ic{font-size:1.15em}
+.feed li .t{min-width:0;overflow-wrap:anywhere}
+.feed li .t b{color:var(--bone)}
+.feed li .t span{color:var(--ash)}
+.feed li .ago{font-family:var(--font-mono);font-size:.75em;color:var(--ash);white-space:nowrap}
+.feed li.boss{border-color:#c77dff88;background:linear-gradient(90deg,#c77dff2a,var(--stone))}
+.feed li.rank{border-color:#ff8a2a88;background:linear-gradient(90deg,#ff8a2a26,var(--stone))}
+.feed li.egg{border-color:#8be3b466}
+@keyframes slide{from{transform:translateX(30px);opacity:0}}
+
+/* bottom strip */
+.foot{flex:none;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.3fr) minmax(0,1.2fr);gap:clamp(12px,1.4vw,26px)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--stone);border:1px solid var(--line);border-radius:12px;padding:8px 12px;min-width:0}
+.stat b{display:block;font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:clamp(20px,1.9vw,38px);line-height:1.1}
+.stat span{font-size:clamp(10px,.75vw,14px);letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.cities{display:flex;flex-direction:column;gap:7px;justify-content:center}
+.city{display:grid;grid-template-columns:clamp(96px,8.5vw,170px) minmax(0,1fr) clamp(40px,3vw,60px);gap:10px;align-items:center;font-size:clamp(12px,.9vw,17px)}
+.city .bar{height:clamp(10px,1.1vh,16px);background:var(--night);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.city .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ember),var(--gold));border-radius:999px;transition:width 1s cubic-bezier(.2,.9,.25,1)}
+.city .n{font-family:var(--font-mono);text-align:right;color:var(--ash)}
+.bosses{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.bossc{background:var(--stone);border:1px dashed #c77dff66;border-radius:12px;padding:8px;text-align:center;min-width:0;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.bossc .sk{font-size:clamp(18px,1.6vw,32px);filter:grayscale(1) opacity(.5)}
+.bossc .bn{font-size:clamp(10px,.75vw,14px);font-weight:600;line-height:1.15}
+.bossc .by{font-size:clamp(10px,.72vw,13px);color:var(--ash);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bossc.won{border-style:solid;border-color:var(--boss);background:linear-gradient(180deg,#c77dff2e,var(--stone))}
+.bossc.won .sk{filter:none}
+.bossc.won .by{color:var(--boss)}
+.bossc.fresh{animation:blood 2.2s ease-out}
+@keyframes blood{0%{transform:scale(1.15);box-shadow:0 0 40px #c77dffcc}100%{transform:none;box-shadow:none}}
+.joinline{color:var(--ash);font-size:clamp(11px,.8vw,15px);text-align:center}
+.joinline b{color:var(--ember);font-family:var(--font-mono)}
+
+/* host drawer */
+.hostbtn{position:fixed;right:14px;bottom:14px;z-index:30;background:#16141fcc;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--ash);opacity:.55;transition:opacity .2s}
+.hostbtn:hover,.hostbtn:focus-visible{opacity:1;color:var(--bone)}
+.scrim{position:fixed;inset:0;background:#05040a99;z-index:39}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,94vw);z-index:40;background:var(--night);border-left:1px solid var(--line);box-shadow:-20px 0 60px #000c;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;font-size:15px;transform:translateX(105%);transition:transform .3s ease}
+body.host-open .drawer{transform:none}
+.drawer h3{margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);font-weight:600}
+.drawer .card{background:var(--crypt);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.drawer .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.drawer .x{background:none;border:0;color:var(--ash);font-size:24px;line-height:1;padding:2px 8px}
+.btn{background:var(--stone);border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:14px}
+.btn:hover:not(:disabled){border-color:var(--ember)}
+.btn.primary{background:var(--ember);border-color:var(--ember);color:#1a0d02;font-weight:600}
+.btn.danger{border-color:#ff5d6c88;color:var(--blood)}
+.btn.danger.sure{background:var(--blood);color:#1a0207;border-color:var(--blood)}
+.field{background:var(--night);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0;flex:1 1 140px}
+.card > .field{flex:none}
+.fb{margin:0;font-size:13.5px;min-height:1.3em}
+.fb.good{color:var(--spirit)}.fb.bad{color:var(--blood)}
+.who-host{font-size:13px;color:var(--ash);overflow-wrap:anywhere}
+.plist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;max-height:300px;overflow-y:auto}
+.plist li{display:flex;gap:8px;align-items:center;font-size:14px;padding:4px 2px;border-bottom:1px solid #34304a77}
+.plist li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plist li small{color:var(--ash);font-family:var(--font-mono)}
+.hint{font-size:12.5px;color:var(--ash);margin:0}
+
+@media (min-width:1001px){.screen{height:100vh;min-height:620px}.main .panel{overflow:hidden}.foot .panel{justify-content:flex-start}}
+@media (max-width:1000px){
+  .main,.foot{grid-template-columns:minmax(0,1fr)}
+  .head{grid-template-columns:minmax(0,1fr)}
+  .clock{text-align:left}.clock .lbl{justify-content:flex-start}
+  .feed{max-height:420px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="screen">
+  <header class="head">
+    <div class="title">
+      <h1>The Haunted Trail</h1>
+      <p><span>ColorStack Minerva · Halloween Hunt 2026</span><span class="conn" id="conn">connecting</span></p>
+    </div>
+    <div class="clock" id="clock" aria-live="polite">
+      <div class="lbl"><span id="clockLbl">The hunt</span><span class="badge frozen" id="frozenBadge" hidden>❄ FROZEN</span></div>
+      <div class="time word" id="clockTime">Starts soon</div>
+    </div>
+  </header>
+
+  <div class="announce" id="announce" hidden><span class="ic">📣</span><span class="tx" id="announceTx"></span><span class="ago" id="announceAgo"></span></div>
+
+  <main class="main">
+    <section class="panel">
+      <h2><span>The Coven Board</span><span id="boardCount"></span></h2>
+      <div class="board" id="board"><p class="empty" id="boardEmpty">Waiting for the first soul to enter the night…</p></div>
+    </section>
+    <section class="panel">
+      <h2><span>Live from the trail</span><span id="feedCount"></span></h2>
+      <ul class="feed" id="feed" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <section class="panel">
+      <h2><span>Tonight so far</span></h2>
+      <div class="stats" id="stats"></div>
+    </section>
+    <section class="panel">
+      <h2><span>Cities cleared</span><span>covens &amp; solo souls</span></h2>
+      <div class="cities" id="cities"></div>
+    </section>
+    <section class="panel">
+      <h2><span>Boss crypts</span><span>first blood</span></h2>
+      <div class="bosses" id="bosses"></div>
+      <p class="joinline" style="margin:8px 0 0">Join at <b id="joinUrl">temilola23.github.io/haunted-trail</b></p>
+    </section>
+  </footer>
+</div>
+
+<button class="hostbtn" id="hostBtn" type="button">🔑 Host</button>
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Host controls">
+  <div class="row" style="justify-content:space-between"><h3>Host controls</h3><button class="x" type="button" id="drawerClose" aria-label="Close host controls">×</button></div>
+
+  <form class="card" id="loginForm" autocomplete="on">
+    <h3>Host login</h3>
+    <p class="hint">Sign in with the host account set up in Supabase. The big screen works without logging in; this is only for running the event.</p>
+    <input class="field" id="hostEmail" type="email" placeholder="host email" aria-label="Host email" autocomplete="username">
+    <input class="field" id="hostPass" type="password" placeholder="password" aria-label="Password" autocomplete="current-password">
+    <button class="btn primary" type="submit" id="loginBtn">Sign in</button>
+    <p class="fb" id="loginFb"></p>
+  </form>
+
+  <div id="controls" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><span class="who-host" id="hostWho"></span><button class="btn" type="button" id="logoutBtn">Log out</button></div>
+    </div>
+    <div class="card">
+      <h3>Event timer</h3>
+      <div class="row" id="presets"></div>
+      <div class="row"><input class="field" id="customMin" type="number" min="1" max="600" placeholder="minutes" aria-label="Custom minutes" style="flex:0 1 120px"><button class="btn" type="button" id="customStart">Start custom</button></div>
+      <div class="row"><button class="btn" type="button" data-adj="-5">−5 min</button><button class="btn" type="button" data-adj="5">+5 min</button><button class="btn danger" type="button" id="endNow">End now</button></div>
+      <div class="row"><button class="btn" type="button" id="freezeBtn">❄ Freeze board</button><button class="btn" type="button" id="clearTimer">Clear timer</button></div>
+      <p class="fb" id="timerFb"></p>
+    </div>
+    <div class="card">
+      <h3>Announcement</h3>
+      <textarea class="field" id="annText" maxlength="140" rows="2" placeholder="e.g. 10 minutes left! Boss crypts are worth double glory." aria-label="Announcement text" style="resize:vertical"></textarea>
+      <div class="row"><button class="btn primary" type="button" id="annSend">📣 Send to every screen</button><button class="btn" type="button" id="annClear">Clear</button><span class="hint" id="annCount">0 / 140</span></div>
+      <p class="fb" id="annFb"></p>
+    </div>
+    <div class="card">
+      <h3>Players <span id="plCount"></span></h3>
+      <input class="field" id="plFilter" type="search" placeholder="filter by name" aria-label="Filter players">
+      <ul class="plist" id="plist"></ul>
+      <p class="fb" id="plFb"></p>
+    </div>
+    <div class="card">
+      <h3>Reset board</h3>
+      <p class="hint">Removes every player, coven and shared draft. Use it between a practice run and the real event. Type RESET to confirm.</p>
+      <div class="row"><input class="field" id="resetTxt" placeholder="RESET" aria-label="Type RESET to confirm"><button class="btn danger" type="button" id="resetBtn" disabled>Reset everything</button></div>
+      <p class="fb" id="resetFb"></p>
+    </div>
+  </div>
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const SB_URL = "https://glmcrzggvmnhyexkznjm.supabase.co", SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdsbWNyemdndm1uaHlleGt6bmptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyNDg5MTAsImV4cCI6MjEwODgyNDkxMH0.Pb1MuWEvvcBZAdt9KaCHUMDv_Jn-B9bbeuTdf77YspM";
+const RANKS = ["Trick-or-Treater","Skeleton Coder","Ghoul","Phantom","Wraith","Elder of the Stack"];
+const LEVELS = [
+  {city:"San Francisco", pts:100, puzzles:[["l1a","Candy Run"],["l1b","The Shifted Tombstone"],["l1c","Bone Bits"],["l1d","Where It All Began"]], boss:["b1","The Mirror Spell",250]},
+  {city:"Seoul", pts:150, puzzles:[["l2a","Backwards Bones"],["l2b","Ghost Filter"],["l2c","One Bat Too Many"],["l2d","Into Orbit"]], boss:["b2","Top Haunts",350]},
+  {city:"Hyderabad", pts:200, puzzles:[["l3a","The Cauldron Stack"],["l3b","The Haunted House"],["l3c","Echoes"],["l3d","Candy Census"]], boss:["b3","Ritual Order",450]},
+  {city:"Berlin", pts:300, puzzles:[["l4a","Potion Pair"],["l4b","Sealed Spells"],["l4c","Spirit Surge"],["l4d","Graveyards"]], boss:["b4","The Flooded Crypt",600]},
+  {city:"Buenos Aires", pts:400, puzzles:[["l5a","Nightmare Window"],["l5b","The Cursed Stair"],["l5c","Exact Change"],["l5d","The Lonely Ghost"]], boss:["b5","The Shapeshifter",800]}
+];
+const PUZ = {};
+LEVELS.forEach((L,li)=>{ L.puzzles.forEach(([id,t])=>PUZ[id]={id,title:t,city:L.city,pts:L.pts,li,boss:false}); PUZ[L.boss[0]]={id:L.boss[0],title:L.boss[1],city:L.city,pts:L.boss[2],li,boss:true}; });
+const EGG_PTS = 75, EGGS = ["e1","e2","e3","e4"];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clip = (s,n) => { s=String(s||""); return s.length>n ? s.slice(0,n-1)+"…" : s; };
+
+/* ---------- scoring, identical to the player page ---------- */
+function merged(list){
+  const m = {solved:{}, hints:{}, eggs:{}};
+  for (const p of list){
+    for (const k in (p.solved||{})) if (!m.solved[k] || p.solved[k] < m.solved[k]) m.solved[k] = p.solved[k];
+    for (const k in (p.hints||{})) m.hints[k] = Math.max(m.hints[k]||0, +p.hints[k]||0);
+    for (const k in (p.eggs||{})) m.eggs[k] = m.eggs[k] || p.eggs[k];
+  }
+  return m;
+}
+const solvedIn = (st, li) => LEVELS[li].puzzles.filter(([id])=>st.solved[id]).length;
+function rankOf(st){ let r=0; for (let i=0;i<LEVELS.length;i++){ if (solvedIn(st,i)>=3) r=i+1; else break; } return r; }
+const ptsFor = (st,id) => PUZ[id] ? (st.hints[id] ? Math.round(PUZ[id].pts/2) : PUZ[id].pts) : 0;
+function scoreOf(st){ let s=0; for (const id in st.solved) s+=ptsFor(st,id); for (const e in st.eggs) if (EGGS.includes(e)) s+=EGG_PTS; return s; }
+
+/* ---------- state ---------- */
+let PLAYERS = {}, TEAMS = {}, EVENT = {}, booted = false;
+let lastGroups = {};            // key -> {rank, score, name}
+let bossFirst = {};             // bossId -> {name, at}
+let freshBoss = new Set();
+const FEED = [];                // newest first
+const shown = {};               // key -> displayed score (for count-up)
+const hits = new Set();
+
+function groupsNow(){
+  const g = {};
+  for (const [id,p] of Object.entries(PLAYERS)){
+    if (!p || typeof p !== "object") continue;
+    const key = p.teamId ? "t:"+p.teamId : "p:"+id;
+    (g[key] = g[key] || {key, team:p.teamId||"", members:[]}).members.push({id, ...p});
+  }
+  return Object.values(g).map(x=>{
+    const st = merged(x.members);
+    return {...x, st, score:scoreOf(st), rank:rankOf(st), solved:Object.keys(st.solved).length,
+      lastAt:Math.max(0,...x.members.map(m=>+m.lastAt||0)),
+      name: x.team ? (TEAMS[x.team] && TEAMS[x.team].name ? TEAMS[x.team].name : "Coven "+x.team) : (x.members[0].alias || "Unnamed soul")};
+  }).sort((a,b)=> b.score-a.score || a.lastAt-b.lastAt || (a.key<b.key?-1:1));
+}
+function nameFor(id, p){
+  if (p && p.teamId){ const t=TEAMS[p.teamId]; return {who:(t&&t.name)||("Coven "+p.teamId), by:p.alias||""}; }
+  return {who:(p&&p.alias)||"Unnamed soul", by:""};
+}
+
+/* ---------- live feed ---------- */
+function pushFeed(kind, icon, html){
+  FEED.unshift({kind, icon, html, at:Date.now()});
+  if (FEED.length>40) FEED.length=40;
+  schedule();
+}
+function diffPlayer(id, prev, next){
+  if (!next) return;
+  const {who, by} = nameFor(id, next);
+  const byTxt = by && next.teamId ? ` <span>(${esc(clip(by,18))})</span>` : "";
+  if (!prev){ pushFeed("join","👻",`<b>${esc(clip(next.alias||"A new soul",26))}</b> <span>entered the night</span>`); }
+  const ps = (prev&&prev.solved)||{}, ns = next.solved||{};
+  const fresh = Object.keys(ns).filter(k=>!ps[k] && PUZ[k]).sort((a,b)=>ns[a]-ns[b]);
+  for (const k of fresh){
+    const P = PUZ[k];
+    if (P.boss && !bossFirst[k]){
+      bossFirst[k] = {name:who, at:ns[k]}; freshBoss.add(k);
+      pushFeed("boss","💀",`<b>${esc(clip(who,30))}</b>${byTxt} <span>is the first to defeat</span> <b>${esc(P.title)}</b>!`);
+    } else {
+      pushFeed(P.boss?"boss":"solve", P.boss?"⚔️":"🕯️", `<b>${esc(clip(who,30))}</b>${byTxt} <span>solved</span> ${esc(P.title)} <span>· ${esc(P.city)}</span>`);
+    }
+    hits.add(next.teamId ? "t:"+next.teamId : "p:"+id);
+  }
+  const pe=(prev&&prev.eggs)||{}, ne=next.eggs||{};
+  Object.keys(ne).filter(k=>!pe[k] && EGGS.includes(k)).forEach(()=>pushFeed("egg","🦇",`<b>${esc(clip(who,30))}</b>${byTxt} <span>found a hidden secret</span>`));
+  if (prev && !prev.teamId && next.teamId){ pushFeed("join","🕯️",`<b>${esc(clip(next.alias||"A soul",22))}</b> <span>joined the coven</span> <b>${esc(clip(nameFor(id,next).who,28))}</b>`); }
+}
+function checkRanks(groups){
+  const now = {};
+  for (const g of groups){
+    now[g.key] = {rank:g.rank, score:g.score, name:g.name};
+    const was = lastGroups[g.key];
+    if (booted && was && g.rank > was.rank) pushFeed("rank","⬆",`<b>${esc(clip(g.name,30))}</b> <span>rose to</span> <b>${esc(RANKS[g.rank])}</b>`);
+  }
+  lastGroups = now;
+}
+function rebuildBossFirst(){
+  // from scratch on a full load: earliest solve per boss across every player
+  const best = {};
+  for (const [id,p] of Object.entries(PLAYERS)){
+    for (const k in (p.solved||{})) if (PUZ[k] && PUZ[k].boss && (!best[k] || p.solved[k] < best[k].at)) best[k] = {name:nameFor(id,p).who, at:p.solved[k]};
+  }
+  bossFirst = best;
+}
+
+/* ---------- render (coalesced) ---------- */
+let pending=false, lastRender=0;
+function schedule(){
+  if (pending) return; pending=true;
+  const wait = Math.max(0, 250-(performance.now()-lastRender));
+  setTimeout(()=>requestAnimationFrame(()=>{ pending=false; lastRender=performance.now(); render(); }), wait);
+}
+const TOP = 12;
+function render(){
+  const groups = groupsNow();
+  checkRanks(groups);
+  renderBoard(groups);
+  renderFeed();
+  renderStats(groups);
+  renderCities(groups);
+  renderBosses();
+}
+function renderBoard(groups){
+  const board=$("board");
+  // as many rows as fit (at least 5, at most TOP); rows shrink to fit, text scales with the row
+  const avail = board.clientHeight || 480, maxRow = Math.min(96, Math.max(56, innerHeight*0.075));
+  const fit = Math.max(5, Math.min(TOP, Math.floor(avail/58)));
+  const top = groups.slice(0, fit);
+  $("boardEmpty").hidden = groups.length>0;
+  $("boardCount").textContent = groups.length ? (groups.length>top.length ? `top ${top.length} of ${groups.length}` : `${groups.length} on the board`) : "";
+  const rowH = Math.max(38, Math.min(maxRow, avail/Math.max(1,top.length)));
+  board.style.setProperty("--rh", (rowH-6)+"px");
+  board.classList.toggle("tight", rowH<52);
+  const keep = new Set(top.map(g=>g.key));
+  board.querySelectorAll(".brow").forEach(el=>{ if (!keep.has(el.dataset.key)){ el.classList.add("gone"); setTimeout(()=>el.remove(),500); } });
+  top.forEach((g,i)=>{
+    let el = board.querySelector(`.brow[data-key="${CSS.escape(g.key)}"]`);
+    if (!el){
+      el=document.createElement("div"); el.className="brow"; el.dataset.key=g.key;
+      el.innerHTML=`<span class="pos"></span><span class="who"><span class="nm"></span><span class="sub"></span></span><span class="sc">0</span>`;
+      el.style.transform=`translateY(${(i+1)*rowH}px)`; el.style.opacity="0";
+      board.appendChild(el);
+      requestAnimationFrame(()=>{ el.style.opacity=""; });
+    }
+    el.classList.remove("gone");
+    el.style.height = (rowH-6)+"px";
+    el.classList.toggle("p1",i===0); el.classList.toggle("p2",i===1); el.classList.toggle("p3",i===2);
+    el.querySelector(".pos").textContent = i+1;
+    el.querySelector(".nm").textContent = clip(g.name,34) + (g.team?" 🕯️":"");
+    el.querySelector(".sub").innerHTML = `<b>${esc(RANKS[g.rank])}</b> · ${g.solved} solved${g.team?" · "+esc(g.members.map(m=>clip(m.alias||"?",14)).join(", ")):""}`;
+    requestAnimationFrame(()=>{ el.style.transform=`translateY(${i*rowH}px)`; });
+    tweenScore(el.querySelector(".sc"), g.key, g.score);
+    if (hits.has(g.key)){ el.classList.remove("hit"); void el.offsetWidth; el.classList.add("hit"); }
+  });
+  hits.clear();
+}
+function tweenScore(node, key, to){
+  const from = shown[key] ?? to;
+  shown[key] = to;
+  if (from===to || matchMedia("(prefers-reduced-motion: reduce)").matches){ node.textContent = to; return; }
+  const t0 = performance.now(), dur = 900;
+  const step = now => { const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3); node.textContent = Math.round(from+(to-from)*e); if (k<1 && shown[key]===to) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function ago(t){ const s=Math.max(0,Math.round((Date.now()-t)/1000)); return s<60 ? s+"s" : s<3600 ? Math.round(s/60)+"m" : Math.round(s/3600)+"h"; }
+let feedSig="";
+function renderFeed(){
+  const ul=$("feed");
+  const sig = FEED.length ? FEED[0].at+":"+FEED.length : "0";
+  if (sig!==feedSig){
+    feedSig=sig;
+    const have = new Map([...ul.children].map(li=>[li.dataset.k, li]));
+    const frag = document.createDocumentFragment();
+    FEED.slice(0,18).forEach(f=>{
+      const k = f.at+":"+f.html.length+":"+f.kind;
+      let li = have.get(k);
+      if (!li){ li=document.createElement("li"); li.dataset.k=k; li.className=f.kind; li.innerHTML=`<span class="ic">${f.icon}</span><span class="t">${f.html}</span><span class="ago"></span>`; li.dataset.at=f.at; }
+      frag.appendChild(li);
+    });
+    ul.replaceChildren(frag);
+  }
+  ul.querySelectorAll("li[data-at]").forEach(li=>li.querySelector(".ago").textContent=ago(+li.dataset.at));
+  $("feedCount").textContent = FEED.length ? "" : "quiet so far";
+  if (!FEED.length && !ul.children.length) ul.innerHTML = `<li class="join"><span class="ic">🌙</span><span class="t"><span>Solves, rank-ups, boss kills and secrets appear here as they happen.</span></span><span class="ago"></span></li>`;
+}
+function renderStats(groups){
+  const players = Object.values(PLAYERS);
+  const covens = new Set(players.filter(p=>p.teamId).map(p=>p.teamId)).size;
+  let solves=0, hintsUsed=0, bosses=0, secrets=0;
+  groups.forEach(g=>{ const ks=Object.keys(g.st.solved); solves+=ks.length; bosses+=ks.filter(k=>PUZ[k]&&PUZ[k].boss).length; secrets+=Object.keys(g.st.eggs).filter(e=>EGGS.includes(e)).length; hintsUsed+=Object.values(g.st.hints).filter(Boolean).length; });
+  const elders = groups.filter(g=>g.rank===5).length;
+  const items = [["Souls playing",players.length],["Covens",covens],["Levels solved",solves],["Bosses slain",bosses],["Secrets found",secrets],["Elders of the Stack",elders]];
+  const box=$("stats");
+  if (!box.children.length) box.innerHTML = items.map(([l])=>`<div class="stat"><b>0</b><span>${esc(l)}</span></div>`).join("");
+  [...box.children].forEach((d,i)=>{ const b=d.querySelector("b"); const v=String(items[i][1]); if (b.textContent!==v){ b.textContent=v; } });
+}
+function renderCities(groups){
+  const box=$("cities");
+  if (!box.children.length) box.innerHTML = LEVELS.map(L=>`<div class="city"><span>${esc(L.city)}</span><span class="bar"><i></i></span><span class="n">0</span></div>`).join("");
+  const total = Math.max(1, groups.length);
+  [...box.children].forEach((row,li)=>{
+    const n = groups.filter(g=>solvedIn(g.st,li)>=3).length;
+    row.querySelector("i").style.width = (100*n/total).toFixed(1)+"%";
+    row.querySelector(".n").textContent = n;
+  });
+}
+function renderBosses(){
+  const box=$("bosses");
+  if (!box.children.length) box.innerHTML = LEVELS.map(L=>`<div class="bossc" data-b="${L.boss[0]}"><span class="sk">💀</span><span class="bn">${esc(L.boss[1])}</span><span class="by">undefeated</span></div>`).join("");
+  [...box.children].forEach(c=>{
+    const f=bossFirst[c.dataset.b];
+    c.classList.toggle("won",!!f);
+    c.querySelector(".by").textContent = f ? clip(f.name,22) : "undefeated";
+    c.title = f ? `First defeated by ${f.name}` : "Nobody has defeated this crypt yet";
+    if (freshBoss.has(c.dataset.b)){ c.classList.remove("fresh"); void c.offsetWidth; c.classList.add("fresh"); }
+  });
+  freshBoss.clear();
+}
+
+/* ---------- countdown + announcement ---------- */
+function fmt(ms){ const s=Math.max(0,Math.ceil(ms/1000)), h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0"); }
+function tickClock(){
+  const c=$("clock"), t=$("clockTime"), l=$("clockLbl"), now=Date.now(), e=EVENT||{};
+  $("frozenBadge").hidden = !e.frozen;
+  c.classList.remove("urgent","over");
+  if (!e.endsAt){ t.className="time word"; t.textContent = e.startedAt ? "The hunt is on" : "Starts soon"; l.textContent="The hunt"; }
+  else if (now < e.endsAt){ const left=e.endsAt-now; t.className="time"; t.textContent=fmt(left); l.textContent="Time left"; if (left<=5*60*1000) c.classList.add("urgent"); }
+  else { t.className="time word"; t.textContent="Time’s up!"; l.textContent="Final scores"; c.classList.add("over"); }
+  const a=e.announcement;
+  $("announce").hidden = !(a && a.text);
+  if (a && a.text){ if ($("announceTx").textContent!==a.text) $("announceTx").textContent=a.text; $("announceAgo").textContent = a.at ? ago(a.at)+" ago" : ""; }
+  document.querySelectorAll("#feed .ago").forEach(n=>{ const li=n.closest("li"); if (li && li.dataset.at) n.textContent=ago(+li.dataset.at); });
+}
+setInterval(tickClock, 500);
+
+/* ---------- data: load + realtime + safety-net reload ---------- */
+const sb = supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, autoRefreshToken:true, storageKey:"haunted-host-auth"}});
+function setConn(state, txt){ const c=$("conn"); c.className="conn "+state; c.textContent=txt; }
+async function loadAll(){
+  const [p,t,e] = await Promise.all([
+    sb.from("players").select("id,doc,updated_at").limit(5000),
+    sb.from("teams").select("code,doc").limit(1000),
+    sb.from("event").select("doc").eq("id",1).maybeSingle()
+  ]);
+  if (p.error || t.error){ setConn("bad","reconnecting"); return; }
+  const nextP = {}; p.data.forEach(r=>{ if (r.doc) nextP[r.id]=r.doc; if (!since || r.updated_at>since) since=r.updated_at; });
+  if (booted){ for (const id in nextP){ const a=PLAYERS[id], b=nextP[id]; if (!a || JSON.stringify(a.solved)!==JSON.stringify(b.solved) || JSON.stringify(a.eggs)!==JSON.stringify(b.eggs)) diffPlayer(id, a, b); } }
+  PLAYERS = nextP;
+  TEAMS = {}; t.data.forEach(r=>TEAMS[r.code]=r.doc||{});
+  if (e.data) EVENT = e.data.doc || {};
+  rebuildBossFirst();
+  if (!booted){ booted=true; lastGroups={}; groupsNow().forEach(g=>{ lastGroups[g.key]={rank:g.rank,score:g.score,name:g.name}; shown[g.key]=g.score; }); }
+  schedule(); tickClock(); renderPlayerList();
+}
+function subscribe(){
+  sb.channel("host-live")
+    .on("postgres_changes",{event:"*",schema:"public",table:"players"},msg=>{
+      if (msg.eventType==="DELETE"){ const id=msg.old && msg.old.id; if (id){ delete PLAYERS[id]; rebuildBossFirst(); } }
+      else if (msg.new && msg.new.id){ const prev=PLAYERS[msg.new.id]; PLAYERS[msg.new.id]=msg.new.doc; if (booted) diffPlayer(msg.new.id, prev, msg.new.doc); }
+      schedule(); renderPlayerList();
+    })
+    .on("postgres_changes",{event:"*",schema:"public",table:"teams"},msg=>{
+      if (msg.eventType==="DELETE"){ if (msg.old && msg.old.code) delete TEAMS[msg.old.code]; }
+      else if (msg.new && msg.new.code) TEAMS[msg.new.code]=msg.new.doc||{};
+      schedule();
+    })
+    .on("postgres_changes",{event:"*",schema:"public",table:"event"},msg=>{
+      if (msg.new && msg.new.doc){ const before=EVENT.announcement&&EVENT.announcement.at; EVENT=msg.new.doc; if (EVENT.announcement && EVENT.announcement.at!==before) { const a=$("announce"); a.hidden=true; void a.offsetWidth; } tickClock(); syncControls(); }
+    })
+    .subscribe(st=>{
+      if (st==="SUBSCRIBED"){ setConn("live","live"); loadAll(); }
+      else if (st==="CHANNEL_ERROR" || st==="TIMED_OUT" || st==="CLOSED") setConn("bad","reconnecting");
+    });
+}
+addEventListener("resize", ()=>schedule());
+loadAll().catch(()=>setConn("bad","offline"));
+subscribe();
+// realtime can drop messages when the free plan's live-message cap is hit, so the big screen
+// also asks "what changed since?" every 3s (cheap), and does a full reload every 60s (catches removals)
+let since=null, polling=false;
+async function delta(){
+  if (polling || !booted || !since) return; polling=true;
+  try{
+    const [p,t,e] = await Promise.all([
+      sb.from("players").select("id,doc,updated_at").gte("updated_at", since).limit(5000),
+      sb.from("teams").select("code,doc").limit(1000),
+      sb.from("event").select("doc").eq("id",1).maybeSingle()
+    ]);
+    if (p.error){ setConn("bad","reconnecting"); return; }
+    let changed=false;
+    for (const r of p.data){
+      if (!since || r.updated_at>since) since=r.updated_at;
+      const prev=PLAYERS[r.id];
+      if (!prev || JSON.stringify(prev)!==JSON.stringify(r.doc)){ PLAYERS[r.id]=r.doc; diffPlayer(r.id, prev, r.doc); changed=true; }
+    }
+    if (!t.error){ const next={}; t.data.forEach(r=>next[r.code]=r.doc||{}); if (JSON.stringify(next)!==JSON.stringify(TEAMS)){ TEAMS=next; changed=true; } }
+    if (!e.error && e.data && JSON.stringify(e.data.doc||{})!==JSON.stringify(EVENT)){ EVENT=e.data.doc||{}; tickClock(); syncControls(); }
+    if (changed){ rebuildBossFirst(); schedule(); renderPlayerList(); }
+  } catch(err){ setConn("bad","reconnecting"); } finally { polling=false; }
+}
+setInterval(delta, 3000);
+setInterval(()=>loadAll().catch(()=>setConn("bad","reconnecting")), 60000);
+$("joinUrl").textContent = (location.hostname.endsWith("github.io") ? location.host + location.pathname.replace(/host\.html$/,"") : "temilola23.github.io/haunted-trail/").replace(/\/$/,"");
+
+/* ---------- fireflies ---------- */
+(()=>{
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv=$("fx"), c=cv.getContext("2d"), flies=[];
+  const size=()=>{ const d=Math.min(2,devicePixelRatio||1); cv.width=innerWidth*d; cv.height=innerHeight*d; c.setTransform(d,0,0,d,0,0); };
+  size(); addEventListener("resize",size);
+  for (let i=0;i<34;i++) flies.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,a:Math.random()*6.28,s:.15+Math.random()*.35,ph:Math.random()*6.28});
+  const loop=t=>{ c.clearRect(0,0,innerWidth,innerHeight);
+    for (const f of flies){ f.a+=(Math.random()-.5)*.2; f.x+=Math.cos(f.a)*f.s; f.y+=Math.sin(f.a)*f.s;
+      if (f.x<-10) f.x=innerWidth+10; if (f.x>innerWidth+10) f.x=-10; if (f.y<-10) f.y=innerHeight+10; if (f.y>innerHeight+10) f.y=-10;
+      const al=.2+.5*(.5+.5*Math.sin(t/700+f.ph)), g=c.createRadialGradient(f.x,f.y,0,f.x,f.y,10);
+      g.addColorStop(0,`rgba(255,214,120,${al})`); g.addColorStop(1,"rgba(255,214,120,0)"); c.fillStyle=g; c.beginPath(); c.arc(f.x,f.y,10,0,6.28); c.fill(); }
+    requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+})();
+
+/* ---------- host controls ---------- */
+let isHost=false;
+function openDrawer(on){ document.body.classList.toggle("host-open",on); $("scrim").hidden=!on; if (on) setTimeout(()=>(isHost?$("annText"):$("hostEmail")).focus(),50); }
+$("hostBtn").addEventListener("click",()=>openDrawer(true));
+$("drawerClose").addEventListener("click",()=>openDrawer(false));
+$("scrim").addEventListener("click",()=>openDrawer(false));
+addEventListener("keydown",e=>{ if (e.key==="Escape") openDrawer(false); });
+function fb(id, msg, ok){ const n=$(id); n.textContent=msg; n.className="fb "+(ok?"good":"bad"); }
+
+async function refreshHost(){
+  const {data:{session}} = await sb.auth.getSession();
+  isHost=false;
+  if (session){
+    const r = await sb.rpc("is_admin");
+    isHost = !r.error && r.data===true;
+    if (!isHost){ fb("loginFb", r.error ? "Couldn’t check host access: "+r.error.message : "This account isn’t a host. Ask whoever set up Supabase to add it to the admins table.", false); }
+    $("hostWho").textContent = "Signed in as " + (session.user.email || "host");
+  }
+  $("loginForm").hidden = isHost;
+  $("controls").hidden = !isHost;
+  $("hostBtn").textContent = isHost ? "🔑 Host ✓" : "🔑 Host";
+  if (isHost){ syncControls(); renderPlayerList(); }
+}
+$("loginForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const email=$("hostEmail").value.trim(), password=$("hostPass").value;
+  if (!email || !password){ fb("loginFb","Enter the host email and password.",false); return; }
+  $("loginBtn").disabled=true; fb("loginFb","Signing in…",true);
+  const {error} = await sb.auth.signInWithPassword({email, password});
+  $("loginBtn").disabled=false;
+  if (error){ fb("loginFb", error.message==="Invalid login credentials" ? "That email and password don’t match a host account." : error.message, false); return; }
+  $("hostPass").value=""; fb("loginFb","",true);
+  await refreshHost();
+});
+$("logoutBtn").addEventListener("click", async ()=>{ await sb.auth.signOut(); await refreshHost(); fb("loginFb","Logged out.",true); });
+
+async function writeEvent(patch, fbId, okMsg){
+  const doc = {startedAt:null, endsAt:null, frozen:false, announcement:null, ...(EVENT||{}), ...patch};
+  const {data, error} = await sb.from("event").update({doc}).eq("id",1).select("doc");
+  if (error){ fb(fbId, "Couldn’t save: "+error.message, false); return false; }
+  if (!data || !data.length){ fb(fbId, "Not saved: this account doesn’t have host access.", false); return false; }
+  EVENT = data[0].doc; tickClock(); syncControls(); fb(fbId, okMsg, true); return true;
+}
+[30,45,60,90].forEach(m=>{ const b=document.createElement("button"); b.type="button"; b.className="btn"; b.textContent=`Start ${m} min`; b.addEventListener("click",()=>startTimer(m)); $("presets").appendChild(b); });
+function startTimer(m){ const now=Date.now(); writeEvent({startedAt:now, endsAt:now+m*60000}, "timerFb", `Timer started: ${m} minutes.`); }
+$("customStart").addEventListener("click",()=>{ const m=+$("customMin").value; if (!(m>0 && m<=600)){ fb("timerFb","Enter minutes between 1 and 600.",false); return; } startTimer(Math.round(m)); });
+document.querySelectorAll("[data-adj]").forEach(b=>b.addEventListener("click",()=>{
+  const d=+b.dataset.adj; if (!EVENT.endsAt){ fb("timerFb","Start a timer first.",false); return; }
+  const base=Math.max(EVENT.endsAt, d>0?Date.now():0);
+  writeEvent({endsAt:Math.max(Date.now(), base+d*60000)}, "timerFb", d>0?"Added 5 minutes.":"Took off 5 minutes.");
+}));
+$("endNow").addEventListener("click",()=>writeEvent({endsAt:Date.now(), startedAt:EVENT.startedAt||Date.now()}, "timerFb", "The hunt has ended."));
+$("clearTimer").addEventListener("click",()=>writeEvent({startedAt:null, endsAt:null}, "timerFb", "Timer cleared."));
+$("freezeBtn").addEventListener("click",()=>writeEvent({frozen:!EVENT.frozen}, "timerFb", EVENT.frozen?"Board unfrozen.":"Board frozen."));
+function syncControls(){ $("freezeBtn").textContent = EVENT && EVENT.frozen ? "☀ Unfreeze board" : "❄ Freeze board"; }
+$("annText").addEventListener("input",()=>$("annCount").textContent=`${$("annText").value.length} / 140`);
+$("annSend").addEventListener("click",()=>{ const text=$("annText").value.trim().slice(0,140); if (!text){ fb("annFb","Write a message first.",false); return; } writeEvent({announcement:{text, at:Date.now()}}, "annFb", "Sent to every screen."); });
+$("annClear").addEventListener("click",()=>writeEvent({announcement:null}, "annFb", "Announcement cleared."));
+
+function renderPlayerList(){
+  if (!isHost) return;
+  const q=$("plFilter").value.trim().toLowerCase(), ul=$("plist");
+  if (ul.querySelector(".sure")) return;   // don't redraw under a pending confirm
+  const rows=Object.entries(PLAYERS).map(([id,p])=>({id, alias:p.alias||"Unnamed soul", team:p.teamId||"", score:+p.score||0}))
+    .filter(r=>!q || r.alias.toLowerCase().includes(q)).sort((a,b)=>a.alias.localeCompare(b.alias));
+  $("plCount").textContent = `(${Object.keys(PLAYERS).length})`;
+  ul.textContent="";
+  rows.slice(0,300).forEach(r=>{
+    const li=document.createElement("li");
+    const s=document.createElement("span"); s.textContent=r.alias + (r.team?" · "+r.team:"");
+    const sm=document.createElement("small"); sm.textContent=r.score;
+    const b=document.createElement("button"); b.type="button"; b.className="btn danger"; b.textContent="Remove";
+    b.addEventListener("click", async ()=>{
+      if (!b.classList.contains("sure")){ b.classList.add("sure"); b.textContent="Click to confirm"; setTimeout(()=>{ if (b.isConnected && b.classList.contains("sure")){ b.classList.remove("sure"); b.textContent="Remove"; } },3000); return; }
+      b.disabled=true;
+      const {error}=await sb.rpc("admin_remove_player",{pid:r.id});
+      if (error){ fb("plFb","Couldn’t remove: "+error.message,false); b.disabled=false; b.classList.remove("sure"); b.textContent="Remove"; return; }
+      delete PLAYERS[r.id]; fb("plFb",`Removed ${r.alias}.`,true); b.classList.remove("sure"); rebuildBossFirst(); schedule(); renderPlayerList();
+    });
+    li.append(s,sm,b); ul.appendChild(li);
+  });
+  if (!rows.length) ul.innerHTML=`<li><span style="color:var(--ash)">No players${q?" match":" yet"}.</span></li>`;
+}
+$("plFilter").addEventListener("input", renderPlayerList);
+$("resetTxt").addEventListener("input",()=>$("resetBtn").disabled = $("resetTxt").value.trim()!=="RESET");
+$("resetBtn").addEventListener("click", async ()=>{
+  if ($("resetTxt").value.trim()!=="RESET") return;
+  $("resetBtn").disabled=true;
+  const {error}=await sb.rpc("admin_reset_board");
+  if (error){ fb("resetFb","Couldn’t reset: "+error.message,false); $("resetBtn").disabled=false; return; }
+  PLAYERS={}; TEAMS={}; FEED.length=0; bossFirst={}; lastGroups={}; $("board").querySelectorAll(".brow").forEach(el=>el.remove());
+  $("resetTxt").value=""; fb("resetFb","The board is empty. Ready for a fresh hunt.",true); schedule(); renderPlayerList();
+});
+sb.auth.onAuthStateChange(()=>{ setTimeout(refreshHost,0); });
+refreshHost();
+tickClock(); schedule();
+</script>
+</body>
+</html>

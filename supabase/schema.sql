@@ -59,3 +59,49 @@ create trigger drafts_touch  before update on public.drafts  for each row execut
 
 -- live updates for the board and coven names
 alter publication supabase_realtime add table public.players, public.teams;
+-- Host dashboard: admins, event state (timer, announcements), moderation.
+create table if not exists public.admins (
+  user_id uuid primary key references auth.users(id) on delete cascade
+);
+alter table public.admins enable row level security;
+create policy "admins see themselves" on public.admins for select to authenticated using (user_id = auth.uid());
+
+create or replace function public.is_admin() returns boolean language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.admins a where a.user_id = auth.uid());
+$$;
+grant execute on function public.is_admin() to anon, authenticated;
+
+create table if not exists public.event (
+  id int primary key default 1 check (id = 1),
+  doc jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table public.event enable row level security;
+create policy "event read"  on public.event for select using (true);
+create policy "event write" on public.event for update to authenticated using (public.is_admin()) with check (public.is_admin());
+insert into public.event (id, doc) values (1, '{}'::jsonb) on conflict (id) do nothing;
+create trigger event_touch before update on public.event for each row execute function public.touch_updated_at();
+
+-- hosts can remove a single player, or wipe the board between runs
+create or replace function public.admin_remove_player(pid uuid) returns void language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.is_admin() then raise exception 'not allowed'; end if;
+  delete from auth.users where id = pid and is_anonymous = true;
+end $$;
+create or replace function public.admin_reset_board() returns void language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.is_admin() then raise exception 'not allowed'; end if;
+  delete from public.teams;
+  delete from auth.users where is_anonymous = true;
+end $$;
+revoke all on function public.admin_remove_player(uuid) from public, anon;
+revoke all on function public.admin_reset_board() from public, anon;
+grant execute on function public.admin_remove_player(uuid) to authenticated;
+grant execute on function public.admin_reset_board() to authenticated;
+
+alter publication supabase_realtime add table public.event;
+
+-- change-polling needs updated_at on every table the page watches
+alter table public.teams add column if not exists updated_at timestamptz not null default now();
+create trigger teams_touch before update on public.teams for each row execute function public.touch_updated_at();
+create index if not exists players_updated_at on public.players (updated_at);
