@@ -247,6 +247,17 @@ dialog::backdrop{background:#05040acc;backdrop-filter:blur(3px)}
 .rules{margin:0;padding-left:18px;color:var(--ash);font-size:14px;display:flex;flex-direction:column;gap:4px}
 .rules b{color:var(--bone)}
 
+#bellBtn{position:relative}
+#bellBtn .badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--ember);color:#1a0d02;font-size:11px;font-weight:700;line-height:18px;text-align:center}
+.notif{position:fixed;top:calc(env(safe-area-inset-top,0px) + 74px);right:16px;width:min(340px,calc(100vw - 32px));max-height:min(60vh,520px);z-index:45;display:flex;flex-direction:column;
+  background:#16141fb8;-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border:1px solid #ffffff1f;border-radius:16px;box-shadow:0 20px 50px #000a;animation:rise .2s ease}
+.notif-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid #ffffff14}
+.notif ol{list-style:none;margin:0;padding:6px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.notif li{padding:8px 10px;border-radius:10px;font-size:13.5px;display:flex;gap:10px;justify-content:space-between;align-items:baseline}
+.notif li.new{background:#ff8a2a1a}
+.notif li span{min-width:0;overflow-wrap:anywhere}
+.notif li time{color:var(--ash);font-size:11.5px;white-space:nowrap;font-family:var(--font-mono)}
+.notif .empty{color:var(--ash);padding:14px}
 .announce{position:fixed;top:calc(env(safe-area-inset-top,0px) + 78px);left:50%;transform:translateX(-50%);width:min(900px,calc(100vw - 32px));z-index:26;box-shadow:0 12px 40px #000c;background-color:var(--crypt);display:flex;gap:12px;align-items:center;background:linear-gradient(90deg,#ff8a2a2e,#c77dff2e);border:1px solid var(--ember);border-radius:12px;padding:10px 14px;font-size:15px;animation:rise .4s ease}
 .announce b{color:var(--ember);white-space:nowrap}
 .announce span{flex:1;min-width:0;overflow-wrap:anywhere}
@@ -340,8 +351,8 @@ body.drawer-open .drawer-scrim{display:block}
 @keyframes swingr{from{transform:perspective(200px) rotateY(0)}to{transform:perspective(200px) rotateY(-70deg)}}
 .gate-text{font-family:var(--font-body);font-size:13px;fill:var(--ash);text-anchor:middle;paint-order:stroke;stroke:#0c0b12;stroke-width:4px}
 .gate.open .gate-text{fill:var(--spirit)}
-.ghost{pointer-events:none}
-.ghost .bob{animation:bob 2.4s ease-in-out infinite}
+.ghost-sprite{pointer-events:none}
+.ghost-sprite .bob{animation:bob 2.4s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-7px)}}
 .zone-dim{transition:opacity .8s}
 .mate-dot{stroke:var(--night);stroke-width:2}
@@ -392,6 +403,7 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
       <span class="chip"><span class="star">★</span><b id="meStars">0</b><span style="color:var(--ash)">/ 75</span></span>
       <span class="chip"><b id="meScore">0</b> pts</span>
       <span class="btn" id="timerChip" hidden aria-live="off"></span>
+      <button class="btn" id="bellBtn" type="button" aria-label="Notifications" aria-expanded="false">🔔<span class="badge" id="bellCount" hidden>0</span></button>
       <button class="btn" id="covenChip" type="button">🕯️ Start or join a coven</button>
       <button class="btn" id="soundBtn" type="button" aria-pressed="false">🔇 Sound off</button>
       <button class="btn" id="drawerBtn" type="button">🏆 Board</button>
@@ -541,6 +553,10 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
   </form>
 </dialog>
 
+<div class="notif" id="notif" hidden role="dialog" aria-label="Notifications">
+  <div class="notif-head"><b>Notifications</b><span><button class="btn" type="button" id="notifClear" style="padding:3px 9px;font-size:12px">Clear</button> <button class="x" type="button" id="notifX" aria-label="Close notifications" style="padding:0 6px">×</button></span></div>
+  <ol id="notifList"></ol>
+</div>
 <div class="announce" id="announce" hidden role="status"><b>📣 Host</b><span id="announceText"></span><button class="x" type="button" id="announceX" aria-label="Dismiss announcement" style="padding:0 6px">×</button></div>
 
 <dialog id="covenDlg" aria-label="Your coven">
@@ -1136,7 +1152,7 @@ function buildMap(){
   });
   bg+=`<path class="trail-glow" d="${d}"/><path class="trail" d="${d}" id="trailPath"/><path class="trail-dash" d="${d}"/>`;
   MAP.bosses.forEach(b=>{ const qx=(b.from.x+b.x)/2, qy = MAPMODE==="land" ? (b.from.y+b.y)/2+30 : b.y-40; bg+=`<path class="spur" d="M${b.from.x},${b.from.y} Q${qx},${qy} ${b.x},${b.y}"/>`; });
-  svg.innerHTML = bg + `<g id="mapZoneDim"></g>${labels}<g id="mapGates"></g><g id="mapNodes"></g><g id="ghost" class="ghost"><g class="bob"><path d="M-14,8 v-16 a14,14 0 0 1 28,0 v16 l-4.5,-4 l-4.5,4 l-5,-4 l-5,4 l-4.5,-4z" fill="#f4efe6" filter="url(#glow)"/><circle cx="-5" cy="-6" r="2.4" fill="#120a1c"/><circle cx="5" cy="-6" r="2.4" fill="#120a1c"/><ellipse cx="0" cy="1" rx="2.5" ry="3" fill="#120a1c"/></g></g>`;
+  svg.innerHTML = bg + `<g id="mapZoneDim"></g>${labels}<g id="mapGates"></g><g id="mapNodes"></g><g id="ghost" class="ghost-sprite"><g class="bob"><path d="M-14,8 v-16 a14,14 0 0 1 28,0 v16 l-4.5,-4 l-4.5,4 l-5,-4 l-5,4 l-4.5,-4z" fill="#f4efe6" filter="url(#glow)"/><circle cx="-5" cy="-6" r="2.4" fill="#120a1c"/><circle cx="5" cy="-6" r="2.4" fill="#120a1c"/><ellipse cx="0" cy="1" rx="2.5" ry="3" fill="#120a1c"/></g></g>`;
   // size each city banner to its own text
   svg.querySelectorAll(".zlabel").forEach(g=>{ let w=0; g.querySelectorAll("text").forEach(t=>{ try{ w=Math.max(w,t.getBBox().width); }catch(e){} }); if (w){ const rr=g.querySelector("rect"); rr.setAttribute("x",-(w/2+24)); rr.setAttribute("width",w+48); } });
   // map each main node to a length along the trail, for the ghost's walk
@@ -1382,11 +1398,39 @@ function renderBoard(){
 }
 // other players' news: never while you're in a puzzle, at most one every 6s, batched
 let newsQueue=[], newsTimer=0;
+let NOTIFS=[], unread=0;
+try{ NOTIFS=JSON.parse(sessionStorage.getItem("haunted-notifs")||"[]"); }catch(e){}
+function logNotif(msg){
+  NOTIFS.unshift({msg:String(msg).slice(0,160), at:Date.now()}); NOTIFS=NOTIFS.slice(0,60);
+  try{ sessionStorage.setItem("haunted-notifs", JSON.stringify(NOTIFS)); }catch(e){}
+  if ($("notif").hidden){ unread++; } renderNotifs();
+}
+function agoShort(t){ const s=Math.round((Date.now()-t)/1000); return s<60?"now":s<3600?Math.floor(s/60)+"m":Math.floor(s/3600)+"h"; }
+function renderNotifs(){
+  const b=$("bellCount"); if (b){ b.hidden=!unread; b.textContent=unread>99?"99+":unread; }
+  const ol=$("notifList"); if (!ol || $("notif").hidden) return;
+  ol.textContent="";
+  if (!NOTIFS.length){ ol.innerHTML='<li class="empty">Nothing yet. Solves, rank-ups and host messages will collect here.</li>'; return; }
+  NOTIFS.forEach((n,i)=>{ const li=document.createElement("li"); if (i<lastUnread) li.className="new"; const sp=document.createElement("span"); sp.textContent=n.msg; const tm=document.createElement("time"); tm.textContent=agoShort(n.at); li.append(sp,tm); ol.appendChild(li); });
+}
+let lastUnread=0;
+function toggleNotifs(open){
+  const p=$("notif"); open = open===undefined ? p.hidden : open;
+  p.hidden=!open; $("bellBtn").setAttribute("aria-expanded", open);
+  if (open){ lastUnread=unread; unread=0; renderNotifs(); } else lastUnread=0;
+  renderNotifs();
+}
+$("bellBtn").addEventListener("click", e=>{ e.stopPropagation(); toggleNotifs(); });
+$("notifX").addEventListener("click", ()=>toggleNotifs(false));
+$("notifClear").addEventListener("click", ()=>{ NOTIFS=[]; lastUnread=0; try{ sessionStorage.removeItem("haunted-notifs"); }catch(e){} renderNotifs(); });
+document.addEventListener("click", e=>{ if (!$("notif").hidden && !e.target.closest("#notif,#bellBtn")) toggleNotifs(false); });
+setInterval(()=>{ if (!$("notif").hidden) renderNotifs(); }, 30000);
 function news(msg){
+  logNotif(msg);
   if (document.querySelector("dialog[open]")) return;
   newsQueue.push(msg);
   if (newsTimer) return;
-  const flush=()=>{ newsTimer=0; if (!newsQueue.length) return; const n=newsQueue.length; toast(n===1 ? newsQueue[0] : `👻 ${n} rivals just ranked up`); newsQueue=[]; newsTimer=setTimeout(flush,6000); };
+  const flush=()=>{ newsTimer=0; if (!newsQueue.length) return; const n=newsQueue.length; toast.quiet=true; toast(n===1 ? newsQueue[0] : `👻 ${n} rivals just ranked up`); toast.quiet=false; newsQueue=[]; newsTimer=setTimeout(flush,6000); };
   flush();
 }
 function toast(msg){
@@ -1396,6 +1440,7 @@ function toast(msg){
   while (host.children.length>=2) host.firstChild.remove();
   const t=document.createElement("div"); t.className="toast"; t.textContent=msg;
   host.appendChild(t); setTimeout(()=>t.remove(),4200);
+  if (!toast.quiet) logNotif(msg);
 }
 
 /* ---------- opening puzzles ---------- */
@@ -1814,12 +1859,25 @@ function applyEvent(doc){
   const a = EVENT.announcement;
   if (a && a.text){
     $("announceText").textContent = String(a.text).slice(0,200);
-    if ((a.at||0) > seenAnnounce){ $("announce").hidden=false; if (!bootQuiet){ toast("📣 " + String(a.text).slice(0,120)); Sound.sfx && Sound.on && Sound.bell(); } }
+    if ((a.at||0) > seenAnnounce){
+      $("announce").hidden=false;
+      if (eventSeen){ toast("📣 " + String(a.text).slice(0,120)); Sound.on && Sound.bell(); } else logNotif("📣 " + String(a.text).slice(0,120));
+      clearTimeout(announceTimer); announceTimer=setTimeout(dismissAnnounce, 15000);   // clears itself; it stays in 🔔
+    }
   } else $("announce").hidden=true;
   if (!wasLocked && eventLocked() && eventSeen) toast(EVENT.frozen ? "⏸ The host froze the scores." : "⌛ Time’s up! Final scores are locked.");
   eventSeen = true;
 }
-$("announceX").addEventListener("click",()=>{ $("announce").hidden=true; seenAnnounce=(EVENT.announcement&&EVENT.announcement.at)||Date.now(); try{ localStorage.setItem("haunted-announce-seen", seenAnnounce); }catch(e){} });
+let announceTimer=0;
+function dismissAnnounce(){
+  clearTimeout(announceTimer);
+  $("announce").hidden=true;
+  seenAnnounce=Math.max(seenAnnounce, (EVENT.announcement&&EVENT.announcement.at)||Date.now());
+  try{ localStorage.setItem("haunted-announce-seen", seenAnnounce); }catch(e){}
+}
+$("announceX").addEventListener("click", dismissAnnounce);
+// dismissing in one tab clears it in your other tabs too
+addEventListener("storage", e=>{ if (e.key==="haunted-announce-seen"){ seenAnnounce=Math.max(seenAnnounce, +e.newValue||0); const a=EVENT.announcement; if (!a || (a.at||0)<=seenAnnounce) $("announce").hidden=true; } });
 let renderQueued=false;
 function scheduleRender(){ if (renderQueued) return; renderQueued=true; setTimeout(()=>requestAnimationFrame(()=>{ renderQueued=false; renderBoard(); renderAll(); bootQuiet=false; }),150); }
 
