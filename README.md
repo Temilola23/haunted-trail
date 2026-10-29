@@ -16,6 +16,6 @@ It's a single static `index.html` served by GitHub Pages. The leaderboard, coven
 In the Supabase SQL editor:
 
 ```sql
-delete from public.teams;
+delete from public.teams where code is not null;
 delete from auth.users where is_anonymous = true;  -- cascades to players and drafts
 ```

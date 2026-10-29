@@ -91,7 +91,9 @@ end $$;
 create or replace function public.admin_reset_board() returns void language plpgsql security definer set search_path = '' as $$
 begin
   if not public.is_admin() then raise exception 'not allowed'; end if;
-  delete from public.teams;
+  -- Supabase rejects DELETE without a WHERE clause, so each delete gets an explicit filter
+  delete from public.drafts where team_id is not null;
+  delete from public.teams where code is not null;
   delete from auth.users where is_anonymous = true;
 end $$;
 revoke all on function public.admin_remove_player(uuid) from public, anon;
