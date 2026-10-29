@@ -1780,7 +1780,8 @@ $("projBtn").addEventListener("click",()=>setProjector(!document.body.classList.
 if (location.hash==="#board") setProjector(true);
 
 /* ---------- event: host timer, announcements, lock ---------- */
-let EVENT = {}, seenAnnounce = 0;
+let EVENT = {}, seenAnnounce = 0, eventSeen = false;
+const warned = new Set();
 try{ seenAnnounce = +localStorage.getItem("haunted-announce-seen")||0; }catch(e){}
 const eventLocked = () => !!(EVENT.frozen || (EVENT.endsAt && Date.now() > EVENT.endsAt));
 function fmtClock(ms){ const s=Math.max(0,Math.ceil(ms/1000)), h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0"); }
@@ -1789,20 +1790,34 @@ function tickTimer(){
   if (EVENT.frozen){ c.hidden=false; c.className="btn over"; c.textContent="⏸ Scores frozen"; return; }
   if (!EVENT.endsAt){ c.hidden=true; return; }
   const left=EVENT.endsAt-Date.now(); c.hidden=false;
+  // one-time warnings per timer
+  for (const [mins,msg] of [[5,"⏳ 5 minutes left!"],[1,"⏳ 1 minute left! Submit what you have."]]){
+    const key=EVENT.endsAt+":"+mins;
+    if (left<=mins*60000 && left>mins*60000-15000 && !warned.has(key)){ warned.add(key); toast(msg); Sound.on && Sound.bell(); }
+  }
   if (left<=0){ c.className="btn over"; c.textContent="⌛ Time’s up"; return; }
   c.className="btn"+(left<5*60000?" low":""); c.textContent="⏳ "+fmtClock(left);
 }
 setInterval(tickTimer, 1000);
 function applyEvent(doc){
-  const wasLocked = eventLocked();
+  const wasLocked = eventLocked(), prev = EVENT;
   EVENT = doc || {};
+  // timer news (skipped on first load, so a refresh doesn't replay it)
+  if (eventSeen){
+    const ring = () => { Sound.on && Sound.bell(); };
+    if (EVENT.endsAt && EVENT.endsAt>Date.now() && EVENT.startedAt && EVENT.startedAt!==prev.startedAt){ toast(`⏳ The hunt has begun! ${fmtClock(EVENT.endsAt-Date.now())} on the clock`); ring(); }
+    else if (EVENT.endsAt && prev.endsAt && EVENT.endsAt!==prev.endsAt && EVENT.endsAt>Date.now()){ const d=Math.round((EVENT.endsAt-prev.endsAt)/60000); if (d) { toast(d>0 ? `⏳ The host added ${d} minute${d===1?"":"s"}` : `⏳ The host took off ${-d} minute${d===-1?"":"s"}`); ring(); } }
+    else if (!EVENT.endsAt && prev.endsAt && !eventLocked()) toast("⏳ The host cleared the timer");
+    if (prev.frozen && !EVENT.frozen && !(EVENT.endsAt && Date.now()>EVENT.endsAt)) toast("▶ Scores unfrozen. Keep going!");
+  }
   tickTimer();
   const a = EVENT.announcement;
   if (a && a.text){
     $("announceText").textContent = String(a.text).slice(0,200);
     if ((a.at||0) > seenAnnounce){ $("announce").hidden=false; if (!bootQuiet){ toast("📣 " + String(a.text).slice(0,120)); Sound.sfx && Sound.on && Sound.bell(); } }
   } else $("announce").hidden=true;
-  if (!wasLocked && eventLocked() && !bootQuiet) toast(EVENT.frozen ? "⏸ The host froze the scores." : "⌛ Time’s up! Final scores are locked.");
+  if (!wasLocked && eventLocked() && eventSeen) toast(EVENT.frozen ? "⏸ The host froze the scores." : "⌛ Time’s up! Final scores are locked.");
+  eventSeen = true;
 }
 $("announceX").addEventListener("click",()=>{ $("announce").hidden=true; seenAnnounce=(EVENT.announcement&&EVENT.announcement.at)||Date.now(); try{ localStorage.setItem("haunted-announce-seen", seenAnnounce); }catch(e){} });
 let renderQueued=false;
