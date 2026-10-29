@@ -109,7 +109,7 @@ code{font-size:.92em;background:var(--night);border:1px solid var(--line);border
 aside{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
 @media (max-width:900px){aside{position:static}}
 .panel{background:var(--crypt);border:1px solid var(--line);border-radius:14px;padding:16px}
-.panel h3{margin:0 0 10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.panel h3,.covenbox h3{margin:0 0 10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);font-weight:600;display:flex;justify-content:space-between;gap:8px}
 .live{color:var(--spirit);font-weight:500}
 .live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--spirit);margin-right:6px;vertical-align:1px;animation:pulse 2s infinite}
 .live.off{color:var(--ash)}.live.off::before{background:var(--ash);animation:none}
@@ -125,6 +125,8 @@ ol.board .nm small{display:block;color:var(--ash);font-size:11.5px;overflow:hidd
 ol.board .sc{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600}
 ol.board li:nth-child(1) .pos{color:var(--ember)}
 .empty{color:var(--ash);font-size:13px;margin:0}
+.covenbox .cname{font-weight:600;font-size:17px;overflow-wrap:anywhere}
+#covenChip{max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .covenp .code{font-family:var(--font-mono);font-size:26px;letter-spacing:.2em;color:var(--ember);font-weight:600}
 .covenp .cname{font-weight:600;font-size:16px;margin:0 0 2px}
 .covenp p{margin:0 0 10px;font-size:13.5px;color:var(--ash)}
@@ -236,6 +238,7 @@ dialog::backdrop{background:#05040acc;backdrop-filter:blur(3px)}
 #join .dlg{gap:12px}
 #join p{margin:0;color:var(--ash)}
 .field{flex:1 1 220px;min-width:0;background:var(--night);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+#covenName,#covenCode{flex:none;width:100%}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .seg button{background:var(--stone);border:1px solid var(--line);border-radius:10px;padding:10px 8px;font-size:13.5px;text-align:center}
 .seg button[aria-pressed="true"]{border-color:var(--ember);background:var(--ember-soft);color:var(--bone)}
@@ -269,6 +272,7 @@ body.projector .panel h3{font-size:16px}
 /* Map version: a full-width haunted trail; HUD on top, board in a drawer. */
 .hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding-block:12px;background:linear-gradient(180deg,var(--night) 70%,#0c0b1200)}
 .hud .brand h1{font-size:clamp(26px,4.5vw,40px)}
+@media (max-width:640px){.hud{position:static}}
 .hud .brand p{font-size:10.5px}
 .chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .chip{background:var(--crypt);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;display:flex;gap:6px;align-items:center;white-space:nowrap}
@@ -368,6 +372,7 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
       <span class="chip rankc" id="meRank">Trick-or-Treater</span>
       <span class="chip"><span class="star">★</span><b id="meStars">0</b><span style="color:var(--ash)">/ 75</span></span>
       <span class="chip"><b id="meScore">0</b> pts</span>
+      <button class="btn" id="covenChip" type="button">🕯️ Start or join a coven</button>
       <button class="btn" id="soundBtn" type="button" aria-pressed="false">🔇 Sound off</button>
       <button class="btn" id="drawerBtn" type="button">🏆 Board</button>
       <button class="btn" id="projBtn" type="button">Projector view</button>
@@ -399,7 +404,7 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
       </div>
       <div class="panel coven">
         <h3><span>Nobody climbs alone</span></h3>
-        <p>Stuck? <strong>Summon a familiar</strong> for a hint (you’ll earn 1 star and half points). Even better, turn to the person next to you. Explaining a solution is how you really learn it.</p>
+        <p>Stuck? <strong>Summon a familiar</strong> for a hint (it costs a star and half the points; wrong guesses cost nothing). Even better, turn to the person next to you. Explaining a solution is how you really learn it.</p>
       </div>
       <p class="note" id="offlineNote" hidden></p>
     </aside>
@@ -516,6 +521,13 @@ body.projector aside.drawer{position:static;transform:none;max-width:900px;margi
   </form>
 </dialog>
 
+<dialog id="covenDlg" aria-label="Your coven">
+  <div class="dlg">
+    <div class="row"><span class="kind">🕯️ Coven</span><button class="x" type="button" data-close aria-label="Close">×</button></div>
+    <div class="covenp" id="covenDlgBody"></div>
+  </div>
+</dialog>
+
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
@@ -531,6 +543,11 @@ async function supaInit(){
   if (!window.supabase || SB_URL.startsWith("__")) throw new Error("backend not configured");
   const sb = supabase.createClient(SB_URL, SB_KEY, {auth:{persistSession:true, autoRefreshToken:true, storageKey:"haunted-trail-auth"}});
   let {data:{session}} = await sb.auth.getSession();
+  if (session){
+    // a saved sign-in for a player that was removed (e.g. the board was reset): start fresh
+    const {data:u, error} = await sb.auth.getUser();
+    if (error || !u || !u.user){ try{ await sb.auth.signOut({scope:"local"}); }catch(e){} session = null; }
+  }
   if (!session){
     const r = await sb.auth.signInAnonymously();
     if (r.error) throw r.error;
@@ -558,7 +575,6 @@ async function supaInit(){
         },
         async set(doc){
           const row = {...key, doc};
-          if (t==="teams") row.founder = uid;
           if (t==="drafts") row.by_id = uid;
           const {error} = await sb.from(t).upsert(row);
           if (error) throw fail(error);
@@ -1055,8 +1071,8 @@ function decor(z, near){
   return out.join("");
 }
 function starPath(cx,cy,R){ let d=""; for (let k=0;k<10;k++){ const a=-Math.PI/2+k*Math.PI/5, rr=k%2?R*.45:R; d+=(k?"L":"M")+(cx+rr*Math.cos(a)).toFixed(1)+","+(cy+rr*Math.sin(a)).toFixed(1); } return d+"Z"; }
-const missesAllowed = p => p.boss ? 3 : p.type==="code" ? 2 : 1;
-function starsFor(st,id){ if (!st.solved[id]) return 0; if (st.hints[id]) return 1; if ((st.tries[id]||0)>missesAllowed(byId[id])) return 2; return 3; }
+// stars only count hints; wrong guesses and failed submits are free
+function starsFor(st,id){ if (!st.solved[id]) return 0; const h=+st.hints[id]||0; return h===0 ? 3 : h===1 ? 2 : 1; }
 function totalStars(st){ return ALL.reduce((a,p)=>a+starsFor(st,p.id),0); }
 function buildMap(){
   MAP=layoutMap();
@@ -1205,8 +1221,7 @@ const FX = {
 };
 function starsHtml(n, pop){ return [0,1,2].map(k=>`<span class="${k<n?"on":""}${pop&&k<n?" pop":""}" style="animation-delay:${k*.18}s">★</span>`).join(""); }
 function starRule(p){
-  const n=missesAllowed(p);
-  return p.type==="code" ? `★★★ no hints, up to ${n} failed submits (Run is free) · ★★ no hints · ★ with hints` : `★★★ no hints, up to ${n} wrong guess · ★★ no hints · ★ with hints`;
+  return p.type==="code" ? "★★★ no hints · ★★ one hint · ★ two or more. Wrong submits are free." : "★★★ no hints · ★★ with the hint. Wrong guesses are free.";
 }
 function levelHeader(p, pop){
   const st=E(), main = MAP && MAP.main.find(n=>n.id===p.id);
@@ -1217,18 +1232,42 @@ function renderEggs(st){
   const n=Object.keys(st.eggs).length; $("eggCount").textContent=`${n} / 4`;
   $("eggs").querySelectorAll("span").forEach((s,i)=>s.classList.toggle("found",!!st.eggs[EGG_ORDER[i]]));
 }
-function renderCoven(){
-  const el=$("covenPanel"); el.textContent="";
+const HOSTED = !window.claude;   // on its own website (not inside claude.ai), invite links work
+function inviteUrl(code){ const u=new URL(location.href); u.hash=""; u.search="?coven="+code; return u.toString(); }
+async function copyText(text, btn, done){
+  try{ await navigator.clipboard.writeText(text); const o=btn.textContent; btn.textContent=done||"Copied ✓"; setTimeout(()=>btn.textContent=o,1600); }
+  catch(e){ const f=btn.closest(".covenbox")?.querySelector(".invite"); if (f){ f.focus(); f.select(); } btn.textContent="Select + copy above"; }
+}
+function covenBox(el){
+  if (el.querySelector("input:focus")) return;          // don't wipe a name someone is typing
+  el.textContent="";
+  el.classList.add("covenbox");
   if (!S.teamId){
-    el.innerHTML=`<h3><span>Your coven</span></h3><p>Playing solo. Start a coven to team up: everyone uses their own device, and solves, hints and secrets are shared.</p><div class="row"><button class="btn" type="button" data-coven="start">Start a coven</button><button class="btn" type="button" data-coven="join">Join with a code</button></div>`;
-    el.querySelectorAll("[data-coven]").forEach(b=>b.addEventListener("click",()=>openJoin(b.dataset.coven)));
-    if (!db){ el.querySelectorAll("button").forEach(b=>b.disabled=true); }
+    el.innerHTML=`<h3><span>Your coven</span></h3><p>Playing solo. Start a coven to team up: everyone plays on their own device, and solves, hints and secrets are shared. You’ll get a code and an invite link to send your friends.</p><div class="row"><button class="btn primary" type="button" data-coven="start">Start a coven</button><button class="btn" type="button" data-coven="join">Join with a code</button></div>`;
+    el.querySelectorAll("[data-coven]").forEach(b=>b.addEventListener("click",()=>{ $("covenDlg").open && $("covenDlg").close(); openJoin(b.dataset.coven); }));
+    if (!db) el.querySelectorAll("button").forEach(b=>b.disabled=true);
+    if (!db) el.insertAdjacentHTML("beforeend",`<p style="margin-top:8px">Covens need the live board, which isn’t connected right now.</p>`);
     return;
   }
-  const t = TEAMS[S.teamId];
-  el.innerHTML=`<h3><span>Your coven</span><span>code</span></h3><div class="row" style="justify-content:space-between"><p class="cname"></p><span class="code"></span></div><p>Friends join with this code from their own device.</p><ul></ul><div class="row"><button class="btn" type="button" id="copyCode">Copy code</button><button class="btn ghost" type="button" id="leaveCoven">Leave coven</button></div>`;
-  el.querySelector(".cname").textContent = t ? t.name : "Your coven";
+  const t = TEAMS[S.teamId] || {};
+  el.innerHTML=`<h3><span>Your coven</span><span>invite code</span></h3>
+    <div class="row" style="justify-content:space-between;align-items:flex-start"><div class="cn" style="min-width:0;flex:1"></div><span class="code"></span></div>
+    <p>Send friends the invite link (it opens the game with your code filled in), or have them choose <b>Join a coven</b> and type the code.</p>
+    ${HOSTED?`<div class="row"><input class="field invite" readonly aria-label="Invite link" style="flex:1 1 200px;font-family:var(--font-mono);font-size:12.5px"></div>`:""}
+    <div class="row">${HOSTED?`<button class="btn primary" type="button" data-act="link">Copy invite link</button>`:""}<button class="btn" type="button" data-act="code">Copy code</button></div>
+    <ul></ul>
+    <div class="row"><button class="btn ghost" type="button" data-act="leave">Leave coven</button></div>`;
+  const cn=el.querySelector(".cn");
+  const showName=()=>{ cn.innerHTML=`<p class="cname" style="margin:0"></p><button class="btn ghost" type="button" data-act="rename" style="padding:2px 8px;margin-top:4px;font-size:12px">✎ Rename</button>`; cn.querySelector(".cname").textContent = t.name || "Your coven"; cn.querySelector('[data-act="rename"]').addEventListener("click", editName); };
+  const editName=()=>{
+    cn.innerHTML=`<form class="row" style="gap:6px"><input class="field" maxlength="28" aria-label="Coven name" style="flex:1 1 140px;padding:7px 10px"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" data-x>Cancel</button></form>`;
+    const f=cn.querySelector("form"), inp=f.querySelector("input"); inp.value=t.name||""; inp.focus(); inp.select();
+    f.querySelector("[data-x]").addEventListener("click", showName);
+    f.addEventListener("submit", async e=>{ e.preventDefault(); const name=inp.value.trim().slice(0,28); if (!name){ inp.focus(); return; } inp.blur(); await renameCoven(name); });
+  };
+  showName();
   el.querySelector(".code").textContent = S.teamId;
+  const inv=el.querySelector(".invite"); if (inv){ inv.value=inviteUrl(S.teamId); inv.addEventListener("focus",()=>inv.select()); }
   const ul=el.querySelector("ul");
   const members = [[uid||"me", {alias:S.alias}], ...mates()];
   for (const [id,p] of members){
@@ -1238,12 +1277,36 @@ function renderCoven(){
     const st=document.createElement("span"); st.className="st";
     if (id!==(uid||"me")){
       const peer = PEERS.find(x=>x.presence && x.presence.uid===id);
-      st.textContent = !peer ? "away" : peer.presence.on && byId[peer.presence.on] ? "on " + byId[peer.presence.on].title : "browsing";
+      st.textContent = !peer ? "away" : peer.presence.on && byId[peer.presence.on] ? "on " + byId[peer.presence.on].title : "online";
     } else st.textContent = current && byId[current] ? "on " + byId[current].title : "";
     li.append(dot,nm,st); ul.appendChild(li);
   }
-  $("copyCode").addEventListener("click", async e=>{ try{ await navigator.clipboard.writeText(S.teamId); e.target.textContent="Copied"; }catch(err){ e.target.textContent=S.teamId; } });
-  $("leaveCoven").addEventListener("click", leaveCoven);
+  if (members.length===1) ul.insertAdjacentHTML("beforeend",`<li style="color:var(--ash)">No one else yet. Send the invite!</li>`);
+  el.querySelector('[data-act="code"]').addEventListener("click", e=>copyText(S.teamId, e.target));
+  const lk=el.querySelector('[data-act="link"]'); if (lk) lk.addEventListener("click", e=>copyText(inviteUrl(S.teamId), e.target));
+  const lv=el.querySelector('[data-act="leave"]');
+  lv.addEventListener("click", ()=>{ if (lv.dataset.sure){ leaveCoven(); } else { lv.dataset.sure="1"; lv.textContent="Click again to leave"; lv.classList.remove("ghost"); setTimeout(()=>{ if (lv.isConnected){ delete lv.dataset.sure; lv.textContent="Leave coven"; lv.classList.add("ghost"); } },3000); } });
+}
+function renderCovenChip(){
+  const c=$("covenChip"); if (!c) return;
+  const t=S.teamId && TEAMS[S.teamId];
+  c.textContent = S.teamId ? `🕯️ ${S.teamId} · ${t && t.name ? String(t.name).slice(0,28) : "Coven"}` : "🕯️ Start or join a coven";
+  c.title = S.teamId ? "Your coven: invite code, invite link, members" : "Team up with friends";
+}
+function renderCoven(){
+  covenBox($("covenPanel"));
+  if ($("covenDlg").open) covenBox($("covenDlgBody"));
+  renderCovenChip();
+}
+function showCovenDlg(){ covenBox($("covenDlgBody")); if (!$("covenDlg").open) $("covenDlg").showModal(); }
+async function renameCoven(name){
+  const code=S.teamId; if (!db || !code) return;
+  try{
+    await db.doc("teams/"+code).set({...(TEAMS[code]||{}), name});
+    TEAMS[code]={...(TEAMS[code]||{}), name};
+    toast("🕯️ Coven renamed to " + name);
+  }catch(e){ toast("Couldn’t rename the coven. Try again in a moment."); }
+  renderAll(); renderBoard();
 }
 function renderAll(){
   const st=E();
@@ -1623,7 +1686,9 @@ $("joinForm").addEventListener("submit",async e=>{
       await db.doc("teams/"+code).set({name, createdAt:Date.now(), founder:uid});
     }catch(err){ fb.textContent="Couldn’t create the coven. Try again in a moment."; fb.className="fb bad"; return; }
     TEAMS[code]={name}; await setTeam(code);
-    toast(`🕯️ Coven created. Your code is ${code}`);
+    $("join").close(); save(); renderAll(); showCovenDlg();
+    toast(`🕯️ Coven created. Send your friends the invite link or the code ${code}`);
+    return;
   } else if (joinMode==="join"){
     const code=$("covenCode").value.trim().toUpperCase();
     if (code.length!==4){ fb.textContent="Coven codes are 4 characters."; fb.className="fb bad"; return; }
@@ -1648,6 +1713,7 @@ async function setTeam(code){
 }
 async function leaveCoven(){ await setTeam(""); save(); renderAll(); renderBoard(); toast("You left the coven. Your own solves stay with you."); }
 $("renameBtn").addEventListener("click",()=>openJoin());
+if ($("covenChip")) $("covenChip").addEventListener("click", showCovenDlg);
 function setProjector(on){ document.body.classList.toggle("projector",on); $("projBtn").textContent=on?"Back to the hunt":"Projector view"; }
 $("projBtn").addEventListener("click",()=>setProjector(!document.body.classList.contains("projector")));
 if (location.hash==="#board") setProjector(true);
@@ -1691,8 +1757,21 @@ if (!S.alias && location.hash!=="#board") openJoin("solo");
     }
     if (S.alias) save();
   }catch(e){}
+  if (S.teamId){
+    // the coven may have been removed since this browser last played
+    try{ const ts=await db.doc("teams/"+S.teamId).get(); if (!ts.exists){ S.teamId=""; save(); } else TEAMS[S.teamId]=ts.data(); }catch(e){}
+  }
   if (S.teamId) await setTeam(S.teamId);
   renderAll();
+  const inv = HOSTED ? (new URLSearchParams(location.search).get("coven")||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4) : "";
+  if (inv){
+    try{ history.replaceState(null, "", location.pathname + location.hash); }catch(e){}
+    if (inv!==S.teamId){
+      openJoin("join"); $("covenCode").value=inv;
+      try{ const ts=await db.doc("teams/"+inv).get(); if (ts.exists){ $("joinFb").textContent=`You’ve been invited to ${String(ts.data().name||"a coven").slice(0,28)}. Pick a name and join.`; $("joinFb").className="fb good"; } }catch(e){}
+      if (!S.alias) $("joinName").focus();
+    }
+  }
   db.collection("teams").onSnapshot(snap=>{ TEAMS={}; snap.docs.forEach(d=>{ if (d.id.length===4) TEAMS[d.id]=d.data(); }); renderBoard(); renderMe(E()); renderCoven(); }, ()=>{});
   db.collection("players").onSnapshot(
     snap=>{

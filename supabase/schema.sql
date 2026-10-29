@@ -35,9 +35,13 @@ create policy "players read"   on public.players for select using (true);
 create policy "players insert" on public.players for insert to authenticated with check (id = auth.uid());
 create policy "players update" on public.players for update to authenticated using (id = auth.uid()) with check (id = auth.uid());
 
--- teams: everyone reads coven names; anyone signed in can found one (as themselves); nobody edits them after
+-- teams: everyone reads coven names; anyone signed in can found one (as themselves)
 create policy "teams read"   on public.teams for select using (true);
 create policy "teams insert" on public.teams for insert to authenticated with check (founder = auth.uid());
+-- members can rename their own coven (the code and founder stay fixed)
+create policy "teams update" on public.teams for update to authenticated
+  using (exists (select 1 from public.players p where p.id = auth.uid() and p.doc->>'teamId' = teams.code))
+  with check (exists (select 1 from public.players p where p.id = auth.uid() and p.doc->>'teamId' = teams.code));
 
 -- drafts: only members of that coven read or write its shared code
 create policy "drafts read" on public.drafts for select to authenticated
