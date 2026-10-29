@@ -252,7 +252,10 @@ dialog::backdrop{background:#05040acc;backdrop-filter:blur(3px)}
 .announce span{flex:1;min-width:0;overflow-wrap:anywhere}
 #timerChip.low{border-color:var(--blood);color:var(--blood);animation:pulse 1s infinite}
 #timerChip.over{border-color:var(--blood);color:var(--blood)}
-.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;flex-direction:column;gap:8px;z-index:50;width:min(420px,calc(100vw - 32px));pointer-events:none}
+/* notices live in the bottom-right corner, out of the way */
+.toasts{position:fixed;right:16px;left:auto;transform:none;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;flex-direction:column;align-items:flex-end;gap:8px;z-index:50;width:min(340px,calc(100vw - 32px));pointer-events:none}
+.toast{font-size:13.5px}
+@media (max-width:640px){.toasts{right:50%;transform:translateX(50%);align-items:stretch}}
 dialog .toasts{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
 .toast{background:var(--stone);border:1px solid var(--ember);border-radius:12px;padding:10px 14px;font-size:14px;box-shadow:0 10px 30px #000a;animation:rise .3s ease}
 @keyframes rise{from{transform:translateY(10px);opacity:0}}
