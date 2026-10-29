@@ -631,7 +631,8 @@ async function supaInit(){
             })
             .subscribe(st=>{ if (st==="SUBSCRIBED") delta(); });
           load();
-          const every = t==="players" ? 5000 : 10000;
+          // host messages (timer, announcements, freeze) must land fast even if a live message drops
+          const every = t==="event" ? 3000 : t==="players" ? 5000 : 10000;
           const poll = setInterval(()=>{ if (!document.hidden || Math.random()<.34) delta(); }, every + Math.random()*1000);
           const full = setInterval(load, 90000 + Math.random()*20000);
           return () => { dead=true; clearInterval(poll); clearInterval(full); sb.removeChannel(ch); };
