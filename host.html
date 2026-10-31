@@ -118,6 +118,53 @@ button:disabled{opacity:.5;cursor:not-allowed}
 /* host drawer */
 .hostbtn{position:fixed;right:14px;bottom:14px;z-index:30;background:#16141fcc;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--ash);opacity:.55;transition:opacity .2s}
 .hostbtn:hover,.hostbtn:focus-visible{opacity:1;color:var(--bone)}
+.peoplebtn{right:120px}
+/* People: full-screen host roster */
+.people{position:fixed;inset:0;z-index:45;background:#0c0b12f2;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);display:flex;flex-direction:column;padding:18px 22px;gap:12px;font-size:14px}
+.people[hidden]{display:none}
+.people .top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.people h2{margin:0;font-family:var(--font-display);font-weight:400;color:var(--ember);font-size:30px;letter-spacing:.03em}
+.tabs{display:flex;gap:6px}
+.tabs button{background:var(--stone);border:1px solid var(--line);border-radius:999px;padding:6px 14px;color:var(--ash);font:inherit;cursor:pointer}
+.tabs button[aria-selected="true"]{border-color:var(--ember);color:var(--bone);background:var(--ember-soft)}
+.pstats{display:flex;flex-wrap:wrap;gap:8px}
+.pstat{background:var(--crypt);border:1px solid var(--line);border-radius:12px;padding:8px 12px;min-width:110px}
+.pstat b{display:block;font-family:var(--font-mono);font-size:22px;color:var(--bone);font-variant-numeric:tabular-nums}
+.pstat span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ash)}
+.ptools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ptools .field{flex:1 1 220px;max-width:340px}
+.ptools select{background:var(--stone);border:1px solid var(--line);border-radius:10px;padding:7px 10px;color:var(--bone);font:inherit}
+.spark{background:var(--crypt);border:1px solid var(--line);border-radius:12px;padding:8px 12px;flex:1 1 320px;min-width:0}
+.spark svg{display:block;width:100%;height:56px}
+.spark .lg{font-size:11px;color:var(--ash);display:flex;gap:14px}
+.spark .lg i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.pbody{flex:1;min-height:0;overflow:auto;border:1px solid var(--line);border-radius:14px;background:var(--crypt)}
+table.roster{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.roster th{position:sticky;top:0;background:var(--stone);text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);padding:9px 10px;font-weight:600;white-space:nowrap;z-index:1}
+.roster td{padding:8px 10px;border-top:1px solid #34304a88;vertical-align:middle;white-space:nowrap}
+.roster tr:hover td{background:#ffffff06}
+.roster .nm{font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.roster .num{font-family:var(--font-mono);text-align:right}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#4a4560;margin-right:2px}
+.dot.on{background:var(--spirit);box-shadow:0 0 8px var(--spirit)}
+.dot.idle{background:#d9a441}
+.cities{display:flex;gap:3px}
+.cities i{display:block;width:16px;height:14px;border-radius:3px;background:#2a2638;position:relative;overflow:hidden}
+.cities i b{position:absolute;left:0;bottom:0;width:100%;background:var(--ember)}
+.cities i.clear b{background:var(--spirit)}
+.cities i.boss{outline:1px solid var(--boss)}
+.doing{color:var(--ash);max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.doing.live{color:var(--bone)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding:12px}
+.ccard{background:var(--night);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.ccard .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ccard .h b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ccard .h code{font-family:var(--font-mono);color:var(--ember);letter-spacing:.15em}
+.ccard ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.ccard li{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.ccard li span:last-child{color:var(--ash);font-size:12px;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ccard .meta{display:flex;justify-content:space-between;color:var(--ash);font-size:12.5px}
+.ccard .meta b{color:var(--bone);font-family:var(--font-mono)}
 .scrim{position:fixed;inset:0;background:#05040a99;z-index:39}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,94vw);z-index:40;background:var(--night);border-left:1px solid var(--line);box-shadow:-20px 0 60px #000c;padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;font-size:15px;transform:translateX(105%);transition:transform .3s ease}
 body.host-open .drawer{transform:none}
@@ -196,6 +243,25 @@ body.host-open .drawer{transform:none}
 </div>
 
 <button class="hostbtn" id="hostBtn" type="button">🔑 Host</button>
+<button class="hostbtn peoplebtn" id="peopleBtn" type="button" hidden>👥 People</button>
+<section class="people" id="people" hidden aria-label="People">
+  <div class="top">
+    <h2>People</h2>
+    <div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-tab="players">Players</button><button type="button" role="tab" aria-selected="false" data-tab="covens">Covens</button></div>
+    <div class="ptools"><button class="btn" type="button" id="csvBtn">⬇ Download results (CSV)</button><button class="x" type="button" id="peopleClose" aria-label="Close people" style="font-size:26px">×</button></div>
+  </div>
+  <div class="top" style="align-items:stretch">
+    <div class="pstats" id="pstats"></div>
+    <div class="spark"><div class="lg"><span><i style="background:var(--ember)"></i>joined (total)</span><span><i style="background:var(--spirit)"></i>online now</span><span id="sparkNote"></span></div><svg id="spark" viewBox="0 0 600 56" preserveAspectRatio="none"></svg></div>
+  </div>
+  <div class="ptools">
+    <input class="field" id="pFilter" type="search" placeholder="search name or coven" aria-label="Search players">
+    <select id="pSort" aria-label="Sort by"><option value="score">Sort: score</option><option value="online">Sort: online first</option><option value="name">Sort: name</option><option value="coven">Sort: coven</option><option value="recent">Sort: last active</option><option value="joined">Sort: newest</option></select>
+    <select id="pShow" aria-label="Show"><option value="all">Everyone</option><option value="online">Online now</option><option value="coven">In a coven</option><option value="solo">Solo</option><option value="stuck">Idle 10+ min</option></select>
+    <span class="hint" id="pCount"></span>
+  </div>
+  <div class="pbody" id="pbody"></div>
+</section>
 <div class="scrim" id="scrim" hidden></div>
 <aside class="drawer" id="drawer" aria-label="Host controls">
   <div class="row" style="justify-content:space-between"><h3>Host controls</h3><button class="x" type="button" id="drawerClose" aria-label="Close host controls">×</button></div>
@@ -359,6 +425,7 @@ function rebuildBossFirst(){
 /* ---------- render (coalesced) ---------- */
 let pending=false, lastRender=0;
 function schedule(){
+  if (typeof peopleDirty==="function") peopleDirty();
   if (pending) return; pending=true;
   const wait = Math.max(0, 250-(performance.now()-lastRender));
   setTimeout(()=>requestAnimationFrame(()=>{ pending=false; lastRender=performance.now(); render(); }), wait);
@@ -592,6 +659,7 @@ async function refreshHost(){
   $("loginForm").hidden = isHost;
   $("controls").hidden = !isHost;
   $("hostBtn").textContent = isHost ? "🔑 Host ✓" : "🔑 Host";
+  $("peopleBtn").hidden = !isHost; if (!isHost) $("people").hidden = true;
   if (isHost){ syncControls(); renderPlayerList(); }
 }
 $("loginForm").addEventListener("submit", async e=>{
@@ -675,6 +743,108 @@ $("resetBtn").addEventListener("click", async ()=>{
   PLAYERS={}; TEAMS={}; FEED.length=0; bossFirst={}; lastGroups={}; $("board").querySelectorAll(".brow").forEach(el=>el.remove());
   $("resetTxt").value=""; fb("resetFb","The board is empty. Ready for a fresh hunt.",true); schedule(); renderPlayerList();
 });
+/* ---------- people: heartbeats from every player page ---------- */
+const BEATS = {};                     // uid -> {alias, team, on, at}
+const ONLINE_MS = 90000, IDLE_MS = 10*60000;
+let onlineHistory = [];               // [t, count] sampled every 30s while this screen is open
+sb.channel("host-feed").on("broadcast", {event:"beat"}, ({payload})=>{
+  if (!payload || !payload.uid) return;
+  BEATS[payload.uid] = {alias:String(payload.alias||"").slice(0,24), team:String(payload.team||""), on:payload.on||null, at:Date.now()};
+  peopleDirty();
+}).subscribe();
+const onlineNow = () => Object.keys(PLAYERS).filter(id=>BEATS[id] && Date.now()-BEATS[id].at < ONLINE_MS).length;
+setInterval(()=>{ onlineHistory.push([Date.now(), onlineNow()]); if (onlineHistory.length>400) onlineHistory.shift(); peopleDirty(); }, 30000);
+function lastActive(id, p){ return Math.max(+p.lastAt||0, BEATS[id] ? BEATS[id].at : 0); }
+function statusOf(id, p){ const b=BEATS[id]; if (b && Date.now()-b.at < ONLINE_MS) return "on"; return (Date.now()-lastActive(id,p) < IDLE_MS) ? "idle" : "off"; }
+const starsOf = p => Object.keys(p.solved||{}).reduce((a,id)=>{ const h=+((p.hints||{})[id])||0; return a + (h===0?3:h===1?2:1); },0);
+function rows(){
+  return Object.entries(PLAYERS).map(([id,p])=>{
+    const st={solved:p.solved||{}, hints:p.hints||{}, eggs:p.eggs||{}};
+    const t=p.teamId||"", tn=t ? ((TEAMS[t]&&TEAMS[t].name)||("Coven "+t)) : "";
+    const b=BEATS[id];
+    return {id, p, alias:p.alias||"Unnamed soul", team:t, teamName:tn, st, rank:rankOf(st), solved:Object.keys(st.solved).length,
+      stars:starsOf(p), hints:Object.keys(st.hints).length, eggs:Object.keys(st.eggs).length, score:scoreOf(st),
+      status:statusOf(id,p), on:b&&b.on&&PUZ[b.on] ? PUZ[b.on] : null, last:lastActive(id,p), joined:+p.joinedAt||0};
+  });
+}
+function cityCells(st){
+  return LEVELS.map((L,li)=>{ const n=solvedIn(st,li), boss=!!st.solved[L.boss[0]]; return `<i class="${n>=3?"clear":""}${boss?" boss":""}" title="${esc(L.city)}: ${n}/4${boss?" + boss":""}"><b style="height:${n*25}%"></b></i>`; }).join("");
+}
+let peopleTab="players", peopleQueued=false;
+function peopleDirty(){ if ($("people").hidden || peopleQueued) return; peopleQueued=true; setTimeout(()=>{ peopleQueued=false; renderPeople(); }, 800); }
+function renderPeople(){
+  if ($("people").hidden) return;
+  if ($("pbody").querySelector(".sure")) return;   // don't redraw under a pending Remove
+  const all=rows(), on=all.filter(r=>r.status==="on").length, covens=new Set(all.filter(r=>r.team).map(r=>r.team));
+  const avgSolved = all.length ? (all.reduce((a,r)=>a+r.solved,0)/all.length).toFixed(1) : "0";
+  $("pstats").innerHTML = [["Players",all.length],["Online now",on],["Covens",covens.size],["Solo",all.filter(r=>!r.team).length],["Avg solved",avgSolved],["Elders",all.filter(r=>r.rank===5).length]]
+    .map(([k,v])=>`<div class="pstat"><b>${v}</b><span>${k}</span></div>`).join("");
+  drawSpark(all);
+  const q=$("pFilter").value.trim().toLowerCase(), show=$("pShow").value, sort=$("pSort").value;
+  let list=all.filter(r=>!q || r.alias.toLowerCase().includes(q) || r.teamName.toLowerCase().includes(q) || r.team.toLowerCase().includes(q));
+  if (show==="online") list=list.filter(r=>r.status==="on");
+  if (show==="coven") list=list.filter(r=>r.team);
+  if (show==="solo") list=list.filter(r=>!r.team);
+  if (show==="stuck") list=list.filter(r=>Date.now()-r.last > IDLE_MS);
+  const S={score:(a,b)=>b.score-a.score||b.solved-a.solved, online:(a,b)=>(a.status==="on"?0:a.status==="idle"?1:2)-(b.status==="on"?0:b.status==="idle"?1:2)||b.score-a.score,
+    name:(a,b)=>a.alias.localeCompare(b.alias), coven:(a,b)=>(a.teamName||"~").localeCompare(b.teamName||"~")||b.score-a.score, recent:(a,b)=>b.last-a.last, joined:(a,b)=>b.joined-a.joined};
+  list.sort(S[sort]||S.score);
+  $("pCount").textContent = `${list.length} shown`;
+  const body=$("pbody");
+  if (peopleTab==="covens") return renderCovens(all, body);
+  const tr = r => {
+    const doing = r.status==="on" ? (r.on ? `<span class="doing live">on ${esc(r.on.title)} · ${esc(r.on.city)}</span>` : `<span class="doing live">browsing the map</span>`) : `<span class="doing">${r.status==="idle"?"idle":"away"}</span>`;
+    return `<tr data-id="${esc(r.id)}"><td><span class="dot ${r.status}"></span></td><td class="nm" title="${esc(r.alias)}">${esc(r.alias)}</td><td>${r.team?`${esc(clip(r.teamName,22))} <span class="hint">${esc(r.team)}</span>`:`<span class="hint">solo</span>`}</td>
+      <td>${esc(RANKS[r.rank])}</td><td><div class="cities">${cityCells(r.st)}</div></td><td class="num">${r.solved}/25</td><td class="num">${r.stars}★</td><td class="num">${r.hints}</td><td class="num">${r.eggs}/4</td><td class="num"><b>${r.score}</b></td>
+      <td>${doing}</td><td class="hint">${r.last?ago(r.last)+" ago":"—"}</td><td class="hint">${r.joined?ago(r.joined)+" ago":"—"}</td><td><button class="btn danger" type="button" data-rm="${esc(r.id)}" style="padding:3px 10px;font-size:12px">Remove</button></td></tr>`;
+  };
+  body.innerHTML = `<table class="roster"><thead><tr><th></th><th>Player</th><th>Coven</th><th>Rank</th><th>Cities</th><th>Solved</th><th>Stars</th><th>Hints</th><th>Secrets</th><th>Score</th><th>Doing now</th><th>Last active</th><th>Joined</th><th></th></tr></thead><tbody>${list.slice(0,600).map(tr).join("") || `<tr><td colspan="14" class="hint" style="padding:18px">No players${q||show!=="all"?" match":" yet"}.</td></tr>`}</tbody></table>`;
+  body.querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click", async ()=>{
+    const id=b.dataset.rm, name=(PLAYERS[id]&&PLAYERS[id].alias)||"player";
+    if (!b.classList.contains("sure")){ b.classList.add("sure"); b.textContent="Confirm"; setTimeout(()=>{ if (b.isConnected && b.classList.contains("sure")){ b.classList.remove("sure"); b.textContent="Remove"; } },3000); return; }
+    b.disabled=true;
+    const {error}=await sb.rpc("admin_remove_player",{pid:id});
+    if (error){ b.textContent="Failed"; b.title=error.message; return; }
+    delete PLAYERS[id]; b.classList.remove("sure"); rebuildBossFirst(); schedule(); renderPlayerList(); renderPeople();
+  }));
+}
+function renderCovens(all, body){
+  const g={}; all.filter(r=>r.team).forEach(r=>(g[r.team]=g[r.team]||[]).push(r));
+  const cards=Object.entries(g).map(([code,ms])=>{
+    const st=merged(ms.map(m=>m.p)); return {code, ms, st, name:(TEAMS[code]&&TEAMS[code].name)||("Coven "+code), score:scoreOf(st), rank:rankOf(st), solved:Object.keys(st.solved).length, online:ms.filter(m=>m.status==="on").length};
+  }).sort((a,b)=>b.score-a.score);
+  body.innerHTML = cards.length ? `<div class="cgrid">${cards.map((c,i)=>`<div class="ccard"><div class="h"><b title="${esc(c.name)}">${i+1}. ${esc(c.name)}</b><code>${esc(c.code)}</code></div>
+    <div class="meta"><span><b>${c.score}</b> pts</span><span>${esc(RANKS[c.rank])}</span><span><b>${c.solved}</b>/25 solved</span><span><b>${c.online}</b>/${c.ms.length} online</span></div>
+    <div class="cities">${cityCells(c.st)}</div>
+    <ul>${c.ms.sort((a,b)=>b.score-a.score).map(m=>`<li><span><span class="dot ${m.status}"></span> ${esc(m.alias)}</span><span>${m.status==="on"?(m.on?"on "+esc(m.on.title):"browsing"):(m.last?ago(m.last)+" ago":"away")}</span></li>`).join("")}</ul></div>`).join("")}</div>`
+    : `<p class="hint" style="padding:18px">No covens yet.</p>`;
+}
+function drawSpark(all){
+  const now=Date.now(), joins=all.map(r=>r.joined).filter(Boolean).sort((a,b)=>a-b);
+  const t0=Math.min(joins[0]||now, onlineHistory[0]?onlineHistory[0][0]:now), span=Math.max(60000, now-t0);
+  const maxY=Math.max(1, joins.length, ...onlineHistory.map(x=>x[1]));
+  const X=t=>((t-t0)/span*600).toFixed(1), Y=v=>(54-v/maxY*50).toFixed(1);
+  let jp=`M0,54`; joins.forEach((t,i)=>{ jp+=` L${X(t)},${Y(i)} L${X(t)},${Y(i+1)}`; }); jp+=` L600,${Y(joins.length)}`;
+  const op=onlineHistory.map(([t,v],i)=>(i?"L":"M")+X(t)+","+Y(v)).join(" ") + (onlineHistory.length?` L600,${Y(onlineNow())}`:"");
+  $("spark").innerHTML=`<path d="${jp}" fill="none" stroke="var(--ember)" stroke-width="2"/>${op?`<path d="${op}" fill="none" stroke="var(--spirit)" stroke-width="2"/>`:""}`;
+  $("sparkNote").textContent = `${new Date(t0).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})} → now · online line starts when this screen opened`;
+}
+function csvCell(v){ v=String(v==null?"":v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+$("csvBtn").addEventListener("click",()=>{
+  const all=rows().sort((a,b)=>b.score-a.score);
+  const covenScore={}; groupsNow().forEach(g=>{ if (g.team) covenScore[g.team]=g.score; });
+  const head=["place","player","coven","coven_code","coven_score","rank","solved","stars","hints_used","secrets","score","joined","last_active"];
+  const lines=[head.join(",")].concat(all.map((r,i)=>[i+1,r.alias,r.teamName,r.team,r.team?covenScore[r.team]:"",RANKS[r.rank],r.solved,r.stars,r.hints,r.eggs,r.score,r.joined?new Date(r.joined).toISOString():"",r.last?new Date(r.last).toISOString():""].map(csvCell).join(",")));
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([lines.join("\n")],{type:"text/csv"})); a.download=`haunted-trail-results-${new Date().toISOString().slice(0,16).replace(/[:T]/g,"-")}.csv`;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
+});
+document.querySelectorAll("#people .tabs button").forEach(b=>b.addEventListener("click",()=>{ peopleTab=b.dataset.tab; document.querySelectorAll("#people .tabs button").forEach(x=>x.setAttribute("aria-selected", x===b)); renderPeople(); }));
+["pFilter","pSort","pShow"].forEach(id=>$(id).addEventListener("input", renderPeople));
+$("peopleBtn").addEventListener("click",()=>{ $("people").hidden=false; renderPeople(); });
+$("peopleClose").addEventListener("click",()=>{ $("people").hidden=true; });
+addEventListener("keydown",e=>{ if (e.key==="Escape" && !$("people").hidden) $("people").hidden=true; });
+setInterval(()=>{ if (!$("people").hidden) renderPeople(); }, 10000);   // keep "ago" times and online dots fresh
+
 sb.auth.onAuthStateChange(()=>{ setTimeout(refreshHost,0); });
 refreshHost();
 tickClock(); schedule();
