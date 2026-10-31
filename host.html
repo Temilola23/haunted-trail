@@ -758,11 +758,13 @@ function lastActive(id, p){ return Math.max(+p.lastAt||0, BEATS[id] ? BEATS[id].
 function statusOf(id, p){ const b=BEATS[id]; if (b && Date.now()-b.at < ONLINE_MS) return "on"; return (Date.now()-lastActive(id,p) < IDLE_MS) ? "idle" : "off"; }
 const starsOf = p => Object.keys(p.solved||{}).reduce((a,id)=>{ const h=+((p.hints||{})[id])||0; return a + (h===0?3:h===1?2:1); },0);
 function rows(){
+  const covenSt={}; Object.entries(PLAYERS).forEach(([,p])=>{ if (p.teamId) (covenSt[p.teamId]=covenSt[p.teamId]||[]).push(p); });
+  for (const k in covenSt) covenSt[k]=merged(covenSt[k]);
   return Object.entries(PLAYERS).map(([id,p])=>{
     const st={solved:p.solved||{}, hints:p.hints||{}, eggs:p.eggs||{}};
     const t=p.teamId||"", tn=t ? ((TEAMS[t]&&TEAMS[t].name)||("Coven "+t)) : "";
     const b=BEATS[id];
-    return {id, p, alias:p.alias||"Unnamed soul", team:t, teamName:tn, st, rank:rankOf(st), solved:Object.keys(st.solved).length,
+    return {id, p, alias:p.alias||"Unnamed soul", team:t, teamName:tn, st, rank:rankOf(t && covenSt[t] ? covenSt[t] : st), ownRank:rankOf(st), solved:Object.keys(st.solved).length,
       stars:starsOf(p), hints:Object.keys(st.hints).length, eggs:Object.keys(st.eggs).length, score:scoreOf(st),
       status:statusOf(id,p), on:b&&b.on&&PUZ[b.on] ? PUZ[b.on] : null, last:lastActive(id,p), joined:+p.joinedAt||0};
   });
@@ -798,7 +800,7 @@ function renderPeople(){
       <td>${esc(RANKS[r.rank])}</td><td><div class="cprog">${cityCells(r.st)}</div></td><td class="num">${r.solved}/25</td><td class="num">${r.stars}★</td><td class="num">${r.hints}</td><td class="num">${r.eggs}/4</td><td class="num"><b>${r.score}</b></td>
       <td>${doing}</td><td class="hint">${r.last?ago(r.last)+" ago":"—"}</td><td class="hint">${r.joined?ago(r.joined)+" ago":"—"}</td><td><button class="btn danger" type="button" data-rm="${esc(r.id)}" style="padding:3px 10px;font-size:12px">Remove</button></td></tr>`;
   };
-  body.innerHTML = `<table class="roster"><thead><tr><th></th><th>Player</th><th>Coven</th><th>Rank</th><th>Cities</th><th>Solved</th><th>Stars</th><th>Hints</th><th>Secrets</th><th>Score</th><th>Doing now</th><th>Last active</th><th>Joined</th><th></th></tr></thead><tbody>${list.slice(0,600).map(tr).join("") || `<tr><td colspan="14" class="hint" style="padding:18px">No players${q||show!=="all"?" match":" yet"}.</td></tr>`}</tbody></table>`;
+  body.innerHTML = `<table class="roster"><thead><tr><th></th><th>Player</th><th>Coven</th><th title="What the player sees: their coven's rank, or their own if solo">Rank</th><th title="This player's own solves per city">Cities</th><th>Solved</th><th>Stars</th><th>Hints</th><th>Secrets</th><th title="Points this player earned themselves">Score</th><th>Doing now</th><th>Last active</th><th>Joined</th><th></th></tr></thead><tbody>${list.slice(0,600).map(tr).join("") || `<tr><td colspan="14" class="hint" style="padding:18px">No players${q||show!=="all"?" match":" yet"}.</td></tr>`}</tbody></table>`;
   body.querySelectorAll("[data-rm]").forEach(b=>b.addEventListener("click", async ()=>{
     const id=b.dataset.rm, name=(PLAYERS[id]&&PLAYERS[id].alias)||"player";
     if (!b.classList.contains("sure")){ b.classList.add("sure"); b.textContent="Confirm"; setTimeout(()=>{ if (b.isConnected && b.classList.contains("sure")){ b.classList.remove("sure"); b.textContent="Remove"; } },3000); return; }
@@ -835,8 +837,8 @@ function csvCell(v){ v=String(v==null?"":v); return /[",\n]/.test(v) ? '"'+v.rep
 $("csvBtn").addEventListener("click",()=>{
   const all=rows().sort((a,b)=>b.score-a.score);
   const covenScore={}; groupsNow().forEach(g=>{ if (g.team) covenScore[g.team]=g.score; });
-  const head=["place","player","coven","coven_code","coven_score","rank","solved","stars","hints_used","secrets","score","joined","last_active"];
-  const lines=[head.join(",")].concat(all.map((r,i)=>[i+1,r.alias,r.teamName,r.team,r.team?covenScore[r.team]:"",RANKS[r.rank],r.solved,r.stars,r.hints,r.eggs,r.score,r.joined?new Date(r.joined).toISOString():"",r.last?new Date(r.last).toISOString():""].map(csvCell).join(",")));
+  const head=["place","player","coven","coven_code","coven_score","rank_shown","own_rank","solved","stars","hints_used","secrets","own_score","joined","last_active"];
+  const lines=[head.join(",")].concat(all.map((r,i)=>[i+1,r.alias,r.teamName,r.team,r.team?covenScore[r.team]:"",RANKS[r.rank],RANKS[r.ownRank],r.solved,r.stars,r.hints,r.eggs,r.score,r.joined?new Date(r.joined).toISOString():"",r.last?new Date(r.last).toISOString():""].map(csvCell).join(",")));
   const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([lines.join("\n")],{type:"text/csv"})); a.download=`haunted-trail-results-${new Date().toISOString().slice(0,16).replace(/[:T]/g,"-")}.csv`;
   document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
 });
