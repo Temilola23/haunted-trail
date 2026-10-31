@@ -787,7 +787,7 @@ function renderPeople(){
   if (show==="solo") list=list.filter(r=>!r.team);
   if (show==="stuck") list=list.filter(r=>Date.now()-r.last > IDLE_MS);
   const S={score:(a,b)=>b.score-a.score||b.solved-a.solved, online:(a,b)=>(a.status==="on"?0:a.status==="idle"?1:2)-(b.status==="on"?0:b.status==="idle"?1:2)||b.score-a.score,
-    name:(a,b)=>a.alias.localeCompare(b.alias), coven:(a,b)=>(a.teamName||"~").localeCompare(b.teamName||"~")||b.score-a.score, recent:(a,b)=>b.last-a.last, joined:(a,b)=>b.joined-a.joined};
+    name:(a,b)=>a.alias.localeCompare(b.alias), coven:(a,b)=>(a.team?0:1)-(b.team?0:1)||a.teamName.localeCompare(b.teamName)||b.score-a.score, recent:(a,b)=>b.last-a.last, joined:(a,b)=>b.joined-a.joined};
   list.sort(S[sort]||S.score);
   $("pCount").textContent = `${list.length} shown`;
   const body=$("pbody");
@@ -820,11 +820,13 @@ function renderCovens(all, body){
     : `<p class="hint" style="padding:18px">No covens yet.</p>`;
 }
 function drawSpark(all){
-  const now=Date.now(), joins=all.map(r=>r.joined).filter(Boolean).sort((a,b)=>a-b);
-  const t0=Math.min(joins[0]||now, onlineHistory[0]?onlineHistory[0][0]:now), span=Math.max(60000, now-t0);
-  const maxY=Math.max(1, joins.length, ...onlineHistory.map(x=>x[1]));
+  const now=Date.now(), allJoins=all.map(r=>r.joined).filter(Boolean).sort((a,b)=>a-b);
+  // chart the last few hours; anyone who joined earlier counts as the starting line
+  const floor=now-4*3600000, joins=allJoins.filter(t=>t>=floor), base=allJoins.length-joins.length;
+  const t0=Math.max(floor, Math.min(joins[0]||now, onlineHistory[0]?onlineHistory[0][0]:now)), span=Math.max(60000, now-t0);
+  const maxY=Math.max(1, allJoins.length, ...onlineHistory.map(x=>x[1]));
   const X=t=>((t-t0)/span*600).toFixed(1), Y=v=>(54-v/maxY*50).toFixed(1);
-  let jp=`M0,54`; joins.forEach((t,i)=>{ jp+=` L${X(t)},${Y(i)} L${X(t)},${Y(i+1)}`; }); jp+=` L600,${Y(joins.length)}`;
+  let jp=`M0,${Y(base)}`; joins.forEach((t,i)=>{ jp+=` L${X(t)},${Y(base+i)} L${X(t)},${Y(base+i+1)}`; }); jp+=` L600,${Y(allJoins.length)}`;
   const op=onlineHistory.map(([t,v],i)=>(i?"L":"M")+X(t)+","+Y(v)).join(" ") + (onlineHistory.length?` L600,${Y(onlineNow())}`:"");
   $("spark").innerHTML=`<path d="${jp}" fill="none" stroke="var(--ember)" stroke-width="2"/>${op?`<path d="${op}" fill="none" stroke="var(--spirit)" stroke-width="2"/>`:""}`;
   $("sparkNote").textContent = `${new Date(t0).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})} → now · online line starts when this screen opened`;
